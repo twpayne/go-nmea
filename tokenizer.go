@@ -202,6 +202,33 @@ func (t *Tokenizer) DecimalDigits(n int) int {
 	return value
 }
 
+func (t *Tokenizer) PointDecimal() (int, int) {
+	if t.err != nil {
+		return 0, 1
+	}
+	if t.pos == len(t.data) {
+		t.err = errUnexpectedEndOfData
+		return 0, 1
+	}
+	if t.data[t.pos] != '.' {
+		t.err = errUnexpectedByte
+		return 0, 1
+	}
+	t.pos++
+	numerator := 0
+	denominator := 1
+	for t.pos < len(t.data) {
+		digit, ok := digitValue(t.data[t.pos])
+		if !ok {
+			break
+		}
+		numerator = 10*numerator + digit
+		denominator *= 10
+		t.pos++
+	}
+	return numerator, denominator
+}
+
 func (t *Tokenizer) EndOfData() {
 	if t.err != nil {
 		return

@@ -102,8 +102,9 @@ func commaOptionalLonDegMinCommaHemi(tok *nmea.Tokenizer) nmea.Optional[float64]
 
 func latDegMinCommaHemi(tok *nmea.Tokenizer) float64 {
 	deg := tok.DecimalDigits(2)
-	min := tok.UnsignedFloat()
-	lat := float64(deg) + min/60
+	min := tok.DecimalDigits(2)
+	numerator, denominator := tok.PointDecimal()
+	lat := float64(deg) + (float64(min)+float64(numerator)/float64(denominator))/60
 	if tok.CommaOneByteOf(latHemis) == 'S' {
 		lat = -lat
 	}
@@ -112,8 +113,9 @@ func latDegMinCommaHemi(tok *nmea.Tokenizer) float64 {
 
 func lonDegMinCommaHemi(tok *nmea.Tokenizer) float64 {
 	deg := tok.DecimalDigits(3)
-	min := tok.UnsignedFloat()
-	lon := float64(deg) + min/60
+	min := tok.DecimalDigits(2)
+	numerator, denominator := tok.PointDecimal()
+	lon := float64(deg) + (float64(min)+float64(numerator)/float64(denominator))/60
 	if tok.CommaOneByteOf(lonHemis) == 'W' {
 		lon = -lon
 	}
