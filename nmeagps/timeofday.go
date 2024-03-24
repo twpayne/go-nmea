@@ -4,8 +4,6 @@ package nmeagps
 
 import (
 	"fmt"
-	"regexp"
-	"strconv"
 	"time"
 
 	"github.com/twpayne/go-nmea"
@@ -17,8 +15,6 @@ type TimeOfDay struct {
 	Second     int
 	Nanosecond int
 }
-
-var secondsRx = regexp.MustCompile(`(\d{2})(?:\.(\d+))?`)
 
 func ParseCommaTimeOfDay(tok *nmea.Tokenizer) TimeOfDay {
 	tok.Comma()
@@ -66,19 +62,16 @@ func (t TimeOfDay) Valid() bool {
 	return true
 }
 
-func secondPointNanosecond(tok *nmea.Tokenizer) (sec, nsec int) {
-	// FIXME avoid use of regexp
-	// FIXME nanosecond rounding
-	match := tok.Regexp(secondsRx)
-	if match == nil {
-		return 0, 0
+func secondPointNanosecond(tok *nmea.Tokenizer) (int, int) {
+	sec := tok.DecimalDigits(2)
+	numerator, denominator := tok.OptionalPointDecimal()
+	for denominator < 1000000000 {
+		numerator *= 10
+		denominator *= 10
 	}
-	sec, _ = strconv.Atoi(string(match[1]))
-	if len(match[2]) != 0 {
-		nsec, _ = strconv.Atoi(string(match[2]))
-		for i := 0; i < 9-len(match[2]); i++ {
-			nsec *= 10
-		}
+	if denominator > 1000000000 {
+		factor := denominator / 1000000000
+		numerator = (numerator + factor/2) / factor
 	}
-	return sec, nsec
+	return sec, numerator
 }

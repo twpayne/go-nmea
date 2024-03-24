@@ -443,6 +443,19 @@ func (t *Tokenizer) OptionalOneByteOf(bytes string) Optional[byte] {
 	return NewOptional(t.OneByteOf(bytes))
 }
 
+func (t *Tokenizer) OptionalPointDecimal() (int, int) {
+	if t.err != nil {
+		return 0, 1
+	}
+	if t.pos == len(t.data) {
+		return 0, 1
+	}
+	if t.data[t.pos] == ',' {
+		return 0, 1
+	}
+	return t.PointDecimal()
+}
+
 func (t *Tokenizer) OptionalUnsignedFloat() Optional[float64] {
 	if t.err != nil {
 		return Optional[float64]{}

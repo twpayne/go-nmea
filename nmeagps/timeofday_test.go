@@ -6,8 +6,75 @@ import (
 
 	"github.com/alecthomas/assert/v2"
 
+	"github.com/twpayne/go-nmea"
 	"github.com/twpayne/go-nmea/nmeagps"
 )
+
+func TestParseTimeOfDay(t *testing.T) {
+	for _, tc := range []struct {
+		s        string
+		expected nmeagps.TimeOfDay
+	}{
+		{
+			s: "010203",
+			expected: nmeagps.TimeOfDay{
+				Hour:   1,
+				Minute: 2,
+				Second: 3,
+			},
+		},
+		{
+			s: "010203.",
+			expected: nmeagps.TimeOfDay{
+				Hour:   1,
+				Minute: 2,
+				Second: 3,
+			},
+		},
+		{
+			s: "010203.4",
+			expected: nmeagps.TimeOfDay{
+				Hour:       1,
+				Minute:     2,
+				Second:     3,
+				Nanosecond: 400000000,
+			},
+		},
+		{
+			s: "010203.456789123",
+			expected: nmeagps.TimeOfDay{
+				Hour:       1,
+				Minute:     2,
+				Second:     3,
+				Nanosecond: 456789123,
+			},
+		},
+		{
+			s: "010203.4567891234",
+			expected: nmeagps.TimeOfDay{
+				Hour:       1,
+				Minute:     2,
+				Second:     3,
+				Nanosecond: 456789123,
+			},
+		},
+		{
+			s: "010203.4567891235",
+			expected: nmeagps.TimeOfDay{
+				Hour:       1,
+				Minute:     2,
+				Second:     3,
+				Nanosecond: 456789124,
+			},
+		},
+	} {
+		t.Run(tc.s, func(t *testing.T) {
+			tok := nmea.NewTokenizer([]byte(tc.s))
+			assert.Equal(t, tc.expected, nmeagps.ParseTimeOfDay(tok))
+			assert.NoError(t, tok.Err())
+		})
+	}
+}
 
 func TestTimeOfDay(t *testing.T) {
 	for _, tc := range []struct {
