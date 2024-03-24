@@ -107,7 +107,7 @@ func TestTokenizer_OptionalInt(t *testing.T) {
 	for _, tc := range []struct {
 		s           string
 		expectedErr error
-		expected    int
+		expected    nmea.Optional[int]
 	}{
 		{
 			s: "",
@@ -117,11 +117,11 @@ func TestTokenizer_OptionalInt(t *testing.T) {
 		},
 		{
 			s:        "123",
-			expected: 123,
+			expected: nmea.NewOptional(123),
 		},
 		{
 			s:        "-123",
-			expected: -123,
+			expected: nmea.NewOptional(-123),
 		},
 	} {
 		t.Run(tc.s, func(t *testing.T) {

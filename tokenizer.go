@@ -131,14 +131,29 @@ func (t *Tokenizer) CommaOneByteOf(bytes string) byte {
 	return t.OneByteOf(bytes)
 }
 
+func (t *Tokenizer) CommaOptionalLiteralByte(b byte) Optional[byte] {
+	t.Comma()
+	return t.OptionalLiteralByte(b)
+}
+
 func (t *Tokenizer) CommaOptionalFloat() Optional[float64] {
 	t.Comma()
 	return t.OptionalFloat()
 }
 
+func (t *Tokenizer) CommaOptionalInt() Optional[int] {
+	t.Comma()
+	return t.OptionalInt()
+}
+
 func (t *Tokenizer) CommaOptionalHex() Optional[int] {
 	t.Comma()
 	return t.OptionalHex()
+}
+
+func (t *Tokenizer) CommaOptionalOneByteOf(bytes string) Optional[byte] {
+	t.Comma()
+	return t.OptionalOneByteOf(bytes)
 }
 
 func (t *Tokenizer) CommaOptionalUnsignedFloat() Optional[float64] {
@@ -356,17 +371,49 @@ func (t *Tokenizer) OptionalHex() Optional[int] {
 	return NewOptional(t.Hex())
 }
 
-func (t *Tokenizer) OptionalInt() int {
+func (t *Tokenizer) OptionalInt() Optional[int] {
 	if t.err != nil {
-		return 0
+		return Optional[int]{}
 	}
 	if t.pos == len(t.data) {
-		return 0
+		return Optional[int]{}
 	}
 	if t.data[t.pos] == ',' {
-		return 0
+		return Optional[int]{}
 	}
-	return t.Int()
+	return NewOptional(t.Int())
+}
+
+func (t *Tokenizer) OptionalLiteralByte(b byte) Optional[byte] {
+	if t.err != nil {
+		return Optional[byte]{}
+	}
+	if t.pos == len(t.data) {
+		return Optional[byte]{}
+	}
+	switch t.data[t.pos] {
+	case b:
+		t.pos++
+		return NewOptional(b)
+	case ',':
+		return Optional[byte]{}
+	default:
+		t.err = errUnexpectedByte
+		return Optional[byte]{}
+	}
+}
+
+func (t *Tokenizer) OptionalOneByteOf(bytes string) Optional[byte] {
+	if t.err != nil {
+		return Optional[byte]{}
+	}
+	if t.pos == len(t.data) {
+		return Optional[byte]{}
+	}
+	if t.data[t.pos] == ',' {
+		return Optional[byte]{}
+	}
+	return NewOptional(t.OneByteOf(bytes))
 }
 
 func (t *Tokenizer) OptionalUnsignedFloat() Optional[float64] {
