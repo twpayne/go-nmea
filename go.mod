@@ -1,6 +1,6 @@
 module github.com/twpayne/go-nmea
 
-go 1.22.1
+go 1.21
 
 require github.com/alecthomas/assert/v2 v2.6.0
 
