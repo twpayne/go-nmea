@@ -9,6 +9,7 @@ import (
 
 	"github.com/twpayne/go-nmea"
 	"github.com/twpayne/go-nmea/nmeagps"
+	"github.com/twpayne/go-nmea/nmeapgrm"
 	"github.com/twpayne/go-nmea/nmeapubx"
 )
 
@@ -24,6 +25,7 @@ func run() error {
 		nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
 		nmea.WithLineEndingDiscipline(nmea.LineEndingDisciplineNever),
 		nmea.WithSentenceParserFunc(nmeagps.SentenceParser),
+		nmea.WithSentenceParserFunc(nmeapgrm.SentenceParser),
 		nmea.WithSentenceParserFunc(nmeapubx.SentenceParser),
 	)
 
