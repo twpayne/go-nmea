@@ -84,8 +84,8 @@ func WithSentenceParserFunc(sentenceParserFunc func(string) SentenceParser) Pars
 
 func WithSentenceParserMap(sentenceParserMap SentenceParserMap) ParserOption {
 	return func(p *Parser) {
-		sentenceParserFunc := func(address string) SentenceParser {
-			return sentenceParserMap[address]
+		sentenceParserFunc := func(addr string) SentenceParser {
+			return sentenceParserMap[addr]
 		}
 		p.sentenceParserFuncs = append(p.sentenceParserFuncs, sentenceParserFunc)
 	}

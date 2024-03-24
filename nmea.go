@@ -16,7 +16,7 @@ type SentenceParser func(string, *Tokenizer) (Sentence, error)
 type SentenceParserMap map[string]SentenceParser
 
 func MakeSentenceParser[S Sentence](f func(string, *Tokenizer) (S, error)) SentenceParser {
-	return func(address string, tokenizer *Tokenizer) (Sentence, error) {
-		return f(address, tokenizer)
+	return func(addr string, tok *Tokenizer) (Sentence, error) {
+		return f(addr, tok)
 	}
 }

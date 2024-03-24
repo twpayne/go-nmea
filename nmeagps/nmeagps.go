@@ -42,8 +42,8 @@ var (
 	}
 )
 
-func SentenceParser(address string) nmea.SentenceParser {
-	match := addressRx.FindStringSubmatch(address)
+func SentenceParser(addr string) nmea.SentenceParser {
+	match := addressRx.FindStringSubmatch(addr)
 	if match == nil {
 		return nil
 	}
