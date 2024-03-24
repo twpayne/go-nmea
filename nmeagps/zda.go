@@ -27,6 +27,6 @@ func ParseZDA(addr string, tok *nmea.Tokenizer) (*ZDA, error) {
 	return &zda, tok.Err()
 }
 
-func (zda ZDA) Address() nmea.Address {
+func (zda ZDA) Address() nmea.Addresser {
 	return zda.address
 }

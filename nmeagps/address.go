@@ -1,6 +1,9 @@
 package nmeagps
 
-import "regexp"
+import (
+	"regexp"
+	"strings"
+)
 
 type Address struct {
 	address string
@@ -29,7 +32,7 @@ func (a Address) Formatter() string {
 }
 
 func (a Address) Proprietary() bool {
-	return false
+	return strings.HasPrefix(a.address, "P")
 }
 
 func (a Address) String() string {

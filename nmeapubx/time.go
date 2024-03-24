@@ -40,6 +40,6 @@ func ParseTime(addr string, tok *nmea.Tokenizer) (*Time, error) {
 	return &t, tok.Err()
 }
 
-func (t Time) Address() nmea.Address {
+func (t Time) Address() nmea.Addresser {
 	return t.address
 }

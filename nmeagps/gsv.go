@@ -40,6 +40,6 @@ func ParseGSV(addr string, tok *nmea.Tokenizer) (*GSV, error) {
 	return &gsv, tok.Err()
 }
 
-func (gsv GSV) Address() nmea.Address {
+func (gsv GSV) Address() nmea.Addresser {
 	return gsv.address
 }

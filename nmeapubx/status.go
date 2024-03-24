@@ -36,6 +36,6 @@ func ParseStatus(addr string, tok *nmea.Tokenizer) (*Status, error) {
 	return &s, tok.Err()
 }
 
-func (s Status) Address() nmea.Address {
+func (s Status) Address() nmea.Addresser {
 	return s.address
 }

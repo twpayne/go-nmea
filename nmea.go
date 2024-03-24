@@ -8,7 +8,7 @@ package nmea
 // an inattentive documentation writer
 
 type Sentence interface {
-	Address() Address
+	Address() Addresser
 }
 
 type SentenceParser func(string, *Tokenizer) (Sentence, error)

@@ -21,6 +21,6 @@ func ParseTXT(addr string, tok *nmea.Tokenizer) (*TXT, error) {
 	return &txt, tok.Err()
 }
 
-func (txt TXT) Address() nmea.Address {
+func (txt TXT) Address() nmea.Addresser {
 	return txt.address
 }

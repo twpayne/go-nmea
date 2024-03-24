@@ -27,6 +27,6 @@ func ParseVTG(addr string, tok *nmea.Tokenizer) (*VTG, error) {
 	return &vtg, tok.Err()
 }
 
-func (vtg VTG) Address() nmea.Address {
+func (vtg VTG) Address() nmea.Addresser {
 	return vtg.address
 }

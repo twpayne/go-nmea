@@ -25,6 +25,6 @@ func ParseVLW(addr string, tok *nmea.Tokenizer) (*VLW, error) {
 	return &vlw, tok.Err()
 }
 
-func (vlw VLW) Address() nmea.Address {
+func (vlw VLW) Address() nmea.Addresser {
 	return vlw.address
 }

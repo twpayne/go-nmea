@@ -33,6 +33,6 @@ func ParseGGA(addr string, tok *nmea.Tokenizer) (*GGA, error) {
 	return &gga, tok.Err()
 }
 
-func (gga GGA) Address() nmea.Address {
+func (gga GGA) Address() nmea.Addresser {
 	return gga.address
 }

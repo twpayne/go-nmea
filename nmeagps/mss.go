@@ -23,6 +23,6 @@ func ParseMSS(addr string, tok *nmea.Tokenizer) (*MSS, error) {
 	return &mss, tok.Err()
 }
 
-func (mss MSS) Address() nmea.Address {
+func (mss MSS) Address() nmea.Addresser {
 	return mss.address
 }

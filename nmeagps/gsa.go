@@ -32,6 +32,6 @@ func ParseGSA(addr string, tok *nmea.Tokenizer) (*GSA, error) {
 	return &gsa, tok.Err()
 }
 
-func (gsa GSA) Address() nmea.Address {
+func (gsa GSA) Address() nmea.Addresser {
 	return gsa.address
 }

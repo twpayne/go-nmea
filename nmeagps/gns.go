@@ -35,6 +35,6 @@ func ParseGNS(addr string, tok *nmea.Tokenizer) (*GNS, error) {
 	return &gns, tok.Err()
 }
 
-func (gns GNS) Address() nmea.Address {
+func (gns GNS) Address() nmea.Addresser {
 	return gns.address
 }

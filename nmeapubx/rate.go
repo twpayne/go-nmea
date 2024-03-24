@@ -27,6 +27,6 @@ func ParseRate(addr string, tok *nmea.Tokenizer) (*Rate, error) {
 	return &r, tok.Err()
 }
 
-func (r Rate) Address() nmea.Address {
+func (r Rate) Address() nmea.Addresser {
 	return r.address
 }

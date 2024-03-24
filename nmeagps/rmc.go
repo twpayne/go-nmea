@@ -47,6 +47,6 @@ func ParseRMC(addr string, tok *nmea.Tokenizer) (*RMC, error) {
 	return &rmc, tok.Err()
 }
 
-func (rmc *RMC) Address() nmea.Address {
+func (rmc *RMC) Address() nmea.Addresser {
 	return rmc.address
 }

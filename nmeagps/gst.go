@@ -28,6 +28,6 @@ func ParseGST(addr string, tok *nmea.Tokenizer) (*GST, error) {
 	return &gst, tok.Err()
 }
 
-func (gst GST) Address() nmea.Address {
+func (gst GST) Address() nmea.Addresser {
 	return gst.address
 }

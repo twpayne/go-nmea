@@ -17,6 +17,6 @@ func ParseTHS(addr string, tok *nmea.Tokenizer) (*THS, error) {
 	return &ths, tok.Err()
 }
 
-func (ths THS) Address() nmea.Address {
+func (ths THS) Address() nmea.Addresser {
 	return ths.address
 }

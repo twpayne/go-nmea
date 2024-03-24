@@ -22,6 +22,6 @@ func ParseGLL(addr string, tok *nmea.Tokenizer) (*GLL, error) {
 	return &gll, tok.Err()
 }
 
-func (gll GLL) Address() nmea.Address {
+func (gll GLL) Address() nmea.Addresser {
 	return gll.address
 }

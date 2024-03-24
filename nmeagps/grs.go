@@ -26,6 +26,6 @@ func ParseGRS(addr string, tok *nmea.Tokenizer) (*GRS, error) {
 	return &grs, tok.Err()
 }
 
-func (grs GRS) Address() nmea.Address {
+func (grs GRS) Address() nmea.Addresser {
 	return grs.address
 }

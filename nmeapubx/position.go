@@ -51,6 +51,6 @@ func ParsePosition(addr string, tok *nmea.Tokenizer) (*Position, error) {
 	return &p, tok.Err()
 }
 
-func (p Position) Address() nmea.Address {
+func (p Position) Address() nmea.Addresser {
 	return p.address
 }

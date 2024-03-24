@@ -25,6 +25,6 @@ func ParseDTM(addr string, tok *nmea.Tokenizer) (*DTM, error) {
 	return &dtm, tok.Err()
 }
 
-func (dtm DTM) Address() nmea.Address {
+func (dtm DTM) Address() nmea.Addresser {
 	return dtm.address
 }
