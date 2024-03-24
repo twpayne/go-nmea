@@ -8,7 +8,7 @@ type MSS struct {
 	SignalToNoiseRatio int
 	BeaconFrequencyKHz float64
 	BeaconBitRate      int
-	ChannelNumber      int
+	ChannelNumber      nmea.Optional[int]
 }
 
 func ParseMSS(addr string, tok *nmea.Tokenizer) (*MSS, error) {
@@ -18,8 +18,8 @@ func ParseMSS(addr string, tok *nmea.Tokenizer) (*MSS, error) {
 	mss.SignalToNoiseRatio = tok.CommaInt()
 	mss.BeaconFrequencyKHz = tok.CommaFloat()
 	mss.BeaconBitRate = tok.CommaUnsignedInt()
-	mss.ChannelNumber = tok.CommaUnsignedInt()
-	// tok.EndOfData() // FIXME remove, see trailing data discipline
+	mss.ChannelNumber = tok.CommaOptionalUnsignedInt()
+	tok.EndOfData()
 	return &mss, tok.Err()
 }
 

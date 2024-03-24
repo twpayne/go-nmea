@@ -576,14 +576,14 @@ func TestParseSentence(t *testing.T) {
 			options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineRequire),
 			},
-			s: "$GPMSS,55,27,318.0,100,1,*57",
+			s: "$GPMSS,55,27,318.0,100,1*57",
 			expected: &MSS{
 				address:            NewAddress("GPMSS"),
 				SignalStrength:     55,
 				SignalToNoiseRatio: 27,
 				BeaconFrequencyKHz: 318,
 				BeaconBitRate:      100,
-				ChannelNumber:      1,
+				ChannelNumber:      nmea.NewOptional(1),
 			},
 		},
 		{
@@ -873,38 +873,6 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			skip: "FIXME handle empty satellites in view",
-			options: []nmea.ParserOption{
-				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
-			},
-			s: "$GLGSV,3,3,09,86,02,338,,,,,,,,,,,,,,1*XX",
-			expected: &GSV{
-				address: NewAddress("GLGSV"),
-				NumMsg:  3,
-				MsgNum:  3,
-				NumSV:   9,
-				SatellitesInView: []SatelliteInView{
-					{
-						SVID: 86,
-						Elv:  nmea.NewOptional(2),
-						Az:   nmea.NewOptional(338),
-						CNO:  nmea.NewOptional(46),
-					},
-				},
-				SignalID: nmea.NewOptional(1),
-			},
-		},
-		{
-			skip: "FIXME handle missing status",
-			options: []nmea.ParserOption{
-				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
-			},
-			s: "$GNRMC,020418.127,4048.4894,N,7720.2754,W,0.00,0.00,180116,,,A,V*XX",
-			expected: &RMC{
-				address: NewAddress("GNRMC"),
-			},
-		},
-		{
 			options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
 			},
@@ -914,15 +882,29 @@ func TestParseSentence(t *testing.T) {
 				ModeIndicator: 'D',
 			},
 		},
+
+		// Miscellaneous examples.
 		{
-			skip: "FIXME handle + sign in hours",
-			options: []nmea.ParserOption{
-				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
+			s: "$GPMSS,0,0,0.000000,0,*58",
+			expected: &MSS{
+				address: NewAddress("GPMSS"),
 			},
-			s: "$GPZDA,014811.000,13,09,2013,+00,00*XX",
-			expected: &ZDA{
-				address: NewAddress("GPZDA"),
-				Time:    time.Date(2013, time.September, 13, 1, 48, 11, 0, time.UTC),
+		},
+		{
+			s: "$GPMSS,0,0,0.000000,200,*5A",
+			expected: &MSS{
+				address:       NewAddress("GPMSS"),
+				BeaconBitRate: 200,
+			},
+		},
+		{
+			s: "$GPMSS,55,27,318.0,100,*66",
+			expected: &MSS{
+				address:            NewAddress("GPMSS"),
+				SignalStrength:     55,
+				SignalToNoiseRatio: 27,
+				BeaconFrequencyKHz: 318,
+				BeaconBitRate:      100,
 			},
 		},
 	} {
