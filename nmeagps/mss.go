@@ -6,7 +6,7 @@ type MSS struct {
 	address            Address
 	SignalStrength     int
 	SignalToNoiseRatio int
-	BeaconFrequency    float64
+	BeaconFrequencyKHz float64
 	BeaconBitRate      int
 	ChannelNumber      int
 }
@@ -16,7 +16,7 @@ func ParseMSS(addr string, tok *nmea.Tokenizer) (*MSS, error) {
 	mss.address = NewAddress(addr)
 	mss.SignalStrength = tok.CommaInt()
 	mss.SignalToNoiseRatio = tok.CommaInt()
-	mss.BeaconFrequency = 1000 * tok.CommaFloat()
+	mss.BeaconFrequencyKHz = tok.CommaFloat()
 	mss.BeaconBitRate = tok.CommaUnsignedInt()
 	mss.ChannelNumber = tok.CommaUnsignedInt()
 	// tok.EndOfData() // FIXME remove, see trailing data discipline

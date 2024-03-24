@@ -581,7 +581,7 @@ func TestParseSentence(t *testing.T) {
 				address:            NewAddress("GPMSS"),
 				SignalStrength:     55,
 				SignalToNoiseRatio: 27,
-				BeaconFrequency:    318000,
+				BeaconFrequencyKHz: 318,
 				BeaconBitRate:      100,
 				ChannelNumber:      1,
 			},
