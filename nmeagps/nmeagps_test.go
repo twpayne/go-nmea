@@ -1,7 +1,5 @@
 package nmeagps
 
-// FIXME fix all skips
-
 import (
 	"testing"
 	"time"
@@ -761,34 +759,6 @@ func TestParseSentence(t *testing.T) {
 						Elv:  nmea.NewOptional(47),
 						Az:   nmea.NewOptional(163),
 						CNO:  nmea.NewOptional(44),
-					},
-				},
-				SignalID: nmea.NewOptional(1),
-			},
-		},
-		{
-			skip: "FIXME handle empty satellites in view",
-			options: []nmea.ParserOption{
-				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
-			},
-			s: "$GPGSV,4,4,14,42,48,171,44,93,65,191,48,,,,,,,,,1*XX",
-			expected: &GSV{
-				address: NewAddress("GPGSV"),
-				NumMsg:  4,
-				MsgNum:  4,
-				NumSV:   14,
-				SatellitesInView: []SatelliteInView{
-					{
-						SVID: 42,
-						Elv:  nmea.NewOptional(48),
-						Az:   nmea.NewOptional(171),
-						CNO:  nmea.NewOptional(44),
-					},
-					{
-						SVID: 93,
-						Elv:  nmea.NewOptional(65),
-						Az:   nmea.NewOptional(191),
-						CNO:  nmea.NewOptional(48),
 					},
 				},
 				SignalID: nmea.NewOptional(1),

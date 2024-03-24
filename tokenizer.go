@@ -1,7 +1,5 @@
 package nmea
 
-// FIXME verify all combinations of {Comma,}{Optional,}Type
-
 import (
 	"errors"
 	"fmt"
