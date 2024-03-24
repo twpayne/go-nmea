@@ -24,17 +24,12 @@ func ParseRMC(addr string, tok *nmea.Tokenizer) (*RMC, error) {
 	rmc.address = NewAddress(addr)
 	timeOfDay := ParseCommaTimeOfDay(tok)
 	rmc.Status = tok.CommaOneByteOf(statuses)
-	rmc.Lat = commaLatDegMinCommaHemi(tok)
-	rmc.Lon = commaLonDegMinCommaHemi(tok)
+	rmc.Lat = ParseCommaLatDegMinCommaHemi(tok)
+	rmc.Lon = ParseCommaLonDegMinCommaHemi(tok)
 	rmc.SpeedOverGroundKN = tok.CommaUnsignedFloat()
 	rmc.CourseOverGround = tok.CommaOptionalUnsignedFloat()
-	tok.Comma()
-	day := tok.DecimalDigits(2)
-	month := time.Month(tok.DecimalDigits(2))
-	year := 1900 + tok.DecimalDigits(2)
-	if year < 1993 {
-		year += 100
-	}
+	date := ParseCommaDate(tok)
+	rmc.Time = time.Date(date.Year, date.Month, date.Day, timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second, timeOfDay.Nanosecond, time.UTC)
 	rmc.MagneticVariation = tok.CommaOptionalFloat()
 	if rmc.MagneticVariation.Valid {
 		hemisphere := tok.CommaOneByteOf("EW")
@@ -49,7 +44,6 @@ func ParseRMC(addr string, tok *nmea.Tokenizer) (*RMC, error) {
 		rmc.NavStatus = tok.CommaOneByteOf("V")
 	}
 	tok.EndOfData()
-	rmc.Time = time.Date(year, month, day, timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second, timeOfDay.Nanosecond, time.UTC)
 	return &rmc, tok.Err()
 }
 

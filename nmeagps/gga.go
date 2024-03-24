@@ -20,8 +20,8 @@ func ParseGGA(addr string, tok *nmea.Tokenizer) (*GGA, error) {
 	var gga GGA
 	gga.address = NewAddress(addr)
 	gga.TimeOfDay = ParseCommaTimeOfDay(tok)
-	gga.Lat = commaLatDegMinCommaHemi(tok)
-	gga.Lon = commaLonDegMinCommaHemi(tok)
+	gga.Lat = ParseCommaLatDegMinCommaHemi(tok)
+	gga.Lon = ParseCommaLonDegMinCommaHemi(tok)
 	gga.FixQuality = tok.CommaUnsignedInt()
 	gga.NumberOfSatellites = tok.CommaUnsignedInt()
 	gga.HDOP = tok.CommaUnsignedFloat()

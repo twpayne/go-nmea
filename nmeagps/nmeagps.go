@@ -63,7 +63,7 @@ func commaLatCommaHemi(tok *nmea.Tokenizer) float64 {
 	return lat
 }
 
-func commaLatDegMinCommaHemi(tok *nmea.Tokenizer) float64 {
+func ParseCommaLatDegMinCommaHemi(tok *nmea.Tokenizer) float64 {
 	tok.Comma()
 	return latDegMinCommaHemi(tok)
 }
@@ -85,7 +85,7 @@ func commaLonCommaHemi(tok *nmea.Tokenizer) float64 {
 	return lon
 }
 
-func commaLonDegMinCommaHemi(tok *nmea.Tokenizer) float64 {
+func ParseCommaLonDegMinCommaHemi(tok *nmea.Tokenizer) float64 {
 	tok.Comma()
 	return lonDegMinCommaHemi(tok)
 }

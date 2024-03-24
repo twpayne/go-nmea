@@ -14,8 +14,8 @@ type GLL struct {
 func ParseGLL(addr string, tok *nmea.Tokenizer) (*GLL, error) {
 	var gll GLL
 	gll.address = NewAddress(addr)
-	gll.Lat = commaLatDegMinCommaHemi(tok)
-	gll.Lon = commaLonDegMinCommaHemi(tok)
+	gll.Lat = ParseCommaLatDegMinCommaHemi(tok)
+	gll.Lon = ParseCommaLonDegMinCommaHemi(tok)
 	gll.TimeOfDay = ParseCommaTimeOfDay(tok)
 	gll.Status = tok.CommaOneByteOf(statuses)
 	gll.PosMode = tok.CommaOneByteOf(posModes)
