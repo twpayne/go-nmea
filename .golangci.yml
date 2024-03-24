@@ -52,7 +52,6 @@ linters:
   - loggercheck
   - makezero
   - misspell
-  - musttag
   - nakedret
   - nestif
   - nilerr
@@ -98,6 +97,7 @@ linters:
   - gomoddirectives
   - lll
   - maintidx
+  - musttag
   - nlreturn
   - nonamedreturns
   - paralleltest
