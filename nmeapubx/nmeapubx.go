@@ -1,3 +1,6 @@
+// Package nmeapubx parses u-blox NMEA sentences.
+//
+// See https://content.u-blox.com/sites/default/files/products/documents/u-blox8-M8_ReceiverDescrProtSpec_UBX-13003221.pdf.
 package nmeapubx
 
 import (
@@ -6,14 +9,12 @@ import (
 	"github.com/twpayne/go-nmea"
 )
 
-var (
-	parsers = map[int]nmea.SentenceParser{
-		0:  nmea.MakeSentenceParser(ParsePosition),
-		3:  nmea.MakeSentenceParser(ParseStatus),
-		4:  nmea.MakeSentenceParser(ParseTime),
-		40: nmea.MakeSentenceParser(ParseRate),
-	}
-)
+var sentenceParserMap = map[int]nmea.SentenceParser{
+	0:  nmea.MakeSentenceParser(ParsePosition),
+	3:  nmea.MakeSentenceParser(ParseStatus),
+	4:  nmea.MakeSentenceParser(ParseTime),
+	40: nmea.MakeSentenceParser(ParseRate),
+}
 
 type UnknownMsgIDError struct {
 	MsgID int
@@ -28,7 +29,7 @@ func ParseSentence(addr string, tok *nmea.Tokenizer) (nmea.Sentence, error) {
 	if err := tok.Err(); err != nil {
 		return nil, err
 	}
-	sentenceParser := parsers[msgID]
+	sentenceParser := sentenceParserMap[msgID]
 	if sentenceParser != nil {
 		return sentenceParser(addr, tok)
 	}

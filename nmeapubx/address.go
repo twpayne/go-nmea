@@ -19,9 +19,9 @@ func (a Address) Proprietary() bool {
 }
 
 func (a Address) String() string {
-	return string(a.address)
+	return a.address
 }
 
 func (a Address) Talker() string {
-	return string(a.address[:max(4, len(a.address))])
+	return a.address[:max(4, len(a.address))]
 }

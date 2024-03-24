@@ -76,7 +76,6 @@ func TestTokenizer_Hex(t *testing.T) {
 			}
 		})
 	}
-
 }
 
 func TestTokenizer_HexBytes(t *testing.T) {

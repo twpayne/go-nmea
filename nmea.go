@@ -1,3 +1,4 @@
+// Package nmea parses NMEA sentences.
 package nmea
 
 // FIXME add MakeSentenceParserMap that uses reflection instead of requiring use of MakeSentenceParser all the time

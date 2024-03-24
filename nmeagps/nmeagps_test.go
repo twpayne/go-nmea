@@ -1003,7 +1003,6 @@ func TestParseSentence(t *testing.T) {
 			}
 		})
 	}
-
 }
 
 func newParser(options ...nmea.ParserOption) *nmea.Parser {

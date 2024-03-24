@@ -39,12 +39,12 @@ var (
 	errUnexpectedLineEnding = errors.New("unexpected line ending")
 )
 
-type InvalidChecksum struct {
+type InvalidChecksumError struct {
 	Expected byte // FIXME rename to maybe calculated?
 	Found    byte // FIXME rename to maybe got or received?
 }
 
-func (e InvalidChecksum) Error() string {
+func (e InvalidChecksumError) Error() string {
 	return fmt.Sprintf("invalid checksum: expected %02X, found %02X", e.Expected, e.Found)
 }
 
@@ -53,7 +53,7 @@ type UnknownAddressError struct {
 }
 
 func (e UnknownAddressError) Error() string {
-	return fmt.Sprintf("%s: unknown address", e.Address)
+	return e.Address + ": unknown address"
 }
 
 type Parser struct {
@@ -125,8 +125,8 @@ func (p *Parser) Parse(data []byte) (Sentence, error) {
 		case !checksum.Valid:
 			return nil, errMissingChecksum
 		case checksum.Value != calculatedChecksumValue:
-			return nil, InvalidChecksum{
-				Expected: byte(calculatedChecksumValue),
+			return nil, InvalidChecksumError{
+				Expected: calculatedChecksumValue,
 				Found:    checksum.Value,
 			}
 		}
@@ -168,7 +168,6 @@ func (p *Parser) Parse(data []byte) (Sentence, error) {
 		if sentenceParser := sentenceParserFunc(address); sentenceParser != nil {
 			return sentenceParser(address, tokenizer)
 		}
-
 	}
 	return nil, UnknownAddressError{
 		Address: address,

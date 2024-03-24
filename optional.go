@@ -6,7 +6,7 @@ import (
 )
 
 type Optional[T any] struct {
-	Value T `json:",omitempty"`
+	Value T
 	Valid bool
 }
 

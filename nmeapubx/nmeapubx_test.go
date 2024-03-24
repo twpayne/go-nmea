@@ -18,8 +18,6 @@ func TestParseSentence(t *testing.T) {
 		expectedErr error
 		expected    nmea.Sentence
 	}{
-		// u-blox examples from
-		// https://content.u-blox.com/sites/default/files/products/documents/u-blox8-M8_ReceiverDescrProtSpec_UBX-13003221.pdf
 		{
 			s: "$PUBX,00,081350.00,4717.113210,N,00833.915187,E,546.589,G3,2.1,2.0,0.007,77.52,0.007,,0.92,1.19,0.77,9,0,0*5F",
 			expected: &Position{
@@ -175,7 +173,6 @@ func TestParseSentence(t *testing.T) {
 			}
 		})
 	}
-
 }
 
 func newParser(options ...nmea.ParserOption) *nmea.Parser {

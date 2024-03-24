@@ -1,3 +1,4 @@
+// Package nmeagps parses GPS NMEA sentences.
 package nmeagps
 
 import (

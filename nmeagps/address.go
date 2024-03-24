@@ -25,7 +25,7 @@ func (a Address) Formatter() string {
 	if len(a.address) < 2 {
 		return ""
 	}
-	return string(a.address[2:])
+	return a.address[2:]
 }
 
 func (a Address) Proprietary() bool {
@@ -33,13 +33,13 @@ func (a Address) Proprietary() bool {
 }
 
 func (a Address) String() string {
-	return string(a.address)
+	return a.address
 }
 
 func (a Address) Talker() string {
-	return string(a.address[:min(2, len(a.address))])
+	return a.address[:min(2, len(a.address))]
 }
 
 func (a Address) Valid() bool {
-	return addressRx.MatchString(string(a.address))
+	return addressRx.MatchString(a.address)
 }
