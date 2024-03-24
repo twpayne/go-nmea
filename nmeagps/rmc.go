@@ -21,7 +21,7 @@ type RMC struct {
 
 func ParseRMC(addr string, tok *nmea.Tokenizer) (*RMC, error) {
 	var rmc RMC
-	rmc.address = Address(addr)
+	rmc.address = NewAddress(addr)
 	timeOfDay := ParseCommaTimeOfDay(tok)
 	rmc.Status = tok.CommaOneByteOf(statuses)
 	rmc.Lat = commaLatDegMinCommaHemi(tok)

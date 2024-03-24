@@ -10,7 +10,7 @@ type THS struct {
 
 func ParseTHS(addr string, tok *nmea.Tokenizer) (*THS, error) {
 	var ths THS
-	ths.address = Address(addr)
+	ths.address = NewAddress(addr)
 	ths.TrueHeading = tok.CommaUnsignedFloat()
 	ths.ModeIndicator = tok.CommaOneByteOf(modeIndicators)
 	tok.EndOfData()

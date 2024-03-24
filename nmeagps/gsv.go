@@ -20,7 +20,7 @@ type GSV struct {
 
 func ParseGSV(addr string, tok *nmea.Tokenizer) (*GSV, error) {
 	var gsv GSV
-	gsv.address = Address(addr)
+	gsv.address = NewAddress(addr)
 	gsv.NumMsg = tok.CommaInt()
 	gsv.MsgNum = tok.CommaInt()
 	gsv.NumSV = tok.CommaInt()

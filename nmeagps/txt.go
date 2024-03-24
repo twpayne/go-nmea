@@ -12,7 +12,7 @@ type TXT struct {
 
 func ParseTXT(addr string, tok *nmea.Tokenizer) (*TXT, error) {
 	var txt TXT
-	txt.address = Address(addr)
+	txt.address = NewAddress(addr)
 	txt.NumMsg = tok.CommaInt()
 	txt.MsgNum = tok.CommaInt()
 	txt.MsgType = tok.CommaInt()

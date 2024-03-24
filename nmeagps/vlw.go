@@ -12,7 +12,7 @@ type VLW struct {
 
 func ParseVLW(addr string, tok *nmea.Tokenizer) (*VLW, error) {
 	var vlw VLW
-	vlw.address = Address(addr)
+	vlw.address = NewAddress(addr)
 	vlw.TotalWaterDistanceNM = tok.CommaOptionalUnsignedFloat()
 	tok.CommaLiteralByte('N')
 	vlw.WaterDistanceNM = tok.CommaOptionalUnsignedFloat()

@@ -13,7 +13,7 @@ type VTG struct {
 
 func ParseVTG(addr string, tok *nmea.Tokenizer) (*VTG, error) {
 	var vtg VTG
-	vtg.address = Address(addr)
+	vtg.address = NewAddress(addr)
 	vtg.TrueCourseOverGround = tok.CommaUnsignedFloat()
 	tok.CommaLiteralByte('T')
 	vtg.MagneticCourseOverGround = tok.CommaOptionalUnsignedFloat()

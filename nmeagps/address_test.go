@@ -10,7 +10,7 @@ import (
 
 func TestAddress(t *testing.T) {
 	for _, tc := range []struct {
-		address               nmeagps.Address
+		address               string
 		expectedConstellation byte
 		expectedFormatter     string
 		expectedTalker        string
@@ -52,12 +52,13 @@ func TestAddress(t *testing.T) {
 			expectedValid:         false,
 		},
 	} {
-		t.Run(tc.address.String(), func(t *testing.T) {
-			assert.Equal(t, tc.expectedConstellation, tc.address.Constellation())
-			assert.Equal(t, tc.expectedFormatter, tc.address.Formatter())
-			assert.False(t, tc.address.Proprietary())
-			assert.Equal(t, tc.expectedTalker, tc.address.Talker())
-			assert.Equal(t, tc.expectedValid, tc.address.Valid())
+		t.Run(tc.address, func(t *testing.T) {
+			address := nmeagps.NewAddress(tc.address)
+			assert.Equal(t, tc.expectedConstellation, address.Constellation())
+			assert.Equal(t, tc.expectedFormatter, address.Formatter())
+			assert.False(t, address.Proprietary())
+			assert.Equal(t, tc.expectedTalker, address.Talker())
+			assert.Equal(t, tc.expectedValid, address.Valid())
 		})
 	}
 }

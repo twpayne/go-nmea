@@ -19,7 +19,7 @@ type GNS struct {
 
 func ParseGNS(addr string, tok *nmea.Tokenizer) (*GNS, error) {
 	var gns GNS
-	gns.address = Address(addr)
+	gns.address = NewAddress(addr)
 	gns.TimeOfDay = ParseCommaTimeOfDay(tok)
 	gns.Lat = commaOptionalLatDegMinCommaHemi(tok)
 	gns.Lon = commaOptionalLonDegMinCommaHemi(tok)

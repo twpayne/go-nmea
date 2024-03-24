@@ -24,7 +24,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPDTM,W84,,0.0,N,0.0,E,0.0,W84*6F",
 			expected: &DTM{
-				address:  "GPDTM",
+				address:  NewAddress("GPDTM"),
 				Datum:    "W84",
 				RefDatum: "W84",
 			},
@@ -32,7 +32,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPGBS,235503.00,1.6,1.4,3.2,,,,,,*40",
 			expected: &GBS{
-				address: "GPGBS",
+				address: NewAddress("GPGBS"),
 				TimeOfDay: TimeOfDay{
 					Hour:   23,
 					Minute: 55,
@@ -49,7 +49,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GPGBS,235458.00,1.4,1.3,3.1,03,,-21.4,3.8,1,0*5B",
 			expected: &GBS{
-				address: "GPGBS",
+				address: NewAddress("GPGBS"),
 				TimeOfDay: TimeOfDay{
 					Hour:   23,
 					Minute: 54,
@@ -68,7 +68,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPGGA,092725.00,4717.11399,N,00833.91590,E,1,08,1.01,499.6,M,48.0,M,,*5B",
 			expected: &GGA{
-				address: "GPGGA",
+				address: NewAddress("GPGGA"),
 				TimeOfDay: TimeOfDay{
 					Hour:   9,
 					Minute: 27,
@@ -86,7 +86,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPGLL,4717.11364,N,00833.91565,E,092321.00,A,A*60",
 			expected: &GLL{
-				address: "GPGLL",
+				address: NewAddress("GPGLL"),
 				Lat:     47.28522733333333,
 				Lon:     8.565260833333333,
 				TimeOfDay: TimeOfDay{
@@ -101,7 +101,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GNGNS,103600.01,5114.51176,N,00012.29380,W,ANNN,07,1.18,111.5,45.6,,,V*00",
 			expected: &GNS{
-				address: "GNGNS",
+				address: NewAddress("GNGNS"),
 				TimeOfDay: TimeOfDay{
 					Hour:       10,
 					Minute:     36,
@@ -123,7 +123,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GNGNS,122310.2,3722.425671,N,12258.856215,W,DAAA,14,0.9,1005.543,6.5,,,V*0E",
 			expected: &GNS{
-				address: "GNGNS",
+				address: NewAddress("GNGNS"),
 				TimeOfDay: TimeOfDay{
 					Hour:       12,
 					Minute:     23,
@@ -146,7 +146,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GPGNS,122310.2,,,,,,07,,,,5.2,23,V*02",
 			expected: &GNS{
-				address: "GPGNS",
+				address: NewAddress("GPGNS"),
 				TimeOfDay: TimeOfDay{
 					Hour:       12,
 					Minute:     23,
@@ -162,7 +162,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GNGRS,104148.00,1,2.6,2.2,-1.6,-1.1,-1.7,-1.5,5.8,1.7,,,,,1,1*52",
 			expected: &GRS{
-				address: "GNGRS",
+				address: NewAddress("GNGRS"),
 				TimeOfDay: TimeOfDay{
 					Hour:   10,
 					Minute: 41,
@@ -193,7 +193,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GNGRS,104148.00,1,,0.0,2.5,0.0,,2.8,,,,,,,1,5*52",
 			expected: &GRS{
-				address: "GNGRS",
+				address: NewAddress("GNGRS"),
 				TimeOfDay: TimeOfDay{
 					Hour:   10,
 					Minute: 41,
@@ -224,7 +224,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GPGSA,A,3,23,29,07,08,09,18,26,28,,,,,1.94,1.18,1.54,1*0D",
 			expected: &GSA{
-				address: "GPGSA",
+				address: NewAddress("GPGSA"),
 				OpMode:  'A',
 				NavMode: 3,
 				SVIDs: []nmea.Optional[int]{
@@ -250,7 +250,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPGST,082356.00,1.8,,,,1.7,1.3,2.2*7E",
 			expected: &GST{
-				address: "GPGST",
+				address: NewAddress("GPGST"),
 				TimeOfDay: TimeOfDay{
 					Hour:   8,
 					Minute: 23,
@@ -265,7 +265,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPGSV,3,1,09,09,,,17,10,,,40,12,,,49,13,,,35,1*6F",
 			expected: &GSV{
-				address: "GPGSV",
+				address: NewAddress("GPGSV"),
 				NumMsg:  3,
 				MsgNum:  1,
 				NumSV:   9,
@@ -293,7 +293,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPGSV,3,2,09,15,,,44,17,,,45,19,,,44,24,,,50,1*64",
 			expected: &GSV{
-				address: "GPGSV",
+				address: NewAddress("GPGSV"),
 				NumMsg:  3,
 				MsgNum:  2,
 				NumSV:   9,
@@ -321,7 +321,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPGSV,3,3,09,25,,,40,1*6E",
 			expected: &GSV{
-				address: "GPGSV",
+				address: NewAddress("GPGSV"),
 				NumMsg:  3,
 				MsgNum:  3,
 				NumSV:   9,
@@ -337,7 +337,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPGSV,1,1,03,12,,,42,24,,,47,32,,,37,5*66",
 			expected: &GSV{
-				address: "GPGSV",
+				address: NewAddress("GPGSV"),
 				NumMsg:  1,
 				MsgNum:  1,
 				NumSV:   3,
@@ -361,7 +361,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GAGSV,1,1,00,2*76",
 			expected: &GSV{
-				address:  "GAGSV",
+				address:  NewAddress("GAGSV"),
 				NumMsg:   1,
 				MsgNum:   1,
 				NumSV:    0,
@@ -374,7 +374,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GPRMC,083559.00,A,4717.11437,N,00833.91522,E,0.004,77.52,091202,,,A,V*57",
 			expected: &RMC{
-				address:           "GPRMC",
+				address:           NewAddress("GPRMC"),
 				Time:              time.Date(2002, time.December, 9, 8, 35, 59, 0, time.UTC),
 				Status:            'A',
 				Lat:               47.2852395,
@@ -391,7 +391,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GPTHS,77.52,E*32",
 			expected: &THS{
-				address:       "GPTHS",
+				address:       NewAddress("GPTHS"),
 				TrueHeading:   77.52,
 				ModeIndicator: 'E',
 			},
@@ -399,7 +399,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPTXT,01,01,02,u-blox ag - www.u-blox.com*50",
 			expected: &TXT{
-				address: "GPTXT",
+				address: NewAddress("GPTXT"),
 				NumMsg:  1,
 				MsgNum:  1,
 				MsgType: 2,
@@ -409,7 +409,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPTXT,01,01,02,ANTARIS ATR0620 HW 00000040*67",
 			expected: &TXT{
-				address: "GPTXT",
+				address: NewAddress("GPTXT"),
 				NumMsg:  1,
 				MsgNum:  1,
 				MsgType: 2,
@@ -422,7 +422,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GPVLW,,N,,N,15.8,N,1.2,N*06",
 			expected: &VLW{
-				address:               "GPVLW",
+				address:               NewAddress("GPVLW"),
 				TotalGroundDistanceNM: nmea.NewOptional(15.8),
 				GroundDistanceNM:      nmea.NewOptional(1.2),
 			},
@@ -430,7 +430,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPVTG,77.52,T,,M,0.004,N,0.008,K,A*06",
 			expected: &VTG{
-				address:              "GPVTG",
+				address:              NewAddress("GPVTG"),
 				TrueCourseOverGround: 77.52,
 				SpeedOverGroundKN:    0.004,
 				SpeedOverGroundKPH:   0.008,
@@ -440,7 +440,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPZDA,082710.00,16,09,2002,00,00*64",
 			expected: &ZDA{
-				address:              "GPZDA",
+				address:              NewAddress("GPZDA"),
 				Time:                 time.Date(2002, time.September, 16, 8, 27, 10, 0, time.UTC),
 				LocalTimeZoneHours:   0,
 				LocalTimeZoneMinutes: 0,
@@ -451,7 +451,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPGGA,002153.000,3342.6618,N,11751.3858,W,1,10,1.2,27.0,M,-34.2,M,,0000*5E",
 			expected: &GGA{
-				address: "GPGGA",
+				address: NewAddress("GPGGA"),
 				TimeOfDay: TimeOfDay{
 					Hour:   0,
 					Minute: 21,
@@ -470,7 +470,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPGLL,3723.2475,N,12158.3416,W,161229.487,A,A*41",
 			expected: &GLL{
-				address: "GPGLL",
+				address: NewAddress("GPGLL"),
 				Lat:     37.387458333333335,
 				Lon:     -121.97236,
 				TimeOfDay: TimeOfDay{
@@ -486,7 +486,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPGSA,A,3,07,02,26,27,09,04,15,,,,,,1.8,1.0,1.5*33",
 			expected: &GSA{
-				address: "GPGSA",
+				address: NewAddress("GPGSA"),
 				OpMode:  'A',
 				NavMode: 3,
 				SVIDs: []nmea.Optional[int]{
@@ -511,7 +511,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPGSV,2,1,07,07,79,048,42,02,51,062,43,26,36,256,42,27,27,138,42*71",
 			expected: &GSV{
-				address: "GPGSV",
+				address: NewAddress("GPGSV"),
 				NumMsg:  2,
 				MsgNum:  1,
 				NumSV:   7,
@@ -546,7 +546,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPGSV,2,2,07,09,23,313,42,04,19,159,41,15,12,041,42*41",
 			expected: &GSV{
-				address: "GPGSV",
+				address: NewAddress("GPGSV"),
 				NumMsg:  2,
 				MsgNum:  2,
 				NumSV:   7,
@@ -578,7 +578,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GPMSS,55,27,318.0,100,1,*57",
 			expected: &MSS{
-				address:            "GPMSS",
+				address:            NewAddress("GPMSS"),
 				SignalStrength:     55,
 				SignalToNoiseRatio: 27,
 				BeaconFrequency:    318000,
@@ -589,7 +589,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPRMC,161229.487,A,3723.2475,N,12158.3416,W,0.13,309.62,120598,,*10",
 			expected: &RMC{
-				address:           "GPRMC",
+				address:           NewAddress("GPRMC"),
 				Time:              time.Date(1998, time.May, 12, 16, 12, 29, 487000000, time.UTC),
 				Status:            65,
 				Lat:               37.387458333333335,
@@ -604,7 +604,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GPVTG,309.62,T,,M,0.13,N,0.2,K,A*23",
 			expected: &VTG{
-				address:              "GPVTG",
+				address:              NewAddress("GPVTG"),
 				TrueCourseOverGround: 309.62,
 				SpeedOverGroundKN:    0.13,
 				SpeedOverGroundKPH:   0.2,
@@ -614,7 +614,7 @@ func TestParseSentence(t *testing.T) {
 		{
 			s: "$GPZDA,181813,14,10,2003,00,00*4F",
 			expected: &ZDA{
-				address: "GPZDA",
+				address: NewAddress("GPZDA"),
 				Time:    time.Date(2003, time.October, 14, 18, 18, 13, 0, time.UTC),
 			},
 		},
@@ -626,7 +626,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GPGGA,020418.127,4048.4894,N,7720.2754,W,1,8,1.5,42.0,M,33.8,M,,*XX",
 			expected: &GGA{
-				address: "GPGGA",
+				address: NewAddress("GPGGA"),
 				TimeOfDay: TimeOfDay{
 					Hour:       2,
 					Minute:     4,
@@ -648,7 +648,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GPGLL,4048.4894,N,7720.2754,W,020418.127,A,A*XX",
 			expected: &GLL{
-				address: "GPGLL",
+				address: NewAddress("GPGLL"),
 				Lat:     40.80815666666667,
 				Lon:     -772.00459,
 				TimeOfDay: TimeOfDay{
@@ -667,7 +667,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GNGNS,020418.127,4048.4894,N,7720.2754,W,AAN,18,1.5,42.0,33.8,,,V*XX",
 			expected: &GNS{
-				address: "GNGNS",
+				address: NewAddress("GNGNS"),
 				TimeOfDay: TimeOfDay{
 					Hour:       2,
 					Minute:     4,
@@ -690,7 +690,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GNGSA,A,3,09,15,26,05,24,21,08,02,29,28,18,10,0.8,0.5,0.5,1*XX",
 			expected: &GSA{
-				address: "GNGSA",
+				address: NewAddress("GNGSA"),
 				OpMode:  'A',
 				NavMode: 3,
 				SVIDs: []nmea.Optional[int]{
@@ -719,7 +719,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GPGSV,4,1,14,15,67,319,52,09,63,068,53,26,45,039,50,05,44,104,49,1*XX",
 			expected: &GSV{
-				address: "GPGSV",
+				address: NewAddress("GPGSV"),
 				NumMsg:  4,
 				MsgNum:  1,
 				NumSV:   14,
@@ -758,7 +758,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GPGSV,4,2,14,24,42,196,47,21,34,302,46,18,12,305,43,28,11,067,41,1*XX",
 			expected: &GSV{
-				address: "GPGSV",
+				address: NewAddress("GPGSV"),
 				NumMsg:  4,
 				MsgNum:  2,
 				NumSV:   14,
@@ -797,7 +797,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GPGSV,4,3,14,08,07,035,38,29,04,237,39,02,02,161,40,50,47,163,44,1*XX",
 			expected: &GSV{
-				address: "GPGSV",
+				address: NewAddress("GPGSV"),
 				NumMsg:  4,
 				MsgNum:  3,
 				NumSV:   14,
@@ -837,7 +837,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GPGSV,4,4,14,42,48,171,44,93,65,191,48,,,,,,,,,1*XX",
 			expected: &GSV{
-				address: "GPGSV",
+				address: NewAddress("GPGSV"),
 				NumMsg:  4,
 				MsgNum:  4,
 				NumSV:   14,
@@ -864,7 +864,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GLGSV,3,1,09,79,66,099,50,69,55,019,53,80,33,176,46,68,28,088,45,1*XX",
 			expected: &GSV{
-				address: "GLGSV",
+				address: NewAddress("GLGSV"),
 				NumMsg:  3,
 				MsgNum:  1,
 				NumSV:   9,
@@ -903,7 +903,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GLGSV,3,2,09,70,25,315,46,78,24,031,42,85,18,293,44,84,16,246,41,1*XX",
 			expected: &GSV{
-				address: "GLGSV",
+				address: NewAddress("GLGSV"),
 				NumMsg:  3,
 				MsgNum:  2,
 				NumSV:   9,
@@ -943,7 +943,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GLGSV,3,3,09,86,02,338,,,,,,,,,,,,,,1*XX",
 			expected: &GSV{
-				address: "GLGSV",
+				address: NewAddress("GLGSV"),
 				NumMsg:  3,
 				MsgNum:  3,
 				NumSV:   9,
@@ -965,7 +965,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GNRMC,020418.127,4048.4894,N,7720.2754,W,0.00,0.00,180116,,,A,V*XX",
 			expected: &RMC{
-				address: "GNRMC",
+				address: NewAddress("GNRMC"),
 			},
 		},
 		{
@@ -974,7 +974,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GNVTG,0.00,T,,M,0.00,N,0.00,K,D*XX",
 			expected: &VTG{
-				address:       "GNVTG",
+				address:       NewAddress("GNVTG"),
 				ModeIndicator: 'D',
 			},
 		},
@@ -985,7 +985,7 @@ func TestParseSentence(t *testing.T) {
 			},
 			s: "$GPZDA,014811.000,13,09,2013,+00,00*XX",
 			expected: &ZDA{
-				address: "GPZDA",
+				address: NewAddress("GPZDA"),
 				Time:    time.Date(2013, time.September, 13, 1, 48, 11, 0, time.UTC),
 			},
 		},

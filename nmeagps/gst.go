@@ -16,7 +16,7 @@ type GST struct {
 
 func ParseGST(addr string, tok *nmea.Tokenizer) (*GST, error) {
 	var gst GST
-	gst.address = Address(addr)
+	gst.address = NewAddress(addr)
 	gst.TimeOfDay = ParseCommaTimeOfDay(tok)
 	gst.RangeRMS = tok.CommaUnsignedFloat()
 	gst.MajorStdDev = tok.CommaOptionalUnsignedFloat()

@@ -13,7 +13,7 @@ type MSS struct {
 
 func ParseMSS(addr string, tok *nmea.Tokenizer) (*MSS, error) {
 	var mss MSS
-	mss.address = Address(addr)
+	mss.address = NewAddress(addr)
 	mss.SignalStrength = tok.CommaInt()
 	mss.SignalToNoiseRatio = tok.CommaInt()
 	mss.BeaconFrequency = 1000 * tok.CommaFloat()

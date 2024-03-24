@@ -14,7 +14,7 @@ type DTM struct {
 
 func ParseDTM(addr string, tok *nmea.Tokenizer) (*DTM, error) {
 	var dtm DTM
-	dtm.address = Address(addr)
+	dtm.address = NewAddress(addr)
 	dtm.Datum = tok.CommaString()
 	dtm.SubDatum = tok.CommaString()
 	dtm.Lat = 60 * commaLatCommaHemi(tok)

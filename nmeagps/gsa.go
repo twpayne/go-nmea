@@ -15,7 +15,7 @@ type GSA struct {
 
 func ParseGSA(addr string, tok *nmea.Tokenizer) (*GSA, error) {
 	var gsa GSA
-	gsa.address = Address(addr)
+	gsa.address = NewAddress(addr)
 	gsa.OpMode = tok.CommaOneByteOf("AM")
 	gsa.NavMode = tok.CommaUnsignedInt()
 	for i := 0; i < 12; i++ {
