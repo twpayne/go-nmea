@@ -40,12 +40,12 @@ var (
 )
 
 type InvalidChecksumError struct {
-	Expected byte // FIXME rename to maybe calculated?
-	Found    byte // FIXME rename to maybe got or received?
+	Expected byte
+	Got      byte
 }
 
 func (e InvalidChecksumError) Error() string {
-	return fmt.Sprintf("invalid checksum: expected %02X, found %02X", e.Expected, e.Found)
+	return fmt.Sprintf("invalid checksum: expected %02X, got %02X", e.Expected, e.Got)
 }
 
 type UnknownAddressError struct {
@@ -127,7 +127,7 @@ func (p *Parser) Parse(data []byte) (Sentence, error) {
 		case checksum.Value != calculatedChecksumValue:
 			return nil, InvalidChecksumError{
 				Expected: calculatedChecksumValue,
-				Found:    checksum.Value,
+				Got:      checksum.Value,
 			}
 		}
 	case ChecksumDisciplineRequire:
