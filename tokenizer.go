@@ -99,6 +99,11 @@ func (t *Tokenizer) Comma() {
 	t.pos++
 }
 
+func (t *Tokenizer) CommaEmpty() struct{} {
+	t.Comma()
+	return t.Empty()
+}
+
 func (t *Tokenizer) CommaFloat() float64 {
 	t.Comma()
 	return t.Float()
@@ -154,6 +159,11 @@ func (t *Tokenizer) CommaOptionalOneByteOf(bytes string) Optional[byte] {
 	return t.OptionalOneByteOf(bytes)
 }
 
+func (t *Tokenizer) CommaOptionalString() Optional[string] {
+	t.Comma()
+	return t.OptionalString()
+}
+
 func (t *Tokenizer) CommaOptionalUnsignedFloat() Optional[float64] {
 	t.Comma()
 	return t.OptionalUnsignedFloat()
@@ -162,6 +172,11 @@ func (t *Tokenizer) CommaOptionalUnsignedFloat() Optional[float64] {
 func (t *Tokenizer) CommaOptionalUnsignedInt() Optional[int] {
 	t.Comma()
 	return t.OptionalUnsignedInt()
+}
+
+func (t *Tokenizer) CommaRest() []byte {
+	t.Comma()
+	return t.Rest()
 }
 
 func (t *Tokenizer) CommaString() string {
@@ -225,6 +240,10 @@ func (t *Tokenizer) PointDecimal() (int, int) {
 		t.pos++
 	}
 	return numerator, denominator
+}
+
+func (t *Tokenizer) Empty() struct{} {
+	return struct{}{}
 }
 
 func (t *Tokenizer) EndOfData() {
@@ -454,6 +473,19 @@ func (t *Tokenizer) OptionalPointDecimal() (int, int) {
 	return t.PointDecimal()
 }
 
+func (t *Tokenizer) OptionalString() Optional[string] {
+	if t.err != nil {
+		return Optional[string]{}
+	}
+	if t.pos == len(t.data) {
+		return Optional[string]{}
+	}
+	if t.data[t.pos] == ',' {
+		return Optional[string]{}
+	}
+	return NewOptional(t.String())
+}
+
 func (t *Tokenizer) OptionalUnsignedFloat() Optional[float64] {
 	if t.err != nil {
 		return Optional[float64]{}
@@ -488,6 +520,18 @@ func (t *Tokenizer) Peek() (byte, bool) {
 		return 0, false
 	}
 	return t.data[t.pos], true
+}
+
+func (t *Tokenizer) Rest() []byte {
+	if t.err != nil {
+		return nil
+	}
+	if t.pos == len(t.data) {
+		return nil
+	}
+	value := t.data[t.pos:]
+	t.pos = len(t.data)
+	return value
 }
 
 func (t *Tokenizer) Regexp(regexp *regexp.Regexp) [][]byte {
