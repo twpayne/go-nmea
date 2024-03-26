@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/twpayne/go-nmea"
-	"github.com/twpayne/go-nmea/nmeagps"
+	"github.com/twpayne/go-nmea/gps"
 )
 
 type Time struct {
@@ -22,8 +22,8 @@ type Time struct {
 func ParseTime(addr string, tok *nmea.Tokenizer) (*Time, error) {
 	var t Time
 	t.address = NewAddress(addr)
-	timeOfDay := nmeagps.ParseCommaTimeOfDay(tok)
-	date := nmeagps.ParseCommaDate(tok)
+	timeOfDay := gps.ParseCommaTimeOfDay(tok)
+	date := gps.ParseCommaDate(tok)
 	t.Time = time.Date(date.Year, date.Month, date.Day, timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second, timeOfDay.Nanosecond, time.UTC)
 	t.UTCTimeOfWeek = tok.CommaUnsignedFloat()
 	t.UTCWeek = tok.CommaUnsignedInt()

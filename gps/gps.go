@@ -1,5 +1,5 @@
-// Package nmeagps parses GPS NMEA sentences.
-package nmeagps
+// Package gps parses GPS NMEA sentences.
+package gps
 
 import (
 	"github.com/twpayne/go-nmea"

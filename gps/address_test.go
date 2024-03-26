@@ -1,11 +1,11 @@
-package nmeagps_test
+package gps_test
 
 import (
 	"testing"
 
 	"github.com/alecthomas/assert/v2"
 
-	"github.com/twpayne/go-nmea/nmeagps"
+	"github.com/twpayne/go-nmea/gps"
 )
 
 func TestAddress(t *testing.T) {
@@ -53,7 +53,7 @@ func TestAddress(t *testing.T) {
 		},
 	} {
 		t.Run(tc.address, func(t *testing.T) {
-			address := nmeagps.NewAddress(tc.address)
+			address := gps.NewAddress(tc.address)
 			assert.Equal(t, tc.expectedConstellation, address.Constellation())
 			assert.Equal(t, tc.expectedFormatter, address.Formatter())
 			assert.False(t, address.Proprietary())

@@ -131,7 +131,7 @@ linters-settings:
     - error
     - github\.com/twpayne/go-nmea\.Address
     - github\.com/twpayne/go-nmea\.Sentence
-    - github\.com/twpayne/go-nmea/nmeagps\.Address
+    - github\.com/twpayne/go-nmea/gps\.Address
     - github\.com/twpayne/go-nmea/nmeapubx\.Address
     - stdlib
   misspell:

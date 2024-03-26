@@ -2,13 +2,13 @@ package nmeapubx
 
 import (
 	"github.com/twpayne/go-nmea"
-	"github.com/twpayne/go-nmea/nmeagps"
+	"github.com/twpayne/go-nmea/gps"
 )
 
 type Position struct {
 	address            Address
 	MsgID              int
-	TimeOfDay          nmeagps.TimeOfDay
+	TimeOfDay          gps.TimeOfDay
 	Lat                float64
 	Lon                float64
 	AltRef             float64
@@ -30,9 +30,9 @@ type Position struct {
 func ParsePosition(addr string, tok *nmea.Tokenizer) (*Position, error) {
 	var p Position
 	p.address = NewAddress(addr)
-	p.TimeOfDay = nmeagps.ParseCommaTimeOfDay(tok)
-	p.Lat = nmeagps.ParseCommaLatDegMinCommaHemi(tok)
-	p.Lon = nmeagps.ParseCommaLonDegMinCommaHemi(tok)
+	p.TimeOfDay = gps.ParseCommaTimeOfDay(tok)
+	p.Lat = gps.ParseCommaLatDegMinCommaHemi(tok)
+	p.Lon = gps.ParseCommaLonDegMinCommaHemi(tok)
 	p.AltRef = tok.CommaFloat()
 	p.NavStat = tok.CommaString()
 	p.HorizAcc = tok.CommaUnsignedFloat()

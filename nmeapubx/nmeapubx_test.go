@@ -7,7 +7,7 @@ import (
 	"github.com/alecthomas/assert/v2"
 
 	"github.com/twpayne/go-nmea"
-	"github.com/twpayne/go-nmea/nmeagps"
+	"github.com/twpayne/go-nmea/gps"
 )
 
 func TestParseSentence(t *testing.T) {
@@ -22,7 +22,7 @@ func TestParseSentence(t *testing.T) {
 			s: "$PUBX,00,081350.00,4717.113210,N,00833.915187,E,546.589,G3,2.1,2.0,0.007,77.52,0.007,,0.92,1.19,0.77,9,0,0*5F",
 			expected: &Position{
 				address: NewAddress("PUBX"),
-				TimeOfDay: nmeagps.TimeOfDay{
+				TimeOfDay: gps.TimeOfDay{
 					Hour:   8,
 					Minute: 13,
 					Second: 50,

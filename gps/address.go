@@ -1,4 +1,4 @@
-package nmeagps
+package gps
 
 import (
 	"regexp"

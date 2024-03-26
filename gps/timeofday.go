@@ -1,4 +1,4 @@
-package nmeagps
+package gps
 
 // FIXME what happens to second on GPS leap second?
 
