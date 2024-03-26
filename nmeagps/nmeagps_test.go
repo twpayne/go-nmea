@@ -877,6 +877,14 @@ func TestParseSentence(t *testing.T) {
 				BeaconBitRate:      100,
 			},
 		},
+		{
+			skip: "FIXME parse missing data",
+			s:    "$GPRMC,102042.00,V,,,,,,,110324,,,N*7D",
+		},
+		{
+			skip: "FIXME parse missing data",
+			s:    "$GPGGA,102039.00,,,,,0,00,99.99,,,,,,*6F",
+		},
 	} {
 		t.Run(tc.s, func(t *testing.T) {
 			if tc.skip != "" {
