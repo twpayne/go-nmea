@@ -15,11 +15,6 @@ import (
 
 var sentenceRx = regexp.MustCompile(`\$[^*]+\*(?:[0-9A-Fa-f]{2})?`)
 
-type Record struct {
-	Address string
-	Data    any
-}
-
 func run() error {
 	parser := nmea.NewParser(
 		nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
@@ -40,9 +35,8 @@ func run() error {
 		if err != nil {
 			continue // FIXME
 		}
-		if err := encoder.Encode(Record{
-			Address: sentence.Address().String(),
-			Data:    sentence,
+		if err := encoder.Encode(map[string]any{
+			sentence.Address().String(): sentence,
 		}); err != nil {
 			return err
 		}
