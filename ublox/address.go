@@ -1,4 +1,4 @@
-package nmeapubx
+package ublox
 
 type Address struct {
 	address string

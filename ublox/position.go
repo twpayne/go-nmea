@@ -1,4 +1,4 @@
-package nmeapubx
+package ublox
 
 import (
 	"github.com/twpayne/go-nmea"

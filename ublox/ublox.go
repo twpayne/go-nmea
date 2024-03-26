@@ -1,7 +1,7 @@
-// Package nmeapubx parses u-blox NMEA sentences.
+// Package ublox parses u-blox NMEA sentences.
 //
 // See https://content.u-blox.com/sites/default/files/products/documents/u-blox8-M8_ReceiverDescrProtSpec_UBX-13003221.pdf.
-package nmeapubx
+package ublox
 
 import (
 	"fmt"

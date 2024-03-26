@@ -10,7 +10,7 @@ import (
 	"github.com/twpayne/go-nmea"
 	"github.com/twpayne/go-nmea/gps"
 	"github.com/twpayne/go-nmea/nmeapgrm"
-	"github.com/twpayne/go-nmea/nmeapubx"
+	"github.com/twpayne/go-nmea/ublox"
 )
 
 var sentenceRx = regexp.MustCompile(`\$[^*]+\*(?:[0-9A-Fa-f]{2})?`)
@@ -21,7 +21,7 @@ func run() error {
 		nmea.WithLineEndingDiscipline(nmea.LineEndingDisciplineNever),
 		nmea.WithSentenceParserFunc(gps.SentenceParser),
 		nmea.WithSentenceParserFunc(nmeapgrm.SentenceParser),
-		nmea.WithSentenceParserFunc(nmeapubx.SentenceParser),
+		nmea.WithSentenceParserFunc(ublox.SentenceParser),
 	)
 
 	scanner := bufio.NewScanner(os.Stdin)

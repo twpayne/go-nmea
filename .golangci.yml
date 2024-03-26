@@ -132,7 +132,7 @@ linters-settings:
     - github\.com/twpayne/go-nmea\.Address
     - github\.com/twpayne/go-nmea\.Sentence
     - github\.com/twpayne/go-nmea/gps\.Address
-    - github\.com/twpayne/go-nmea/nmeapubx\.Address
+    - github\.com/twpayne/go-nmea/ublox\.Address
     - stdlib
   misspell:
     locale: US
