@@ -25,7 +25,14 @@ func NewAddress(addr string) Address {
 }
 
 func (a Address) Formatter() string {
-	return ""
+	switch {
+	case a.Proprietary():
+		return a.address
+	case len(a.address) <= 2:
+		return ""
+	default:
+		return a.address[2:]
+	}
 }
 
 func (a Address) Proprietary() bool {
@@ -37,12 +44,8 @@ func (a Address) String() string {
 }
 
 func (a Address) Talker() string {
-	switch {
-	case a.Proprietary():
-		return a.address[:max(4, len(a.address))]
-	case a.address == "":
-		return ""
-	default:
-		return a.address[:1]
+	if a.Proprietary() {
+		return a.address[:min(4, len(a.address))]
 	}
+	return a.address[:min(2, len(a.address))]
 }
