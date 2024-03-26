@@ -8,8 +8,8 @@ import (
 	"regexp"
 
 	"github.com/twpayne/go-nmea"
+	"github.com/twpayne/go-nmea/garmin"
 	"github.com/twpayne/go-nmea/gps"
-	"github.com/twpayne/go-nmea/nmeapgrm"
 	"github.com/twpayne/go-nmea/ublox"
 )
 
@@ -20,7 +20,7 @@ func run() error {
 		nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
 		nmea.WithLineEndingDiscipline(nmea.LineEndingDisciplineNever),
 		nmea.WithSentenceParserFunc(gps.SentenceParser),
-		nmea.WithSentenceParserFunc(nmeapgrm.SentenceParser),
+		nmea.WithSentenceParserFunc(garmin.SentenceParser),
 		nmea.WithSentenceParserFunc(ublox.SentenceParser),
 	)
 

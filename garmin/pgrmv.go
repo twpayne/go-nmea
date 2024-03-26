@@ -1,4 +1,4 @@
-package nmeapgrm
+package garmin
 
 import "github.com/twpayne/go-nmea"
 

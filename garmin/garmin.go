@@ -1,7 +1,7 @@
-// Package nmeapgrm parses Garmin NMEA sentences.
+// Package garmin parses Garmin NMEA sentences.
 //
 // See https://developer.garmin.com/downloads/legacy/uploads/2015/08/190-00684-00.pdf.
-package nmeapgrm
+package garmin
 
 import (
 	"github.com/twpayne/go-nmea"
