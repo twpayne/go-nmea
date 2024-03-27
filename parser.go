@@ -48,14 +48,6 @@ func (e InvalidChecksumError) Error() string {
 	return fmt.Sprintf("invalid checksum: expected %02X, got %02X", e.Expected, e.Got)
 }
 
-type UnknownAddressError struct {
-	Address string
-}
-
-func (e UnknownAddressError) Error() string {
-	return e.Address + ": unknown address"
-}
-
 type Parser struct {
 	checksumDiscipline   ChecksumDiscipline
 	lineEndingDiscipline LineEndingDiscipline
@@ -169,9 +161,7 @@ func (p *Parser) Parse(data []byte) (Sentence, error) {
 			return sentenceParser(address, tokenizer)
 		}
 	}
-	return nil, UnknownAddressError{
-		Address: address,
-	}
+	return ParseUnknown(address, tokenizer)
 }
 
 func (p *Parser) ParseString(s string) (Sentence, error) {

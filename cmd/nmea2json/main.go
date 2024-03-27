@@ -13,7 +13,7 @@ import (
 	"github.com/twpayne/go-nmea/ublox"
 )
 
-var sentenceRx = regexp.MustCompile(`\$[^*]+\*(?:[0-9A-Fa-f]{2})?`)
+var sentenceRx = regexp.MustCompile(`\$[A-Z]+,[^*]+\*(?:[0-9A-Fa-f]{2})?`)
 
 func run() error {
 	parser := nmea.NewParser(
@@ -31,13 +31,19 @@ func run() error {
 		if match == nil {
 			continue
 		}
-		sentence, err := parser.ParseString(match[0])
-		if err != nil {
-			continue // FIXME
+		var value any
+		switch sentence, err := parser.ParseString(match[0]); {
+		case err == nil:
+			value = map[string]any{
+				sentence.Address().String(): sentence,
+			}
+		default:
+			value = map[string]any{
+				"err":      err.Error(),
+				"sentence": string(match[0]),
+			}
 		}
-		if err := encoder.Encode(map[string]any{
-			sentence.Address().String(): sentence,
-		}); err != nil {
+		if err := encoder.Encode(value); err != nil {
 			return err
 		}
 	}
