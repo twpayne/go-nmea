@@ -85,7 +85,8 @@ func WithSentenceParserMap(sentenceParserMap SentenceParserMap) ParserOption {
 
 func NewParser(options ...ParserOption) *Parser {
 	p := &Parser{
-		checksumDiscipline: ChecksumDisciplineStrict,
+		checksumDiscipline:   ChecksumDisciplineStrict,
+		lineEndingDiscipline: LineEndingDisciplineStrict,
 	}
 	for _, option := range options {
 		option(p)
