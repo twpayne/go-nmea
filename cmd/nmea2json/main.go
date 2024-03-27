@@ -19,8 +19,8 @@ func run() error {
 	parser := nmea.NewParser(
 		nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
 		nmea.WithLineEndingDiscipline(nmea.LineEndingDisciplineNever),
-		nmea.WithSentenceParserFunc(gps.SentenceParser),
 		nmea.WithSentenceParserFunc(garmin.SentenceParser),
+		nmea.WithSentenceParserFunc(gps.SentenceParser),
 		nmea.WithSentenceParserFunc(ublox.SentenceParser),
 	)
 

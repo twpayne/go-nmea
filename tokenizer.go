@@ -134,14 +134,14 @@ func (t *Tokenizer) CommaOneByteOf(bytes string) byte {
 	return t.OneByteOf(bytes)
 }
 
-func (t *Tokenizer) CommaOptionalLiteralByte(b byte) Optional[byte] {
-	t.Comma()
-	return t.OptionalLiteralByte(b)
-}
-
 func (t *Tokenizer) CommaOptionalFloat() Optional[float64] {
 	t.Comma()
 	return t.OptionalFloat()
+}
+
+func (t *Tokenizer) CommaOptionalHex() Optional[int] {
+	t.Comma()
+	return t.OptionalHex()
 }
 
 func (t *Tokenizer) CommaOptionalInt() Optional[int] {
@@ -149,9 +149,9 @@ func (t *Tokenizer) CommaOptionalInt() Optional[int] {
 	return t.OptionalInt()
 }
 
-func (t *Tokenizer) CommaOptionalHex() Optional[int] {
+func (t *Tokenizer) CommaOptionalLiteralByte(b byte) Optional[byte] {
 	t.Comma()
-	return t.OptionalHex()
+	return t.OptionalLiteralByte(b)
 }
 
 func (t *Tokenizer) CommaOptionalOneByteOf(bytes string) Optional[byte] {
@@ -213,33 +213,6 @@ func (t *Tokenizer) DecimalDigits(n int) int {
 		t.pos++
 	}
 	return value
-}
-
-func (t *Tokenizer) PointDecimal() (int, int) {
-	if t.err != nil {
-		return 0, 1
-	}
-	if t.pos == len(t.data) {
-		t.err = errUnexpectedEndOfData
-		return 0, 1
-	}
-	if t.data[t.pos] != '.' {
-		t.err = errUnexpectedByte
-		return 0, 1
-	}
-	t.pos++
-	numerator := 0
-	denominator := 1
-	for t.pos < len(t.data) {
-		digit, ok := digitValue(t.data[t.pos])
-		if !ok {
-			break
-		}
-		numerator = 10*numerator + digit
-		denominator *= 10
-		t.pos++
-	}
-	return numerator, denominator
 }
 
 func (t *Tokenizer) Empty() struct{} {
@@ -522,16 +495,31 @@ func (t *Tokenizer) Peek() (byte, bool) {
 	return t.data[t.pos], true
 }
 
-func (t *Tokenizer) Rest() []byte {
+func (t *Tokenizer) PointDecimal() (int, int) {
 	if t.err != nil {
-		return nil
+		return 0, 1
 	}
 	if t.pos == len(t.data) {
-		return nil
+		t.err = errUnexpectedEndOfData
+		return 0, 1
 	}
-	value := t.data[t.pos:]
-	t.pos = len(t.data)
-	return value
+	if t.data[t.pos] != '.' {
+		t.err = errUnexpectedByte
+		return 0, 1
+	}
+	t.pos++
+	numerator := 0
+	denominator := 1
+	for t.pos < len(t.data) {
+		digit, ok := digitValue(t.data[t.pos])
+		if !ok {
+			break
+		}
+		numerator = 10*numerator + digit
+		denominator *= 10
+		t.pos++
+	}
+	return numerator, denominator
 }
 
 func (t *Tokenizer) Regexp(regexp *regexp.Regexp) [][]byte {
@@ -545,6 +533,18 @@ func (t *Tokenizer) Regexp(regexp *regexp.Regexp) [][]byte {
 	}
 	t.pos += len(m[0])
 	return m
+}
+
+func (t *Tokenizer) Rest() []byte {
+	if t.err != nil {
+		return nil
+	}
+	if t.pos == len(t.data) {
+		return nil
+	}
+	value := t.data[t.pos:]
+	t.pos = len(t.data)
+	return value
 }
 
 func (t *Tokenizer) String() string {
