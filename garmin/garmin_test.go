@@ -4,22 +4,15 @@ import (
 	"testing"
 	"time"
 
-	"github.com/alecthomas/assert/v2"
-
 	"github.com/twpayne/go-nmea"
+	"github.com/twpayne/go-nmea/nmeatesting"
 )
 
-func TestParseSentence(t *testing.T) {
-	for _, tc := range []struct {
-		skip        string
-		options     []nmea.ParserOption
-		s           string
-		expectedErr error
-		expected    nmea.Sentence
-	}{
+func TestSentenceParser(t *testing.T) {
+	nmeatesting.TestSentenceParser(t, SentenceParser, []nmeatesting.TestCase{
 		{
-			s: "$PGRMB,0.0,200,,,,K,,N,N*31",
-			expected: &PGRMB{
+			S: "$PGRMB,0.0,200,,,,K,,N,N*31",
+			Expected: &PGRMB{
 				address:       nmea.NewAddress("PGRMB"),
 				BeaconBitRate: 200,
 				DGPSFixSource: 'N',
@@ -27,8 +20,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$PGRME,4.4,M,5.5,M,7.1,M*28",
-			expected: &PGRME{
+			S: "$PGRME,4.4,M,5.5,M,7.1,M*28",
+			Expected: &PGRME{
 				address:                 nmea.NewAddress("PGRME"),
 				HorizontalPositionError: 4.4,
 				VerticalPositionError:   5.5,
@@ -36,8 +29,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$PGRMF,290,293895,160305,093802,13,5213.1439,N,02100.6511,E,A,2,0,226,2,1*11",
-			expected: &PGRMF{
+			S: "$PGRMF,290,293895,160305,093802,13,5213.1439,N,02100.6511,E,A,2,0,226,2,1*11",
+			Expected: &PGRMF{
 				address:          nmea.NewAddress("PGRMF"),
 				GPSWeekNumber:    290,
 				GPSSeconds:       293895,
@@ -53,15 +46,15 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$PGRMM,WGS 84*06",
-			expected: &PGRMM{
+			S: "$PGRMM,WGS 84*06",
+			Expected: &PGRMM{
 				address: nmea.NewAddress("PGRMM"),
 				Datum:   "WGS 84",
 			},
 		},
 		{
-			s: "$PGRMT,GPS 17-HVS Ver. 2.80,P,P,R,R,P,,37,R*0F",
-			expected: &PGRMT{
+			S: "$PGRMT,GPS 17-HVS Ver. 2.80,P,P,R,R,P,,37,R*0F",
+			Expected: &PGRMT{
 				address:                        nmea.NewAddress("PGRMT"),
 				ProductModelAndSoftwareVersion: "GPS 17-HVS Ver. 2.80",
 				ROMChecksumTest:                nmea.NewOptional[byte]('P'),
@@ -74,15 +67,15 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$PGRMT,GPS17x Software Version 2.30,,,,,,,,*00",
-			expected: &PGRMT{
+			S: "$PGRMT,GPS17x Software Version 2.30,,,,,,,,*00",
+			Expected: &PGRMT{
 				address:                        nmea.NewAddress("PGRMT"),
 				ProductModelAndSoftwareVersion: "GPS17x Software Version 2.30",
 			},
 		},
 		{
-			s: "$PGRMT,GPS 25-LVS VER 2.50 ,P,P,R,R,P,,27,R*08",
-			expected: &PGRMT{
+			S: "$PGRMT,GPS 25-LVS VER 2.50 ,P,P,R,R,P,,27,R*08",
+			Expected: &PGRMT{
 				address:                        nmea.NewAddress("PGRMT"),
 				ProductModelAndSoftwareVersion: "GPS 25-LVS VER 2.50 ",
 				ROMChecksumTest:                nmea.NewOptional[byte]('P'),
@@ -95,8 +88,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$PGRMV,-2.5,-1.1,0.3*58",
-			expected: &PGRMV{
+			S: "$PGRMV,-2.5,-1.1,0.3*58",
+			Expected: &PGRMV{
 				address:           nmea.NewAddress("PGRMV"),
 				TrueEastVelocity:  -2.5,
 				TrueNorthVelocity: -1.1,
@@ -104,41 +97,20 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$PGRMZ,5584,F,2*06",
-			expected: &PGRMZ{
+			S: "$PGRMZ,5584,F,2*06",
+			Expected: &PGRMZ{
 				address: nmea.NewAddress("PGRMZ"),
 				AltFeet: 5584,
 				FixType: 2,
 			},
 		},
 		{
-			s: "$PGRMZ,2062,f,3*2D",
-			expected: &PGRMZ{
+			S: "$PGRMZ,2062,f,3*2D",
+			Expected: &PGRMZ{
 				address: nmea.NewAddress("PGRMZ"),
 				AltFeet: 2062,
 				FixType: 3,
 			},
 		},
-	} {
-		t.Run(tc.s, func(t *testing.T) {
-			if tc.skip != "" {
-				t.Skip(tc.skip)
-			}
-			actual, err := newParser(tc.options...).ParseString(tc.s)
-			if tc.expectedErr != nil {
-				assert.IsError(t, err, tc.expectedErr)
-			} else {
-				assert.NoError(t, err)
-				assert.Equal(t, tc.expected, actual)
-			}
-		})
-	}
-}
-
-func newParser(options ...nmea.ParserOption) *nmea.Parser {
-	options = append([]nmea.ParserOption{
-		nmea.WithLineEndingDiscipline(nmea.LineEndingDisciplineNever),
-		nmea.WithSentenceParserFunc(SentenceParser),
-	}, options...)
-	return nmea.NewParser(options...)
+	})
 }

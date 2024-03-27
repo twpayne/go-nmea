@@ -4,32 +4,25 @@ import (
 	"testing"
 	"time"
 
-	"github.com/alecthomas/assert/v2"
-
 	"github.com/twpayne/go-nmea"
+	"github.com/twpayne/go-nmea/nmeatesting"
 )
 
-func TestParseSentence(t *testing.T) {
-	for _, tc := range []struct {
-		skip        string
-		options     []nmea.ParserOption
-		s           string
-		expectedErr error
-		expected    nmea.Sentence
-	}{
+func TestSentenceParser(t *testing.T) {
+	nmeatesting.TestSentenceParser(t, SentenceParser, []nmeatesting.TestCase{
 		// u-blox examples from
 		// https://content.u-blox.com/sites/default/files/products/documents/u-blox8-M8_ReceiverDescrProtSpec_UBX-13003221.pdf
 		{
-			s: "$GPDTM,W84,,0.0,N,0.0,E,0.0,W84*6F",
-			expected: &DTM{
+			S: "$GPDTM,W84,,0.0,N,0.0,E,0.0,W84*6F",
+			Expected: &DTM{
 				address:  NewAddress("GPDTM"),
 				Datum:    "W84",
 				RefDatum: "W84",
 			},
 		},
 		{
-			s: "$GPGBS,235503.00,1.6,1.4,3.2,,,,,,*40",
-			expected: &GBS{
+			S: "$GPGBS,235503.00,1.6,1.4,3.2,,,,,,*40",
+			Expected: &GBS{
 				address: NewAddress("GPGBS"),
 				TimeOfDay: TimeOfDay{
 					Hour:   23,
@@ -42,11 +35,11 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			options: []nmea.ParserOption{
+			Options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineRequire),
 			},
-			s: "$GPGBS,235458.00,1.4,1.3,3.1,03,,-21.4,3.8,1,0*5B",
-			expected: &GBS{
+			S: "$GPGBS,235458.00,1.4,1.3,3.1,03,,-21.4,3.8,1,0*5B",
+			Expected: &GBS{
 				address: NewAddress("GPGBS"),
 				TimeOfDay: TimeOfDay{
 					Hour:   23,
@@ -64,8 +57,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GPGGA,092725.00,4717.11399,N,00833.91590,E,1,08,1.01,499.6,M,48.0,M,,*5B",
-			expected: &GGA{
+			S: "$GPGGA,092725.00,4717.11399,N,00833.91590,E,1,08,1.01,499.6,M,48.0,M,,*5B",
+			Expected: &GGA{
 				address: NewAddress("GPGGA"),
 				TimeOfDay: TimeOfDay{
 					Hour:   9,
@@ -82,8 +75,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GPGLL,4717.11364,N,00833.91565,E,092321.00,A,A*60",
-			expected: &GLL{
+			S: "$GPGLL,4717.11364,N,00833.91565,E,092321.00,A,A*60",
+			Expected: &GLL{
 				address: NewAddress("GPGLL"),
 				Lat:     47.28522733333333,
 				Lon:     8.565260833333333,
@@ -97,8 +90,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GNGNS,103600.01,5114.51176,N,00012.29380,W,ANNN,07,1.18,111.5,45.6,,,V*00",
-			expected: &GNS{
+			S: "$GNGNS,103600.01,5114.51176,N,00012.29380,W,ANNN,07,1.18,111.5,45.6,,,V*00",
+			Expected: &GNS{
 				address: NewAddress("GNGNS"),
 				TimeOfDay: TimeOfDay{
 					Hour:       10,
@@ -116,11 +109,11 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			options: []nmea.ParserOption{
+			Options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineRequire),
 			},
-			s: "$GNGNS,122310.2,3722.425671,N,12258.856215,W,DAAA,14,0.9,1005.543,6.5,,,V*0E",
-			expected: &GNS{
+			S: "$GNGNS,122310.2,3722.425671,N,12258.856215,W,DAAA,14,0.9,1005.543,6.5,,,V*0E",
+			Expected: &GNS{
 				address: NewAddress("GNGNS"),
 				TimeOfDay: TimeOfDay{
 					Hour:       12,
@@ -139,11 +132,11 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			options: []nmea.ParserOption{
+			Options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineRequire),
 			},
-			s: "$GPGNS,122310.2,,,,,,07,,,,5.2,23,V*02",
-			expected: &GNS{
+			S: "$GPGNS,122310.2,,,,,,07,,,,5.2,23,V*02",
+			Expected: &GNS{
 				address: NewAddress("GPGNS"),
 				TimeOfDay: TimeOfDay{
 					Hour:       12,
@@ -158,8 +151,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GNGRS,104148.00,1,2.6,2.2,-1.6,-1.1,-1.7,-1.5,5.8,1.7,,,,,1,1*52",
-			expected: &GRS{
+			S: "$GNGRS,104148.00,1,2.6,2.2,-1.6,-1.1,-1.7,-1.5,5.8,1.7,,,,,1,1*52",
+			Expected: &GRS{
 				address: NewAddress("GNGRS"),
 				TimeOfDay: TimeOfDay{
 					Hour:   10,
@@ -186,11 +179,11 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			options: []nmea.ParserOption{
+			Options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineRequire),
 			},
-			s: "$GNGRS,104148.00,1,,0.0,2.5,0.0,,2.8,,,,,,,1,5*52",
-			expected: &GRS{
+			S: "$GNGRS,104148.00,1,,0.0,2.5,0.0,,2.8,,,,,,,1,5*52",
+			Expected: &GRS{
 				address: NewAddress("GNGRS"),
 				TimeOfDay: TimeOfDay{
 					Hour:   10,
@@ -217,11 +210,11 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			options: []nmea.ParserOption{
+			Options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineRequire),
 			},
-			s: "$GPGSA,A,3,23,29,07,08,09,18,26,28,,,,,1.94,1.18,1.54,1*0D",
-			expected: &GSA{
+			S: "$GPGSA,A,3,23,29,07,08,09,18,26,28,,,,,1.94,1.18,1.54,1*0D",
+			Expected: &GSA{
 				address: NewAddress("GPGSA"),
 				OpMode:  'A',
 				NavMode: 3,
@@ -246,8 +239,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GPGST,082356.00,1.8,,,,1.7,1.3,2.2*7E",
-			expected: &GST{
+			S: "$GPGST,082356.00,1.8,,,,1.7,1.3,2.2*7E",
+			Expected: &GST{
 				address: NewAddress("GPGST"),
 				TimeOfDay: TimeOfDay{
 					Hour:   8,
@@ -261,8 +254,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GPGSV,3,1,09,09,,,17,10,,,40,12,,,49,13,,,35,1*6F",
-			expected: &GSV{
+			S: "$GPGSV,3,1,09,09,,,17,10,,,40,12,,,49,13,,,35,1*6F",
+			Expected: &GSV{
 				address: NewAddress("GPGSV"),
 				NumMsg:  3,
 				MsgNum:  1,
@@ -289,8 +282,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GPGSV,3,2,09,15,,,44,17,,,45,19,,,44,24,,,50,1*64",
-			expected: &GSV{
+			S: "$GPGSV,3,2,09,15,,,44,17,,,45,19,,,44,24,,,50,1*64",
+			Expected: &GSV{
 				address: NewAddress("GPGSV"),
 				NumMsg:  3,
 				MsgNum:  2,
@@ -317,8 +310,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GPGSV,3,3,09,25,,,40,1*6E",
-			expected: &GSV{
+			S: "$GPGSV,3,3,09,25,,,40,1*6E",
+			Expected: &GSV{
 				address: NewAddress("GPGSV"),
 				NumMsg:  3,
 				MsgNum:  3,
@@ -333,8 +326,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GPGSV,1,1,03,12,,,42,24,,,47,32,,,37,5*66",
-			expected: &GSV{
+			S: "$GPGSV,1,1,03,12,,,42,24,,,47,32,,,37,5*66",
+			Expected: &GSV{
 				address: NewAddress("GPGSV"),
 				NumMsg:  1,
 				MsgNum:  1,
@@ -357,8 +350,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GAGSV,1,1,00,2*76",
-			expected: &GSV{
+			S: "$GAGSV,1,1,00,2*76",
+			Expected: &GSV{
 				address:  NewAddress("GAGSV"),
 				NumMsg:   1,
 				MsgNum:   1,
@@ -367,11 +360,11 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			options: []nmea.ParserOption{
+			Options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineRequire),
 			},
-			s: "$GPRMC,083559.00,A,4717.11437,N,00833.91522,E,0.004,77.52,091202,,,A,V*57",
-			expected: &RMC{
+			S: "$GPRMC,083559.00,A,4717.11437,N,00833.91522,E,0.004,77.52,091202,,,A,V*57",
+			Expected: &RMC{
 				address:           NewAddress("GPRMC"),
 				Time:              time.Date(2002, time.December, 9, 8, 35, 59, 0, time.UTC),
 				Status:            'A',
@@ -384,19 +377,19 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			options: []nmea.ParserOption{
+			Options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineRequire),
 			},
-			s: "$GPTHS,77.52,E*32",
-			expected: &THS{
+			S: "$GPTHS,77.52,E*32",
+			Expected: &THS{
 				address:       NewAddress("GPTHS"),
 				TrueHeading:   77.52,
 				ModeIndicator: 'E',
 			},
 		},
 		{
-			s: "$GPTXT,01,01,02,u-blox ag - www.u-blox.com*50",
-			expected: &TXT{
+			S: "$GPTXT,01,01,02,u-blox ag - www.u-blox.com*50",
+			Expected: &TXT{
 				address: NewAddress("GPTXT"),
 				NumMsg:  1,
 				MsgNum:  1,
@@ -405,8 +398,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GPTXT,01,01,02,ANTARIS ATR0620 HW 00000040*67",
-			expected: &TXT{
+			S: "$GPTXT,01,01,02,ANTARIS ATR0620 HW 00000040*67",
+			Expected: &TXT{
 				address: NewAddress("GPTXT"),
 				NumMsg:  1,
 				MsgNum:  1,
@@ -415,19 +408,19 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			options: []nmea.ParserOption{
+			Options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineRequire),
 			},
-			s: "$GPVLW,,N,,N,15.8,N,1.2,N*06",
-			expected: &VLW{
+			S: "$GPVLW,,N,,N,15.8,N,1.2,N*06",
+			Expected: &VLW{
 				address:               NewAddress("GPVLW"),
 				TotalGroundDistanceNM: nmea.NewOptional(15.8),
 				GroundDistanceNM:      nmea.NewOptional(1.2),
 			},
 		},
 		{
-			s: "$GPVTG,77.52,T,,M,0.004,N,0.008,K,A*06",
-			expected: &VTG{
+			S: "$GPVTG,77.52,T,,M,0.004,N,0.008,K,A*06",
+			Expected: &VTG{
 				address:              NewAddress("GPVTG"),
 				TrueCourseOverGround: 77.52,
 				SpeedOverGroundKN:    0.004,
@@ -436,8 +429,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GPZDA,082710.00,16,09,2002,00,00*64",
-			expected: &ZDA{
+			S: "$GPZDA,082710.00,16,09,2002,00,00*64",
+			Expected: &ZDA{
 				address:              NewAddress("GPZDA"),
 				Time:                 time.Date(2002, time.September, 16, 8, 27, 10, 0, time.UTC),
 				LocalTimeZoneHours:   0,
@@ -447,8 +440,8 @@ func TestParseSentence(t *testing.T) {
 
 		// sparkfun examples from https://www.sparkfun.com/datasheets/GPS/NMEA%20Reference%20Manual-Rev2.1-Dec07.pdf
 		{
-			s: "$GPGGA,002153.000,3342.6618,N,11751.3858,W,1,10,1.2,27.0,M,-34.2,M,,0000*5E",
-			expected: &GGA{
+			S: "$GPGGA,002153.000,3342.6618,N,11751.3858,W,1,10,1.2,27.0,M,-34.2,M,,0000*5E",
+			Expected: &GGA{
 				address: NewAddress("GPGGA"),
 				TimeOfDay: TimeOfDay{
 					Hour:   0,
@@ -466,8 +459,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GPGLL,3723.2475,N,12158.3416,W,161229.487,A,A*41",
-			expected: &GLL{
+			S: "$GPGLL,3723.2475,N,12158.3416,W,161229.487,A,A*41",
+			Expected: &GLL{
 				address: NewAddress("GPGLL"),
 				Lat:     37.387458333333335,
 				Lon:     -121.97236,
@@ -482,8 +475,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GPGSA,A,3,07,02,26,27,09,04,15,,,,,,1.8,1.0,1.5*33",
-			expected: &GSA{
+			S: "$GPGSA,A,3,07,02,26,27,09,04,15,,,,,,1.8,1.0,1.5*33",
+			Expected: &GSA{
 				address: NewAddress("GPGSA"),
 				OpMode:  'A',
 				NavMode: 3,
@@ -507,8 +500,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GPGSV,2,1,07,07,79,048,42,02,51,062,43,26,36,256,42,27,27,138,42*71",
-			expected: &GSV{
+			S: "$GPGSV,2,1,07,07,79,048,42,02,51,062,43,26,36,256,42,27,27,138,42*71",
+			Expected: &GSV{
 				address: NewAddress("GPGSV"),
 				NumMsg:  2,
 				MsgNum:  1,
@@ -542,8 +535,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GPGSV,2,2,07,09,23,313,42,04,19,159,41,15,12,041,42*41",
-			expected: &GSV{
+			S: "$GPGSV,2,2,07,09,23,313,42,04,19,159,41,15,12,041,42*41",
+			Expected: &GSV{
 				address: NewAddress("GPGSV"),
 				NumMsg:  2,
 				MsgNum:  2,
@@ -571,11 +564,11 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			options: []nmea.ParserOption{
+			Options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineRequire),
 			},
-			s: "$GPMSS,55,27,318.0,100,1*57",
-			expected: &MSS{
+			S: "$GPMSS,55,27,318.0,100,1*57",
+			Expected: &MSS{
 				address:            NewAddress("GPMSS"),
 				SignalStrength:     55,
 				SignalToNoiseRatio: 27,
@@ -585,8 +578,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GPRMC,161229.487,A,3723.2475,N,12158.3416,W,0.13,309.62,120598,,*10",
-			expected: &RMC{
+			S: "$GPRMC,161229.487,A,3723.2475,N,12158.3416,W,0.13,309.62,120598,,*10",
+			Expected: &RMC{
 				address:           NewAddress("GPRMC"),
 				Time:              time.Date(1998, time.May, 12, 16, 12, 29, 487000000, time.UTC),
 				Status:            65,
@@ -597,11 +590,11 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			options: []nmea.ParserOption{
+			Options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineRequire),
 			},
-			s: "$GPVTG,309.62,T,,M,0.13,N,0.2,K,A*23",
-			expected: &VTG{
+			S: "$GPVTG,309.62,T,,M,0.13,N,0.2,K,A*23",
+			Expected: &VTG{
 				address:              NewAddress("GPVTG"),
 				TrueCourseOverGround: 309.62,
 				SpeedOverGroundKN:    0.13,
@@ -610,8 +603,8 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			s: "$GPZDA,181813,14,10,2003,00,00*4F",
-			expected: &ZDA{
+			S: "$GPZDA,181813,14,10,2003,00,00*4F",
+			Expected: &ZDA{
 				address: NewAddress("GPZDA"),
 				Time:    time.Date(2003, time.October, 14, 18, 18, 13, 0, time.UTC),
 			},
@@ -619,11 +612,11 @@ func TestParseSentence(t *testing.T) {
 
 		// GNSSDO from https://ww1.microchip.com/downloads/aemDocuments/documents/VOP/ProductDocuments/ReferenceManuals/GNSSDO_NMEA_Reference_Manual_RevA.pdf
 		{
-			options: []nmea.ParserOption{
+			Options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
 			},
-			s: "$GNGSA,A,3,09,15,26,05,24,21,08,02,29,28,18,10,0.8,0.5,0.5,1*XX",
-			expected: &GSA{
+			S: "$GNGSA,A,3,09,15,26,05,24,21,08,02,29,28,18,10,0.8,0.5,0.5,1*XX",
+			Expected: &GSA{
 				address: NewAddress("GNGSA"),
 				OpMode:  'A',
 				NavMode: 3,
@@ -648,11 +641,11 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			options: []nmea.ParserOption{
+			Options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
 			},
-			s: "$GPGSV,4,1,14,15,67,319,52,09,63,068,53,26,45,039,50,05,44,104,49,1*XX",
-			expected: &GSV{
+			S: "$GPGSV,4,1,14,15,67,319,52,09,63,068,53,26,45,039,50,05,44,104,49,1*XX",
+			Expected: &GSV{
 				address: NewAddress("GPGSV"),
 				NumMsg:  4,
 				MsgNum:  1,
@@ -687,11 +680,11 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			options: []nmea.ParserOption{
+			Options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
 			},
-			s: "$GPGSV,4,2,14,24,42,196,47,21,34,302,46,18,12,305,43,28,11,067,41,1*XX",
-			expected: &GSV{
+			S: "$GPGSV,4,2,14,24,42,196,47,21,34,302,46,18,12,305,43,28,11,067,41,1*XX",
+			Expected: &GSV{
 				address: NewAddress("GPGSV"),
 				NumMsg:  4,
 				MsgNum:  2,
@@ -726,11 +719,11 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			options: []nmea.ParserOption{
+			Options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
 			},
-			s: "$GPGSV,4,3,14,08,07,035,38,29,04,237,39,02,02,161,40,50,47,163,44,1*XX",
-			expected: &GSV{
+			S: "$GPGSV,4,3,14,08,07,035,38,29,04,237,39,02,02,161,40,50,47,163,44,1*XX",
+			Expected: &GSV{
 				address: NewAddress("GPGSV"),
 				NumMsg:  4,
 				MsgNum:  3,
@@ -765,11 +758,11 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			options: []nmea.ParserOption{
+			Options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
 			},
-			s: "$GLGSV,3,1,09,79,66,099,50,69,55,019,53,80,33,176,46,68,28,088,45,1*XX",
-			expected: &GSV{
+			S: "$GLGSV,3,1,09,79,66,099,50,69,55,019,53,80,33,176,46,68,28,088,45,1*XX",
+			Expected: &GSV{
 				address: NewAddress("GLGSV"),
 				NumMsg:  3,
 				MsgNum:  1,
@@ -804,11 +797,11 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			options: []nmea.ParserOption{
+			Options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
 			},
-			s: "$GLGSV,3,2,09,70,25,315,46,78,24,031,42,85,18,293,44,84,16,246,41,1*XX",
-			expected: &GSV{
+			S: "$GLGSV,3,2,09,70,25,315,46,78,24,031,42,85,18,293,44,84,16,246,41,1*XX",
+			Expected: &GSV{
 				address: NewAddress("GLGSV"),
 				NumMsg:  3,
 				MsgNum:  2,
@@ -843,11 +836,11 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			options: []nmea.ParserOption{
+			Options: []nmea.ParserOption{
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
 			},
-			s: "$GNVTG,0.00,T,,M,0.00,N,0.00,K,D*XX",
-			expected: &VTG{
+			S: "$GNVTG,0.00,T,,M,0.00,N,0.00,K,D*XX",
+			Expected: &VTG{
 				address:       NewAddress("GNVTG"),
 				ModeIndicator: 'D',
 			},
@@ -855,21 +848,21 @@ func TestParseSentence(t *testing.T) {
 
 		// Miscellaneous examples.
 		{
-			s: "$GPMSS,0,0,0.000000,0,*58",
-			expected: &MSS{
+			S: "$GPMSS,0,0,0.000000,0,*58",
+			Expected: &MSS{
 				address: NewAddress("GPMSS"),
 			},
 		},
 		{
-			s: "$GPMSS,0,0,0.000000,200,*5A",
-			expected: &MSS{
+			S: "$GPMSS,0,0,0.000000,200,*5A",
+			Expected: &MSS{
 				address:       NewAddress("GPMSS"),
 				BeaconBitRate: 200,
 			},
 		},
 		{
-			s: "$GPMSS,55,27,318.0,100,*66",
-			expected: &MSS{
+			S: "$GPMSS,55,27,318.0,100,*66",
+			Expected: &MSS{
 				address:            NewAddress("GPMSS"),
 				SignalStrength:     55,
 				SignalToNoiseRatio: 27,
@@ -878,33 +871,12 @@ func TestParseSentence(t *testing.T) {
 			},
 		},
 		{
-			skip: "FIXME parse missing data",
-			s:    "$GPRMC,102042.00,V,,,,,,,110324,,,N*7D",
+			Skip: "FIXME parse missing data",
+			S:    "$GPRMC,102042.00,V,,,,,,,110324,,,N*7D",
 		},
 		{
-			skip: "FIXME parse missing data",
-			s:    "$GPGGA,102039.00,,,,,0,00,99.99,,,,,,*6F",
+			Skip: "FIXME parse missing data",
+			S:    "$GPGGA,102039.00,,,,,0,00,99.99,,,,,,*6F",
 		},
-	} {
-		t.Run(tc.s, func(t *testing.T) {
-			if tc.skip != "" {
-				t.Skip(tc.skip)
-			}
-			actual, err := newParser(tc.options...).ParseString(tc.s)
-			if tc.expectedErr != nil {
-				assert.IsError(t, err, tc.expectedErr)
-			} else {
-				assert.NoError(t, err)
-				assert.Equal(t, tc.expected, actual)
-			}
-		})
-	}
-}
-
-func newParser(options ...nmea.ParserOption) *nmea.Parser {
-	options = append([]nmea.ParserOption{
-		nmea.WithLineEndingDiscipline(nmea.LineEndingDisciplineNever),
-		nmea.WithSentenceParserFunc(SentenceParser),
-	}, options...)
-	return nmea.NewParser(options...)
+	})
 }
