@@ -40,7 +40,7 @@ func run() error {
 		default:
 			value = map[string]any{
 				"err":      err.Error(),
-				"sentence": string(match[0]),
+				"sentence": match[0],
 			}
 		}
 		if err := encoder.Encode(value); err != nil {

@@ -1,3 +1,4 @@
+// Package nmeatesting provides common functionality for testing NMEA sentence parsers.
 package nmeatesting
 
 import (
