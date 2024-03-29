@@ -7,14 +7,8 @@ import (
 	"github.com/twpayne/go-nmea"
 )
 
-const (
-	modeIndicators = "AEMSV"
-	posModes       = "ADEFNR"
-	statuses       = "AV"
-)
-
 var (
-	TalkerIDs = map[string]string{
+	TalkerNames = map[string]string{
 		"GA": "Galileo",
 		"GB": "BeiDou",
 		"GL": "GLONASS",

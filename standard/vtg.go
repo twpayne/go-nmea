@@ -22,7 +22,7 @@ func ParseVTG(addr string, tok *nmea.Tokenizer) (*VTG, error) {
 	tok.CommaLiteralByte('N')
 	vtg.SpeedOverGroundKPH = tok.CommaUnsignedFloat()
 	tok.CommaLiteralByte('K')
-	vtg.ModeIndicator = tok.CommaOneByteOf(posModes)
+	vtg.ModeIndicator = tok.CommaOneByteOf("ADEFNR")
 	tok.EndOfData()
 	return &vtg, tok.Err()
 }

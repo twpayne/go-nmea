@@ -23,7 +23,7 @@ func ParseRMC(addr string, tok *nmea.Tokenizer) (*RMC, error) {
 	var rmc RMC
 	rmc.Address = nmea.NewAddress(addr)
 	timeOfDay := nmea.ParseCommaTimeOfDay(tok)
-	rmc.Status = tok.CommaOneByteOf(statuses)
+	rmc.Status = tok.CommaOneByteOf("AV")
 	rmc.Lat = tok.CommaLatDegMinCommaHemi()
 	rmc.Lon = tok.CommaLonDegMinCommaHemi()
 	rmc.SpeedOverGroundKN = tok.CommaUnsignedFloat()
@@ -40,7 +40,7 @@ func ParseRMC(addr string, tok *nmea.Tokenizer) (*RMC, error) {
 		tok.Comma()
 	}
 	if !tok.AtEndOfData() {
-		rmc.ModeIndicator = tok.CommaOneByteOf(statuses)
+		rmc.ModeIndicator = tok.CommaOneByteOf("AV")
 		rmc.NavStatus = tok.CommaOneByteOf("V")
 	}
 	tok.EndOfData()

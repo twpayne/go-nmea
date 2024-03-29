@@ -12,7 +12,7 @@ func ParseTHS(addr string, tok *nmea.Tokenizer) (*THS, error) {
 	var ths THS
 	ths.Address = nmea.NewAddress(addr)
 	ths.TrueHeading = tok.CommaUnsignedFloat()
-	ths.ModeIndicator = tok.CommaOneByteOf(modeIndicators)
+	ths.ModeIndicator = tok.CommaOneByteOf("AEMSV")
 	tok.EndOfData()
 	return &ths, tok.Err()
 }

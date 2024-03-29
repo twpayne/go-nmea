@@ -17,7 +17,7 @@ func ParseGLL(addr string, tok *nmea.Tokenizer) (*GLL, error) {
 	gll.Lat = tok.CommaLatDegMinCommaHemi()
 	gll.Lon = tok.CommaLonDegMinCommaHemi()
 	gll.TimeOfDay = nmea.ParseCommaTimeOfDay(tok)
-	gll.Status = tok.CommaOneByteOf(statuses)
-	gll.PosMode = tok.CommaOneByteOf(posModes)
+	gll.Status = tok.CommaOneByteOf("AV")
+	gll.PosMode = tok.CommaOneByteOf("ADEFNR")
 	return &gll, tok.Err()
 }
