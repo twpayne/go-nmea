@@ -2,6 +2,7 @@
 package nmeatest
 
 import (
+	"slices"
 	"testing"
 
 	"github.com/alecthomas/assert/v2"
@@ -17,18 +18,16 @@ type TestCase struct {
 	Expected    nmea.Sentence
 }
 
-func TestSentenceParserFunc(t *testing.T, sentenceParserFunc func(string) nmea.SentenceParser, testCases []TestCase) {
+func TestSentenceParserFunc(t *testing.T, options []nmea.ParserOption, testCases []TestCase) {
 	t.Helper()
 	for _, testCase := range testCases {
 		t.Run(testCase.S, func(t *testing.T) {
 			if testCase.Skip != "" {
 				t.Skip(testCase.Skip)
 			}
-			options := append([]nmea.ParserOption{
-				nmea.WithLineEndingDiscipline(nmea.LineEndingDisciplineNever),
-				nmea.WithSentenceParserFunc(sentenceParserFunc),
-			}, testCase.Options...)
-			parser := nmea.NewParser(options...)
+			testCaseOptions := slices.Clone(options)
+			testCaseOptions = append(testCaseOptions, testCase.Options...)
+			parser := nmea.NewParser(testCaseOptions...)
 			actual, err := parser.ParseString(testCase.S)
 			if testCase.ExpectedErr != nil {
 				assert.IsError(t, err, testCase.ExpectedErr)
