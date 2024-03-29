@@ -16,9 +16,11 @@ var (
 		"GP": "GPS, SBAS, QZSS",
 	}
 
-	gpsAddressRx = regexp.MustCompile(`\AG[A-Z]([A-Z]{3})\z`)
+	addressRx = regexp.MustCompile(`\A[A-Z]{2}([A-Z]{3})\z`)
 
-	gpsSentenceParserMap = nmea.SentenceParserMap{
+	sentenceParserMap = nmea.SentenceParserMap{
+		"DBT": nmea.MakeSentenceParser(ParseDBT),
+		"DPT": nmea.MakeSentenceParser(ParseDPT),
 		"DTM": nmea.MakeSentenceParser(ParseDTM),
 		"GBS": nmea.MakeSentenceParser(ParseGBS),
 		"GGA": nmea.MakeSentenceParser(ParseGGA),
@@ -29,9 +31,11 @@ var (
 		"GST": nmea.MakeSentenceParser(ParseGST),
 		"GSV": nmea.MakeSentenceParser(ParseGSV),
 		"MSS": nmea.MakeSentenceParser(ParseMSS),
+		"MTW": nmea.MakeSentenceParser(ParseMTW),
 		"RMC": nmea.MakeSentenceParser(ParseRMC),
 		"THS": nmea.MakeSentenceParser(ParseTHS),
 		"TXT": nmea.MakeSentenceParser(ParseTXT),
+		"VHW": nmea.MakeSentenceParser(ParseVHW),
 		"VLW": nmea.MakeSentenceParser(ParseVLW),
 		"VTG": nmea.MakeSentenceParser(ParseVTG),
 		"ZDA": nmea.MakeSentenceParser(ParseZDA),
@@ -39,9 +43,9 @@ var (
 )
 
 func SentenceParserFunc(addr string) nmea.SentenceParser {
-	match := gpsAddressRx.FindStringSubmatch(addr)
+	match := addressRx.FindStringSubmatch(addr)
 	if match != nil {
-		if sentenceParser := gpsSentenceParserMap[match[1]]; sentenceParser != nil {
+		if sentenceParser := sentenceParserMap[match[1]]; sentenceParser != nil {
 			return sentenceParser
 		}
 	}

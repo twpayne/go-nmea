@@ -99,12 +99,6 @@ func (t *Tokenizer) Comma() {
 	t.pos++
 }
 
-func (t *Tokenizer) CommaAltitudeCommaM() float64 {
-	alt := t.CommaFloat()
-	t.CommaLiteralByte('M')
-	return alt
-}
-
 func (t *Tokenizer) CommaEmpty() struct{} {
 	t.Comma()
 	return t.Empty()
@@ -113,6 +107,12 @@ func (t *Tokenizer) CommaEmpty() struct{} {
 func (t *Tokenizer) CommaFloat() float64 {
 	t.Comma()
 	return t.Float()
+}
+
+func (t *Tokenizer) CommaFloatCommaUnit(unit byte) float64 {
+	value := t.CommaFloat()
+	t.CommaLiteralByte(unit)
+	return value
 }
 
 func (t *Tokenizer) CommaHex() int {
@@ -128,6 +128,12 @@ func (t *Tokenizer) CommaHexBytes() []byte {
 func (t *Tokenizer) CommaInt() int {
 	t.Comma()
 	return t.Int()
+}
+
+func (t *Tokenizer) CommaIntCommaUnit(unit byte) int {
+	value := t.CommaInt()
+	t.CommaLiteralByte(unit)
+	return value
 }
 
 func (t *Tokenizer) CommaLatCommaHemi() float64 {
@@ -171,6 +177,12 @@ func (t *Tokenizer) CommaOptionalFloat() Optional[float64] {
 	return t.OptionalFloat()
 }
 
+func (t *Tokenizer) CommaOptionalFloatCommaUnit(unit byte) Optional[float64] {
+	value := t.CommaOptionalFloat()
+	t.CommaOptionalLiteralByte(unit)
+	return value
+}
+
 func (t *Tokenizer) CommaOptionalHex() Optional[int] {
 	t.Comma()
 	return t.OptionalHex()
@@ -179,6 +191,12 @@ func (t *Tokenizer) CommaOptionalHex() Optional[int] {
 func (t *Tokenizer) CommaOptionalInt() Optional[int] {
 	t.Comma()
 	return t.OptionalInt()
+}
+
+func (t *Tokenizer) CommaOptionalIntCommaUnit(unit byte) Optional[int] {
+	value := t.CommaOptionalInt()
+	t.CommaOptionalLiteralByte(unit)
+	return value
 }
 
 func (t *Tokenizer) CommaOptionalLatDegMinCommaHemi() Optional[float64] {

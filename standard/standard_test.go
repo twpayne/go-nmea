@@ -919,3 +919,64 @@ func TestMiscellaneous(t *testing.T) {
 		},
 	)
 }
+
+func TestTheNMEA0813InformationSheetIssue4(t *testing.T) {
+	// From https://actisense.com/wp-content/uploads/2020/01/NMEA-0183-Information-sheet-issue-4-1-1.pdf.
+	nmeatest.TestSentenceParserFunc(t,
+		[]nmea.ParserOption{
+			nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
+			nmea.WithLineEndingDiscipline(nmea.LineEndingDisciplineNever),
+			nmea.WithSentenceParserFunc(standard.SentenceParserFunc),
+		},
+		[]nmeatest.TestCase{
+			{
+				S: "$SDDBT,8.1,f,2.4,M,1.3,F*0B",
+				Expected: &standard.DBT{
+					Address:      nmea.NewAddress("SDDBT"),
+					DepthFeet:    8.1,
+					Depth:        2.4,
+					DepthFathoms: 1.3,
+				},
+			},
+			{
+				S: "$SDDPT,76.1,0.0,100*00",
+				Expected: &standard.DPT{
+					Address: nmea.NewAddress("SDDPT"),
+					Depth:   76.1,
+					Offset:  nmea.NewOptional(0.0),
+					Maximum: nmea.NewOptional(100.0),
+				},
+			},
+			{
+				S: "$SDDPT,2.4,,*7F",
+				Expected: &standard.DPT{
+					Address: nmea.NewAddress("SDDPT"),
+					Depth:   2.4,
+				},
+			},
+			{
+				S: "$YXMTW,17.75,C*5D",
+				Expected: &standard.MTW{
+					Address:     nmea.NewAddress("YXMTW"),
+					Temperature: 17.75,
+				},
+			},
+			{
+				S: "$VWVHW,,,,,0.0,N,0.0,K*4D",
+				Expected: &standard.VHW{
+					Address:    nmea.NewAddress("VWVHW"),
+					SpeedKnots: nmea.NewOptional(0.0),
+					SpeedKPH:   nmea.NewOptional(0.0),
+				},
+			},
+			{
+				S: "$VWVLW,2.8,N,2.8,N*4C",
+				Expected: &standard.VLW{
+					Address:              nmea.NewAddress("VWVLW"),
+					TotalWaterDistanceNM: nmea.NewOptional(2.8),
+					WaterDistanceNM:      nmea.NewOptional(2.8),
+				},
+			},
+		},
+	)
+}

@@ -14,14 +14,10 @@ type VTG struct {
 func ParseVTG(addr string, tok *nmea.Tokenizer) (*VTG, error) {
 	var vtg VTG
 	vtg.Address = nmea.NewAddress(addr)
-	vtg.TrueCourseOverGround = tok.CommaUnsignedFloat()
-	tok.CommaLiteralByte('T')
-	vtg.MagneticCourseOverGround = tok.CommaOptionalUnsignedFloat()
-	tok.CommaLiteralByte('M')
-	vtg.SpeedOverGroundKN = tok.CommaUnsignedFloat()
-	tok.CommaLiteralByte('N')
-	vtg.SpeedOverGroundKPH = tok.CommaUnsignedFloat()
-	tok.CommaLiteralByte('K')
+	vtg.TrueCourseOverGround = tok.CommaFloatCommaUnit('T')
+	vtg.MagneticCourseOverGround = tok.CommaOptionalFloatCommaUnit('M')
+	vtg.SpeedOverGroundKN = tok.CommaFloatCommaUnit('N')
+	vtg.SpeedOverGroundKPH = tok.CommaFloatCommaUnit('K')
 	vtg.ModeIndicator = tok.CommaOneByteOf("ADEFNR")
 	tok.EndOfData()
 	return &vtg, tok.Err()

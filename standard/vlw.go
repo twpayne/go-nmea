@@ -13,14 +13,12 @@ type VLW struct {
 func ParseVLW(addr string, tok *nmea.Tokenizer) (*VLW, error) {
 	var vlw VLW
 	vlw.Address = nmea.NewAddress(addr)
-	vlw.TotalWaterDistanceNM = tok.CommaOptionalUnsignedFloat()
-	tok.CommaLiteralByte('N')
-	vlw.WaterDistanceNM = tok.CommaOptionalUnsignedFloat()
-	tok.CommaLiteralByte('N')
-	vlw.TotalGroundDistanceNM = tok.CommaOptionalUnsignedFloat()
-	tok.CommaLiteralByte('N')
-	vlw.GroundDistanceNM = tok.CommaOptionalUnsignedFloat()
-	tok.CommaLiteralByte('N')
+	vlw.TotalWaterDistanceNM = tok.CommaOptionalFloatCommaUnit('N')
+	vlw.WaterDistanceNM = tok.CommaOptionalFloatCommaUnit('N')
+	if !tok.AtEndOfData() {
+		vlw.TotalGroundDistanceNM = tok.CommaOptionalFloatCommaUnit('N')
+		vlw.GroundDistanceNM = tok.CommaOptionalFloatCommaUnit('N')
+	}
 	tok.EndOfData()
 	return &vlw, tok.Err()
 }
