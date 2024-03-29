@@ -1,9 +1,9 @@
-package gps
+package standard
 
 import "github.com/twpayne/go-nmea"
 
 type VLW struct {
-	address               Address
+	nmea.Address
 	TotalWaterDistanceNM  nmea.Optional[float64]
 	WaterDistanceNM       nmea.Optional[float64]
 	TotalGroundDistanceNM nmea.Optional[float64]
@@ -12,7 +12,7 @@ type VLW struct {
 
 func ParseVLW(addr string, tok *nmea.Tokenizer) (*VLW, error) {
 	var vlw VLW
-	vlw.address = NewAddress(addr)
+	vlw.Address = nmea.NewAddress(addr)
 	vlw.TotalWaterDistanceNM = tok.CommaOptionalUnsignedFloat()
 	tok.CommaLiteralByte('N')
 	vlw.WaterDistanceNM = tok.CommaOptionalUnsignedFloat()
@@ -23,8 +23,4 @@ func ParseVLW(addr string, tok *nmea.Tokenizer) (*VLW, error) {
 	tok.CommaLiteralByte('N')
 	tok.EndOfData()
 	return &vlw, tok.Err()
-}
-
-func (vlw VLW) Address() nmea.Addresser {
-	return vlw.address
 }

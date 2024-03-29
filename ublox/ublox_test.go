@@ -1,21 +1,21 @@
-package ublox
+package ublox_test
 
 import (
 	"testing"
 	"time"
 
 	"github.com/twpayne/go-nmea"
-	"github.com/twpayne/go-nmea/gps"
-	"github.com/twpayne/go-nmea/nmeatesting"
+	"github.com/twpayne/go-nmea/nmeatest"
+	"github.com/twpayne/go-nmea/ublox"
 )
 
 func TestSentenceParserFunc(t *testing.T) {
-	nmeatesting.TestSentenceParserFunc(t, SentenceParserFunc, []nmeatesting.TestCase{
+	nmeatest.TestSentenceParserFunc(t, ublox.SentenceParserFunc, []nmeatest.TestCase{
 		{
 			S: "$PUBX,00,081350.00,4717.113210,N,00833.915187,E,546.589,G3,2.1,2.0,0.007,77.52,0.007,,0.92,1.19,0.77,9,0,0*5F",
-			Expected: &Position{
-				address: NewAddress("PUBX"),
-				TimeOfDay: gps.TimeOfDay{
+			Expected: &ublox.Position{
+				Address: nmea.NewAddress("PUBX"),
+				TimeOfDay: nmea.TimeOfDay{
 					Hour:   8,
 					Minute: 13,
 					Second: 50,
@@ -37,8 +37,8 @@ func TestSentenceParserFunc(t *testing.T) {
 		},
 		{
 			S: "$PUBX,40,GLL,1,0,0,0,0,0*5D",
-			Expected: &Rate{
-				address:  NewAddress("PUBX"),
+			Expected: &ublox.Rate{
+				Address:  nmea.NewAddress("PUBX"),
 				MsgID:    "GLL",
 				RDDC:     1,
 				RUS1:     0,
@@ -50,10 +50,10 @@ func TestSentenceParserFunc(t *testing.T) {
 		},
 		{
 			S: "$PUBX,03,11,23,-,,,45,010,29,-,,,46,013,07,-,,,42,015,08,U,067,31,42,025,10,U,195,33,46,026,18,U,326,08,39,026,17,-,,,32,015,26,U,306,66,48,025,27,U,073,10,36,026,28,U,089,61,46,024,15,-,,,39,014*0D",
-			Expected: &Status{
-				address: NewAddress("PUBX"),
+			Expected: &ublox.Status{
+				Address: nmea.NewAddress("PUBX"),
 				N:       11,
-				SatelliteStatuses: []SatelliteStatus{
+				SatelliteStatuses: []ublox.SatelliteStatus{
 					{
 						SVID:   23,
 						Status: 45,
@@ -140,8 +140,8 @@ func TestSentenceParserFunc(t *testing.T) {
 				nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineRequire),
 			},
 			S: "$PUBX,04,073731.00,091202,113851.00,1196,15D,1930035,-2660.664,43,*3C",
-			Expected: &Time{
-				address:              NewAddress("PUBX"),
+			Expected: &ublox.Time{
+				Address:              nmea.NewAddress("PUBX"),
 				Time:                 time.Date(2002, time.December, 9, 7, 37, 31, 0, time.UTC),
 				UTCTimeOfWeek:        113851,
 				UTCWeek:              1196,

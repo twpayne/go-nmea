@@ -3,7 +3,7 @@ package garmin
 import "github.com/twpayne/go-nmea"
 
 type PGRMB struct {
-	address                            nmea.Address
+	nmea.Address
 	BeaconTuneFrequencyKHz             float64
 	BeaconBitRate                      int
 	BeaconSNR                          nmea.Optional[int]
@@ -16,7 +16,7 @@ type PGRMB struct {
 
 func ParsePGRMB(addr string, tok *nmea.Tokenizer) (*PGRMB, error) {
 	var b PGRMB
-	b.address = nmea.NewAddress(addr)
+	b.Address = nmea.NewAddress(addr)
 	b.BeaconTuneFrequencyKHz = tok.CommaFloat()
 	b.BeaconBitRate = tok.CommaUnsignedInt()
 	b.BeaconSNR = tok.CommaOptionalUnsignedInt()
@@ -28,8 +28,4 @@ func ParsePGRMB(addr string, tok *nmea.Tokenizer) (*PGRMB, error) {
 	b.DGPSMode = tok.CommaOneByteOf("ANRW")
 	tok.EndOfData()
 	return &b, tok.Err()
-}
-
-func (b PGRMB) Address() nmea.Addresser {
-	return b.address
 }

@@ -2,7 +2,7 @@
 package nmea
 
 type Sentence interface {
-	Address() Addresser
+	GetAddress() Address
 }
 
 type SentenceParser func(string, *Tokenizer) (Sentence, error)

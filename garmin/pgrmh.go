@@ -3,7 +3,7 @@ package garmin
 import "github.com/twpayne/go-nmea"
 
 type PGRMH struct {
-	address                                  nmea.Address
+	nmea.Address
 	DataStatus                               byte
 	VerticalSpeedFeetPerMinute               int
 	VNAVProfileErrorFeet                     int
@@ -16,7 +16,7 @@ type PGRMH struct {
 
 func ParsePGRMH(addr string, tok *nmea.Tokenizer) (*PGRMH, error) {
 	var h PGRMH
-	h.address = nmea.NewAddress(addr)
+	h.Address = nmea.NewAddress(addr)
 	h.DataStatus = tok.CommaOneByteOf("Av")
 	h.VerticalSpeedFeetPerMinute = tok.CommaInt()
 	h.VNAVProfileErrorFeet = tok.CommaInt()
@@ -27,8 +27,4 @@ func ParsePGRMH(addr string, tok *nmea.Tokenizer) (*PGRMH, error) {
 	h.CourseOfNextRouteLeg = tok.CommaInt()
 	tok.EndOfData()
 	return &h, tok.Err()
-}
-
-func (h PGRMH) Address() nmea.Addresser {
-	return h.address
 }

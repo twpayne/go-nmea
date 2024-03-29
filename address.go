@@ -1,18 +1,8 @@
 package nmea
 
-// FIXME add Valid method?
-
 import (
-	"fmt"
 	"strings"
 )
-
-type Addresser interface {
-	fmt.Stringer
-	Formatter() string
-	Proprietary() bool
-	Talker() string
-}
 
 type Address struct {
 	address string
@@ -33,6 +23,10 @@ func (a Address) Formatter() string {
 	default:
 		return a.address[2:]
 	}
+}
+
+func (a Address) GetAddress() Address {
+	return a
 }
 
 func (a Address) Proprietary() bool {

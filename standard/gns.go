@@ -1,10 +1,10 @@
-package gps
+package standard
 
 import "github.com/twpayne/go-nmea"
 
 type GNS struct {
-	address Address
-	TimeOfDay
+	nmea.Address
+	nmea.TimeOfDay
 	Lat         nmea.Optional[float64]
 	Lon         nmea.Optional[float64]
 	PosMode     []byte
@@ -19,10 +19,10 @@ type GNS struct {
 
 func ParseGNS(addr string, tok *nmea.Tokenizer) (*GNS, error) {
 	var gns GNS
-	gns.address = NewAddress(addr)
-	gns.TimeOfDay = ParseCommaTimeOfDay(tok)
-	gns.Lat = commaOptionalLatDegMinCommaHemi(tok)
-	gns.Lon = commaOptionalLonDegMinCommaHemi(tok)
+	gns.Address = nmea.NewAddress(addr)
+	gns.TimeOfDay = nmea.ParseCommaTimeOfDay(tok)
+	gns.Lat = tok.CommaOptionalLatDegMinCommaHemi()
+	gns.Lon = tok.CommaOptionalLonDegMinCommaHemi()
 	gns.PosMode = []byte(tok.CommaString())
 	gns.NumSV = tok.CommaUnsignedInt()
 	gns.HDOP = tok.CommaOptionalUnsignedFloat()
@@ -33,8 +33,4 @@ func ParseGNS(addr string, tok *nmea.Tokenizer) (*GNS, error) {
 	gns.NavStatus = tok.CommaOneByteOf("V")
 	tok.EndOfData()
 	return &gns, tok.Err()
-}
-
-func (gns GNS) Address() nmea.Addresser {
-	return gns.address
 }

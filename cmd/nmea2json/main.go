@@ -9,7 +9,7 @@ import (
 
 	"github.com/twpayne/go-nmea"
 	"github.com/twpayne/go-nmea/garmin"
-	"github.com/twpayne/go-nmea/gps"
+	"github.com/twpayne/go-nmea/standard"
 	"github.com/twpayne/go-nmea/ublox"
 )
 
@@ -20,7 +20,7 @@ func run() error {
 		nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
 		nmea.WithLineEndingDiscipline(nmea.LineEndingDisciplineNever),
 		nmea.WithSentenceParserFunc(garmin.SentenceParserFunc),
-		nmea.WithSentenceParserFunc(gps.SentenceParserFunc),
+		nmea.WithSentenceParserFunc(standard.SentenceParserFunc),
 		nmea.WithSentenceParserFunc(ublox.SentenceParserFunc),
 	)
 
@@ -35,7 +35,7 @@ func run() error {
 		switch sentence, err := parser.ParseString(match[0]); {
 		case err == nil:
 			value = map[string]any{
-				sentence.Address().String(): sentence,
+				sentence.GetAddress().String(): sentence,
 			}
 		default:
 			value = map[string]any{

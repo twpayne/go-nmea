@@ -3,7 +3,7 @@ package garmin
 import "github.com/twpayne/go-nmea"
 
 type PGRME struct {
-	address                 nmea.Addresser
+	nmea.Address
 	HorizontalPositionError float64
 	VerticalPositionError   float64
 	PositionError           float64
@@ -11,7 +11,7 @@ type PGRME struct {
 
 func ParsePGRME(addr string, tok *nmea.Tokenizer) (*PGRME, error) {
 	var e PGRME
-	e.address = nmea.NewAddress(addr)
+	e.Address = nmea.NewAddress(addr)
 	e.HorizontalPositionError = tok.CommaUnsignedFloat()
 	tok.CommaLiteralByte('M')
 	e.VerticalPositionError = tok.CommaUnsignedFloat()
@@ -20,8 +20,4 @@ func ParsePGRME(addr string, tok *nmea.Tokenizer) (*PGRME, error) {
 	tok.CommaLiteralByte('M')
 	tok.EndOfData()
 	return &e, tok.Err()
-}
-
-func (e PGRME) Address() nmea.Addresser {
-	return e.address
 }

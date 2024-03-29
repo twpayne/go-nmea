@@ -1,4 +1,4 @@
-package gps
+package standard
 
 import (
 	"time"
@@ -7,7 +7,7 @@ import (
 )
 
 type RMC struct {
-	address           Address
+	nmea.Address
 	Time              time.Time
 	Status            byte
 	Lat               float64
@@ -21,14 +21,14 @@ type RMC struct {
 
 func ParseRMC(addr string, tok *nmea.Tokenizer) (*RMC, error) {
 	var rmc RMC
-	rmc.address = NewAddress(addr)
-	timeOfDay := ParseCommaTimeOfDay(tok)
+	rmc.Address = nmea.NewAddress(addr)
+	timeOfDay := nmea.ParseCommaTimeOfDay(tok)
 	rmc.Status = tok.CommaOneByteOf(statuses)
-	rmc.Lat = ParseCommaLatDegMinCommaHemi(tok)
-	rmc.Lon = ParseCommaLonDegMinCommaHemi(tok)
+	rmc.Lat = tok.CommaLatDegMinCommaHemi()
+	rmc.Lon = tok.CommaLonDegMinCommaHemi()
 	rmc.SpeedOverGroundKN = tok.CommaUnsignedFloat()
 	rmc.CourseOverGround = tok.CommaOptionalUnsignedFloat()
-	date := ParseCommaDate(tok)
+	date := nmea.ParseCommaDate(tok)
 	rmc.Time = time.Date(date.Year, date.Month, date.Day, timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second, timeOfDay.Nanosecond, time.UTC)
 	rmc.MagneticVariation = tok.CommaOptionalFloat()
 	if rmc.MagneticVariation.Valid {
@@ -45,8 +45,4 @@ func ParseRMC(addr string, tok *nmea.Tokenizer) (*RMC, error) {
 	}
 	tok.EndOfData()
 	return &rmc, tok.Err()
-}
-
-func (rmc *RMC) Address() nmea.Addresser {
-	return rmc.address
 }

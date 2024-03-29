@@ -4,11 +4,10 @@ import (
 	"time"
 
 	"github.com/twpayne/go-nmea"
-	"github.com/twpayne/go-nmea/gps"
 )
 
 type PGRMF struct {
-	address            nmea.Address
+	nmea.Address
 	GPSWeekNumber      int
 	GPSSeconds         int
 	Time               time.Time
@@ -25,15 +24,15 @@ type PGRMF struct {
 
 func ParsePGRMF(addr string, tok *nmea.Tokenizer) (*PGRMF, error) {
 	var f PGRMF
-	f.address = nmea.NewAddress(addr)
+	f.Address = nmea.NewAddress(addr)
 	f.GPSWeekNumber = tok.CommaUnsignedInt()
 	f.GPSSeconds = tok.CommaUnsignedInt()
-	date := gps.ParseCommaDate(tok)
-	timeOfDay := gps.ParseCommaTimeOfDay(tok)
+	date := nmea.ParseCommaDate(tok)
+	timeOfDay := nmea.ParseCommaTimeOfDay(tok)
 	f.Time = time.Date(date.Year, date.Month, date.Day, timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second, timeOfDay.Nanosecond, time.UTC)
 	f.LeapSeconds = tok.CommaUnsignedInt()
-	f.Lat = gps.ParseCommaLatDegMinCommaHemi(tok)
-	f.Lon = gps.ParseCommaLonDegMinCommaHemi(tok)
+	f.Lat = tok.CommaLatDegMinCommaHemi()
+	f.Lon = tok.CommaLonDegMinCommaHemi()
 	f.Mode = tok.CommaOneByteOf("AM")
 	f.FixType = tok.CommaUnsignedInt()
 	f.SpeedOverGroundKPH = tok.CommaUnsignedInt()
@@ -42,8 +41,4 @@ func ParsePGRMF(addr string, tok *nmea.Tokenizer) (*PGRMF, error) {
 	f.TDOP = tok.CommaUnsignedInt()
 	tok.EndOfData()
 	return &f, tok.Err()
-}
-
-func (f PGRMF) Address() nmea.Addresser {
-	return f.address
 }

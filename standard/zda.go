@@ -1,4 +1,4 @@
-package gps
+package standard
 
 import (
 	"time"
@@ -7,7 +7,7 @@ import (
 )
 
 type ZDA struct {
-	address              Address
+	nmea.Address
 	Time                 time.Time
 	LocalTimeZoneHours   int
 	LocalTimeZoneMinutes int
@@ -15,8 +15,8 @@ type ZDA struct {
 
 func ParseZDA(addr string, tok *nmea.Tokenizer) (*ZDA, error) {
 	var zda ZDA
-	zda.address = NewAddress(addr)
-	timeOfDay := ParseCommaTimeOfDay(tok)
+	zda.Address = nmea.NewAddress(addr)
+	timeOfDay := nmea.ParseCommaTimeOfDay(tok)
 	day := tok.CommaUnsignedInt()
 	month := time.Month(tok.CommaUnsignedInt())
 	year := tok.CommaUnsignedInt()
@@ -25,8 +25,4 @@ func ParseZDA(addr string, tok *nmea.Tokenizer) (*ZDA, error) {
 	zda.LocalTimeZoneMinutes = tok.CommaInt()
 	tok.EndOfData()
 	return &zda, tok.Err()
-}
-
-func (zda ZDA) Address() nmea.Addresser {
-	return zda.address
 }

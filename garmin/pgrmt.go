@@ -3,7 +3,7 @@ package garmin
 import "github.com/twpayne/go-nmea"
 
 type PGRMT struct {
-	address                        nmea.Address
+	nmea.Address
 	ProductModelAndSoftwareVersion string
 	ROMChecksumTest                nmea.Optional[byte]
 	ReceiverFailureDiscrete        nmea.Optional[byte]
@@ -17,7 +17,7 @@ type PGRMT struct {
 
 func ParsePGRMT(addr string, tok *nmea.Tokenizer) (*PGRMT, error) {
 	var t PGRMT
-	t.address = nmea.NewAddress(addr)
+	t.Address = nmea.NewAddress(addr)
 	t.ProductModelAndSoftwareVersion = tok.CommaString()
 	t.ROMChecksumTest = tok.CommaOptionalOneByteOf("FP")
 	t.ReceiverFailureDiscrete = tok.CommaOptionalOneByteOf("FP")
@@ -29,8 +29,4 @@ func ParsePGRMT(addr string, tok *nmea.Tokenizer) (*PGRMT, error) {
 	t.GPSSensorConfigurationData = tok.CommaOptionalOneByteOf("LR")
 	tok.EndOfData()
 	return &t, tok.Err()
-}
-
-func (t PGRMT) Address() nmea.Addresser {
-	return t.address
 }

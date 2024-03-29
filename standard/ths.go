@@ -1,22 +1,18 @@
-package gps
+package standard
 
 import "github.com/twpayne/go-nmea"
 
 type THS struct {
-	address       Address
+	nmea.Address
 	TrueHeading   float64
 	ModeIndicator byte
 }
 
 func ParseTHS(addr string, tok *nmea.Tokenizer) (*THS, error) {
 	var ths THS
-	ths.address = NewAddress(addr)
+	ths.Address = nmea.NewAddress(addr)
 	ths.TrueHeading = tok.CommaUnsignedFloat()
 	ths.ModeIndicator = tok.CommaOneByteOf(modeIndicators)
 	tok.EndOfData()
 	return &ths, tok.Err()
-}
-
-func (ths THS) Address() nmea.Addresser {
-	return ths.address
 }

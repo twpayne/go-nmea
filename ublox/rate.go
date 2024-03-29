@@ -3,7 +3,7 @@ package ublox
 import "github.com/twpayne/go-nmea"
 
 type Rate struct {
-	address  Address
+	nmea.Address
 	MsgID    string
 	RDDC     int
 	RUS1     int
@@ -15,7 +15,7 @@ type Rate struct {
 
 func ParseRate(addr string, tok *nmea.Tokenizer) (*Rate, error) {
 	var r Rate
-	r.address = NewAddress(addr)
+	r.Address = nmea.NewAddress(addr)
 	r.MsgID = tok.CommaString()
 	r.RDDC = tok.CommaUnsignedInt()
 	r.RUS1 = tok.CommaUnsignedInt()
@@ -25,8 +25,4 @@ func ParseRate(addr string, tok *nmea.Tokenizer) (*Rate, error) {
 	r.Reserved = tok.CommaUnsignedInt()
 	tok.EndOfData()
 	return &r, tok.Err()
-}
-
-func (r Rate) Address() nmea.Addresser {
-	return r.address
 }

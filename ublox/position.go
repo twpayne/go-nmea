@@ -1,14 +1,11 @@
 package ublox
 
-import (
-	"github.com/twpayne/go-nmea"
-	"github.com/twpayne/go-nmea/gps"
-)
+import "github.com/twpayne/go-nmea"
 
 type Position struct {
-	address            Address
+	nmea.Address
 	MsgID              int
-	TimeOfDay          gps.TimeOfDay
+	TimeOfDay          nmea.TimeOfDay
 	Lat                float64
 	Lon                float64
 	AltRef             float64
@@ -29,10 +26,10 @@ type Position struct {
 
 func ParsePosition(addr string, tok *nmea.Tokenizer) (*Position, error) {
 	var p Position
-	p.address = NewAddress(addr)
-	p.TimeOfDay = gps.ParseCommaTimeOfDay(tok)
-	p.Lat = gps.ParseCommaLatDegMinCommaHemi(tok)
-	p.Lon = gps.ParseCommaLonDegMinCommaHemi(tok)
+	p.Address = nmea.NewAddress(addr)
+	p.TimeOfDay = nmea.ParseCommaTimeOfDay(tok)
+	p.Lat = tok.CommaLatDegMinCommaHemi()
+	p.Lon = tok.CommaLonDegMinCommaHemi()
 	p.AltRef = tok.CommaFloat()
 	p.NavStat = tok.CommaString()
 	p.HorizAcc = tok.CommaUnsignedFloat()
@@ -49,8 +46,4 @@ func ParsePosition(addr string, tok *nmea.Tokenizer) (*Position, error) {
 	p.DR = tok.CommaInt()
 	tok.EndOfData()
 	return &p, tok.Err()
-}
-
-func (p Position) Address() nmea.Addresser {
-	return p.address
 }

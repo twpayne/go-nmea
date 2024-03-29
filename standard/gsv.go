@@ -1,4 +1,4 @@
-package gps
+package standard
 
 import "github.com/twpayne/go-nmea"
 
@@ -10,7 +10,7 @@ type SatelliteInView struct {
 }
 
 type GSV struct {
-	address          Address
+	nmea.Address
 	NumMsg           int
 	MsgNum           int
 	NumSV            int
@@ -20,7 +20,7 @@ type GSV struct {
 
 func ParseGSV(addr string, tok *nmea.Tokenizer) (*GSV, error) {
 	var gsv GSV
-	gsv.address = NewAddress(addr)
+	gsv.Address = nmea.NewAddress(addr)
 	gsv.NumMsg = tok.CommaInt()
 	gsv.MsgNum = tok.CommaInt()
 	gsv.NumSV = tok.CommaInt()
@@ -38,8 +38,4 @@ func ParseGSV(addr string, tok *nmea.Tokenizer) (*GSV, error) {
 	}
 	tok.EndOfData()
 	return &gsv, tok.Err()
-}
-
-func (gsv GSV) Address() nmea.Addresser {
-	return gsv.address
 }

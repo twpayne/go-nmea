@@ -1,5 +1,5 @@
-// Package nmeatesting provides common functionality for testing NMEA sentence parsers.
-package nmeatesting
+// Package nmeatest provides common functionality for testing NMEA sentence parsers.
+package nmeatest
 
 import (
 	"testing"

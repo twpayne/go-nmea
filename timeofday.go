@@ -1,12 +1,10 @@
-package gps
+package nmea
 
 // FIXME what happens to second on GPS leap second?
 
 import (
 	"fmt"
 	"time"
-
-	"github.com/twpayne/go-nmea"
 )
 
 type TimeOfDay struct {
@@ -16,12 +14,12 @@ type TimeOfDay struct {
 	Nanosecond int
 }
 
-func ParseCommaTimeOfDay(tok *nmea.Tokenizer) TimeOfDay {
+func ParseCommaTimeOfDay(tok *Tokenizer) TimeOfDay {
 	tok.Comma()
 	return ParseTimeOfDay(tok)
 }
 
-func ParseTimeOfDay(tok *nmea.Tokenizer) TimeOfDay {
+func ParseTimeOfDay(tok *Tokenizer) TimeOfDay {
 	hour := tok.DecimalDigits(2)
 	min := tok.DecimalDigits(2)
 	sec, nsec := secondPointNanosecond(tok)
@@ -62,7 +60,7 @@ func (t TimeOfDay) Valid() bool {
 	return true
 }
 
-func secondPointNanosecond(tok *nmea.Tokenizer) (int, int) {
+func secondPointNanosecond(tok *Tokenizer) (int, int) {
 	sec := tok.DecimalDigits(2)
 	numerator, denominator := tok.OptionalPointDecimal()
 	for denominator < 1000000000 {

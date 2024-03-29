@@ -1,10 +1,10 @@
-package gps
+package standard
 
 import "github.com/twpayne/go-nmea"
 
 type GRS struct {
-	address   Address
-	TimeOfDay TimeOfDay
+	nmea.Address
+	TimeOfDay nmea.TimeOfDay
 	Mode      int
 	Residuals []nmea.Optional[float64]
 	SystemID  int
@@ -13,8 +13,8 @@ type GRS struct {
 
 func ParseGRS(addr string, tok *nmea.Tokenizer) (*GRS, error) {
 	var grs GRS
-	grs.address = NewAddress(addr)
-	grs.TimeOfDay = ParseCommaTimeOfDay(tok)
+	grs.Address = nmea.NewAddress(addr)
+	grs.TimeOfDay = nmea.ParseCommaTimeOfDay(tok)
 	grs.Mode = tok.CommaUnsignedInt()
 	for i := 0; i < 12; i++ {
 		residual := tok.CommaOptionalFloat()
@@ -24,8 +24,4 @@ func ParseGRS(addr string, tok *nmea.Tokenizer) (*GRS, error) {
 	grs.SignalID = tok.CommaHex()
 	tok.EndOfData()
 	return &grs, tok.Err()
-}
-
-func (grs GRS) Address() nmea.Addresser {
-	return grs.address
 }

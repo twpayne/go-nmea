@@ -1,10 +1,10 @@
-package gps
+package standard
 
 import "github.com/twpayne/go-nmea"
 
 type GST struct {
-	address     Address
-	TimeOfDay   TimeOfDay
+	nmea.Address
+	TimeOfDay   nmea.TimeOfDay
 	RangeRMS    float64
 	MajorStdDev nmea.Optional[float64]
 	MinorStdDev nmea.Optional[float64]
@@ -16,8 +16,8 @@ type GST struct {
 
 func ParseGST(addr string, tok *nmea.Tokenizer) (*GST, error) {
 	var gst GST
-	gst.address = NewAddress(addr)
-	gst.TimeOfDay = ParseCommaTimeOfDay(tok)
+	gst.Address = nmea.NewAddress(addr)
+	gst.TimeOfDay = nmea.ParseCommaTimeOfDay(tok)
 	gst.RangeRMS = tok.CommaUnsignedFloat()
 	gst.MajorStdDev = tok.CommaOptionalUnsignedFloat()
 	gst.MinorStdDev = tok.CommaOptionalUnsignedFloat()
@@ -26,8 +26,4 @@ func ParseGST(addr string, tok *nmea.Tokenizer) (*GST, error) {
 	gst.LonStdDev = tok.CommaUnsignedFloat()
 	gst.AltStdDev = tok.CommaUnsignedFloat()
 	return &gst, tok.Err()
-}
-
-func (gst GST) Address() nmea.Addresser {
-	return gst.address
 }

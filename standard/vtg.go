@@ -1,9 +1,9 @@
-package gps
+package standard
 
 import "github.com/twpayne/go-nmea"
 
 type VTG struct {
-	address                  Address
+	nmea.Address
 	TrueCourseOverGround     float64
 	MagneticCourseOverGround nmea.Optional[float64]
 	SpeedOverGroundKN        float64
@@ -13,7 +13,7 @@ type VTG struct {
 
 func ParseVTG(addr string, tok *nmea.Tokenizer) (*VTG, error) {
 	var vtg VTG
-	vtg.address = NewAddress(addr)
+	vtg.Address = nmea.NewAddress(addr)
 	vtg.TrueCourseOverGround = tok.CommaUnsignedFloat()
 	tok.CommaLiteralByte('T')
 	vtg.MagneticCourseOverGround = tok.CommaOptionalUnsignedFloat()
@@ -25,8 +25,4 @@ func ParseVTG(addr string, tok *nmea.Tokenizer) (*VTG, error) {
 	vtg.ModeIndicator = tok.CommaOneByteOf(posModes)
 	tok.EndOfData()
 	return &vtg, tok.Err()
-}
-
-func (vtg VTG) Address() nmea.Addresser {
-	return vtg.address
 }

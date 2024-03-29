@@ -1,4 +1,4 @@
-package gps_test
+package nmea_test
 
 import (
 	"testing"
@@ -7,17 +7,16 @@ import (
 	"github.com/alecthomas/assert/v2"
 
 	"github.com/twpayne/go-nmea"
-	"github.com/twpayne/go-nmea/gps"
 )
 
 func TestParseTimeOfDay(t *testing.T) {
 	for _, tc := range []struct {
 		s        string
-		expected gps.TimeOfDay
+		expected nmea.TimeOfDay
 	}{
 		{
 			s: "010203",
-			expected: gps.TimeOfDay{
+			expected: nmea.TimeOfDay{
 				Hour:   1,
 				Minute: 2,
 				Second: 3,
@@ -25,7 +24,7 @@ func TestParseTimeOfDay(t *testing.T) {
 		},
 		{
 			s: "010203.",
-			expected: gps.TimeOfDay{
+			expected: nmea.TimeOfDay{
 				Hour:   1,
 				Minute: 2,
 				Second: 3,
@@ -33,7 +32,7 @@ func TestParseTimeOfDay(t *testing.T) {
 		},
 		{
 			s: "010203.4",
-			expected: gps.TimeOfDay{
+			expected: nmea.TimeOfDay{
 				Hour:       1,
 				Minute:     2,
 				Second:     3,
@@ -42,7 +41,7 @@ func TestParseTimeOfDay(t *testing.T) {
 		},
 		{
 			s: "010203.456789123",
-			expected: gps.TimeOfDay{
+			expected: nmea.TimeOfDay{
 				Hour:       1,
 				Minute:     2,
 				Second:     3,
@@ -51,7 +50,7 @@ func TestParseTimeOfDay(t *testing.T) {
 		},
 		{
 			s: "010203.4567891234",
-			expected: gps.TimeOfDay{
+			expected: nmea.TimeOfDay{
 				Hour:       1,
 				Minute:     2,
 				Second:     3,
@@ -60,7 +59,7 @@ func TestParseTimeOfDay(t *testing.T) {
 		},
 		{
 			s: "010203.4567891235",
-			expected: gps.TimeOfDay{
+			expected: nmea.TimeOfDay{
 				Hour:       1,
 				Minute:     2,
 				Second:     3,
@@ -70,7 +69,7 @@ func TestParseTimeOfDay(t *testing.T) {
 	} {
 		t.Run(tc.s, func(t *testing.T) {
 			tok := nmea.NewTokenizer([]byte(tc.s))
-			assert.Equal(t, tc.expected, gps.ParseTimeOfDay(tok))
+			assert.Equal(t, tc.expected, nmea.ParseTimeOfDay(tok))
 			assert.NoError(t, tok.Err())
 		})
 	}
@@ -78,18 +77,18 @@ func TestParseTimeOfDay(t *testing.T) {
 
 func TestTimeOfDay(t *testing.T) {
 	for _, tc := range []struct {
-		timeOfDay             gps.TimeOfDay
+		timeOfDay             nmea.TimeOfDay
 		expectedInvalid       bool
 		expectedString        string
 		expectedSinceMidnight time.Duration
 	}{
 		{
-			timeOfDay:             gps.TimeOfDay{},
+			timeOfDay:             nmea.TimeOfDay{},
 			expectedString:        "00:00:00.000000000",
 			expectedSinceMidnight: 0,
 		},
 		{
-			timeOfDay: gps.TimeOfDay{
+			timeOfDay: nmea.TimeOfDay{
 				Hour:       1,
 				Minute:     2,
 				Second:     3,
@@ -99,7 +98,7 @@ func TestTimeOfDay(t *testing.T) {
 			expectedSinceMidnight: 1*time.Hour + 2*time.Minute + 3*time.Second + 456789000*time.Nanosecond,
 		},
 		{
-			timeOfDay: gps.TimeOfDay{
+			timeOfDay: nmea.TimeOfDay{
 				Hour:       23,
 				Minute:     59,
 				Second:     59,
@@ -109,49 +108,49 @@ func TestTimeOfDay(t *testing.T) {
 			expectedSinceMidnight: 24*time.Hour - time.Nanosecond,
 		},
 		{
-			timeOfDay: gps.TimeOfDay{
+			timeOfDay: nmea.TimeOfDay{
 				Hour: -1,
 			},
 			expectedInvalid: true,
 		},
 		{
-			timeOfDay: gps.TimeOfDay{
+			timeOfDay: nmea.TimeOfDay{
 				Hour: 24,
 			},
 			expectedInvalid: true,
 		},
 		{
-			timeOfDay: gps.TimeOfDay{
+			timeOfDay: nmea.TimeOfDay{
 				Minute: -1,
 			},
 			expectedInvalid: true,
 		},
 		{
-			timeOfDay: gps.TimeOfDay{
+			timeOfDay: nmea.TimeOfDay{
 				Minute: 60,
 			},
 			expectedInvalid: true,
 		},
 		{
-			timeOfDay: gps.TimeOfDay{
+			timeOfDay: nmea.TimeOfDay{
 				Second: -1,
 			},
 			expectedInvalid: true,
 		},
 		{
-			timeOfDay: gps.TimeOfDay{
+			timeOfDay: nmea.TimeOfDay{
 				Second: 61,
 			},
 			expectedInvalid: true,
 		},
 		{
-			timeOfDay: gps.TimeOfDay{
+			timeOfDay: nmea.TimeOfDay{
 				Nanosecond: -1,
 			},
 			expectedInvalid: true,
 		},
 		{
-			timeOfDay: gps.TimeOfDay{
+			timeOfDay: nmea.TimeOfDay{
 				Nanosecond: 1000000000,
 			},
 			expectedInvalid: true,

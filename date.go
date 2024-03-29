@@ -1,10 +1,6 @@
-package gps
+package nmea
 
-import (
-	"time"
-
-	"github.com/twpayne/go-nmea"
-)
+import "time"
 
 type Date struct {
 	Day   int
@@ -12,12 +8,12 @@ type Date struct {
 	Year  int
 }
 
-func ParseCommaDate(tok *nmea.Tokenizer) Date {
+func ParseCommaDate(tok *Tokenizer) Date {
 	tok.Comma()
 	return ParseDate(tok)
 }
 
-func ParseDate(tok *nmea.Tokenizer) Date {
+func ParseDate(tok *Tokenizer) Date {
 	day := tok.DecimalDigits(2)
 	month := time.Month(tok.DecimalDigits(2))
 	year := 1900 + tok.DecimalDigits(2)

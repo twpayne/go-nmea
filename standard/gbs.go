@@ -1,10 +1,10 @@
-package gps
+package standard
 
 import "github.com/twpayne/go-nmea"
 
 type GBS struct {
-	address Address
-	TimeOfDay
+	nmea.Address
+	nmea.TimeOfDay
 	ErrLat   float64
 	ErrLon   float64
 	ErrAlt   float64
@@ -18,8 +18,8 @@ type GBS struct {
 
 func ParseGBS(addr string, tok *nmea.Tokenizer) (*GBS, error) {
 	var gbs GBS
-	gbs.address = NewAddress(addr)
-	gbs.TimeOfDay = ParseCommaTimeOfDay(tok)
+	gbs.Address = nmea.NewAddress(addr)
+	gbs.TimeOfDay = nmea.ParseCommaTimeOfDay(tok)
 	gbs.ErrLat = tok.CommaUnsignedFloat()
 	gbs.ErrLon = tok.CommaUnsignedFloat()
 	gbs.ErrAlt = tok.CommaUnsignedFloat()
@@ -30,8 +30,4 @@ func ParseGBS(addr string, tok *nmea.Tokenizer) (*GBS, error) {
 	gbs.SystemID = tok.CommaOptionalHex()
 	gbs.SignalID = tok.CommaOptionalHex()
 	return &gbs, tok.Err()
-}
-
-func (gbs GBS) Address() nmea.Addresser {
-	return gbs.address
 }

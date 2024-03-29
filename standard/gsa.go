@@ -1,9 +1,9 @@
-package gps
+package standard
 
 import "github.com/twpayne/go-nmea"
 
 type GSA struct {
-	address  Address
+	nmea.Address
 	OpMode   byte
 	NavMode  int
 	SVIDs    []nmea.Optional[int]
@@ -15,7 +15,7 @@ type GSA struct {
 
 func ParseGSA(addr string, tok *nmea.Tokenizer) (*GSA, error) {
 	var gsa GSA
-	gsa.address = NewAddress(addr)
+	gsa.Address = nmea.NewAddress(addr)
 	gsa.OpMode = tok.CommaOneByteOf("AM")
 	gsa.NavMode = tok.CommaUnsignedInt()
 	for i := 0; i < 12; i++ {
@@ -30,8 +30,4 @@ func ParseGSA(addr string, tok *nmea.Tokenizer) (*GSA, error) {
 	}
 	tok.EndOfData()
 	return &gsa, tok.Err()
-}
-
-func (gsa GSA) Address() nmea.Addresser {
-	return gsa.address
 }

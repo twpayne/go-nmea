@@ -99,6 +99,12 @@ func (t *Tokenizer) Comma() {
 	t.pos++
 }
 
+func (t *Tokenizer) CommaAltitudeCommaM() float64 {
+	alt := t.CommaFloat()
+	t.CommaLiteralByte('M')
+	return alt
+}
+
 func (t *Tokenizer) CommaEmpty() struct{} {
 	t.Comma()
 	return t.Empty()
@@ -124,9 +130,35 @@ func (t *Tokenizer) CommaInt() int {
 	return t.Int()
 }
 
+func (t *Tokenizer) CommaLatCommaHemi() float64 {
+	lat := t.CommaUnsignedFloat()
+	if t.CommaOneByteOf("NS") == 'S' {
+		lat = -lat
+	}
+	return lat
+}
+
+func (t *Tokenizer) CommaLatDegMinCommaHemi() float64 {
+	t.Comma()
+	return t.LatDegMinCommaHemi()
+}
+
 func (t *Tokenizer) CommaLiteralByte(b byte) {
 	t.Comma()
 	t.LiteralByte(b)
+}
+
+func (t *Tokenizer) CommaLonCommaHemi() float64 {
+	lon := t.CommaUnsignedFloat()
+	if t.CommaOneByteOf("EW") == 'W' {
+		return -lon
+	}
+	return lon
+}
+
+func (t *Tokenizer) CommaLonDegMinCommaHemi() float64 {
+	t.Comma()
+	return t.LonDegMinCommaHemi()
 }
 
 func (t *Tokenizer) CommaOneByteOf(bytes string) byte {
@@ -149,9 +181,27 @@ func (t *Tokenizer) CommaOptionalInt() Optional[int] {
 	return t.OptionalInt()
 }
 
+func (t *Tokenizer) CommaOptionalLatDegMinCommaHemi() Optional[float64] {
+	t.Comma()
+	if c, ok := t.Peek(); !ok || c == ',' {
+		t.Comma()
+		return Optional[float64]{}
+	}
+	return NewOptional(t.LatDegMinCommaHemi())
+}
+
 func (t *Tokenizer) CommaOptionalLiteralByte(b byte) Optional[byte] {
 	t.Comma()
 	return t.OptionalLiteralByte(b)
+}
+
+func (t *Tokenizer) CommaOptionalLonDegMinCommaHemi() Optional[float64] {
+	t.Comma()
+	if c, ok := t.Peek(); !ok || c == ',' {
+		t.Comma()
+		return Optional[float64]{}
+	}
+	return NewOptional(t.LonDegMinCommaHemi())
 }
 
 func (t *Tokenizer) CommaOptionalOneByteOf(bytes string) Optional[byte] {
@@ -330,6 +380,17 @@ func (t *Tokenizer) Int() int {
 	return sign * t.UnsignedInt()
 }
 
+func (t *Tokenizer) LatDegMinCommaHemi() float64 {
+	deg := t.DecimalDigits(2)
+	min := t.DecimalDigits(2)
+	numerator, denominator := t.PointDecimal()
+	lat := float64(deg) + (float64(min)+float64(numerator)/float64(denominator))/60
+	if t.CommaOneByteOf("NS") == 'S' {
+		lat = -lat
+	}
+	return lat
+}
+
 func (t *Tokenizer) LiteralByte(b byte) {
 	if t.err != nil {
 		return
@@ -343,6 +404,17 @@ func (t *Tokenizer) LiteralByte(b byte) {
 		return
 	}
 	t.pos++
+}
+
+func (t *Tokenizer) LonDegMinCommaHemi() float64 {
+	deg := t.DecimalDigits(3)
+	min := t.DecimalDigits(2)
+	numerator, denominator := t.PointDecimal()
+	lon := float64(deg) + (float64(min)+float64(numerator)/float64(denominator))/60
+	if t.CommaOneByteOf("EW") == 'W' {
+		lon = -lon
+	}
+	return lon
 }
 
 func (t *Tokenizer) OneByteOf(bytes string) byte {

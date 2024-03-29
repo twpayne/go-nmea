@@ -1,9 +1,9 @@
-package gps
+package standard
 
 import "github.com/twpayne/go-nmea"
 
 type MSS struct {
-	address            Address
+	nmea.Address
 	SignalStrength     int
 	SignalToNoiseRatio int
 	BeaconFrequencyKHz float64
@@ -13,7 +13,7 @@ type MSS struct {
 
 func ParseMSS(addr string, tok *nmea.Tokenizer) (*MSS, error) {
 	var mss MSS
-	mss.address = NewAddress(addr)
+	mss.Address = nmea.NewAddress(addr)
 	mss.SignalStrength = tok.CommaInt()
 	mss.SignalToNoiseRatio = tok.CommaInt()
 	mss.BeaconFrequencyKHz = tok.CommaFloat()
@@ -21,8 +21,4 @@ func ParseMSS(addr string, tok *nmea.Tokenizer) (*MSS, error) {
 	mss.ChannelNumber = tok.CommaOptionalUnsignedInt()
 	tok.EndOfData()
 	return &mss, tok.Err()
-}
-
-func (mss MSS) Address() nmea.Addresser {
-	return mss.address
 }

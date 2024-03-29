@@ -12,14 +12,14 @@ type SatelliteStatus struct {
 }
 
 type Status struct {
-	address           Address
+	nmea.Address
 	N                 int
 	SatelliteStatuses []SatelliteStatus
 }
 
 func ParseStatus(addr string, tok *nmea.Tokenizer) (*Status, error) {
 	var s Status
-	s.address = NewAddress(addr)
+	s.Address = nmea.NewAddress(addr)
 	s.N = tok.CommaUnsignedInt()
 	s.SatelliteStatuses = make([]SatelliteStatus, 0, s.N)
 	for i := 0; i < s.N; i++ {
@@ -34,8 +34,4 @@ func ParseStatus(addr string, tok *nmea.Tokenizer) (*Status, error) {
 	}
 	tok.EndOfData()
 	return &s, tok.Err()
-}
-
-func (s Status) Address() nmea.Addresser {
-	return s.address
 }
