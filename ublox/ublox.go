@@ -38,7 +38,7 @@ func ParseSentence(addr string, tok *nmea.Tokenizer) (nmea.Sentence, error) {
 	}
 }
 
-func SentenceParser(addr string) nmea.SentenceParser {
+func SentenceParserFunc(addr string) nmea.SentenceParser {
 	if addr != "PUBX" {
 		return nil
 	}

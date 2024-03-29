@@ -9,8 +9,8 @@ import (
 	"github.com/twpayne/go-nmea/nmeatesting"
 )
 
-func TestSentenceParser(t *testing.T) {
-	nmeatesting.TestSentenceParser(t, SentenceParser, []nmeatesting.TestCase{
+func TestSentenceParserFunc(t *testing.T) {
+	nmeatesting.TestSentenceParserFunc(t, SentenceParserFunc, []nmeatesting.TestCase{
 		{
 			S: "$PUBX,00,081350.00,4717.113210,N,00833.915187,E,546.589,G3,2.1,2.0,0.007,77.52,0.007,,0.92,1.19,0.77,9,0,0*5F",
 			Expected: &Position{

@@ -18,6 +18,6 @@ var sentenceParserMap = nmea.SentenceParserMap{
 	"PGRMZ": nmea.MakeSentenceParser(ParsePGRMZ),
 }
 
-func SentenceParser(addr string) nmea.SentenceParser {
+func SentenceParserFunc(addr string) nmea.SentenceParser {
 	return sentenceParserMap[addr]
 }

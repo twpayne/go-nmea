@@ -8,8 +8,8 @@ import (
 	"github.com/twpayne/go-nmea/nmeatesting"
 )
 
-func TestSentenceParser(t *testing.T) {
-	nmeatesting.TestSentenceParser(t, SentenceParser, []nmeatesting.TestCase{
+func TestSentenceParserFunc(t *testing.T) {
+	nmeatesting.TestSentenceParserFunc(t, SentenceParserFunc, []nmeatesting.TestCase{
 		{
 			S: "$PGRMB,0.0,200,,,,K,,N,N*31",
 			Expected: &PGRMB{

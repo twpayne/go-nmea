@@ -19,9 +19,9 @@ func run() error {
 	parser := nmea.NewParser(
 		nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
 		nmea.WithLineEndingDiscipline(nmea.LineEndingDisciplineNever),
-		nmea.WithSentenceParserFunc(garmin.SentenceParser),
-		nmea.WithSentenceParserFunc(gps.SentenceParser),
-		nmea.WithSentenceParserFunc(ublox.SentenceParser),
+		nmea.WithSentenceParserFunc(garmin.SentenceParserFunc),
+		nmea.WithSentenceParserFunc(gps.SentenceParserFunc),
+		nmea.WithSentenceParserFunc(ublox.SentenceParserFunc),
 	)
 
 	scanner := bufio.NewScanner(os.Stdin)

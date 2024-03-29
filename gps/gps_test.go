@@ -8,8 +8,8 @@ import (
 	"github.com/twpayne/go-nmea/nmeatesting"
 )
 
-func TestSentenceParser(t *testing.T) {
-	nmeatesting.TestSentenceParser(t, SentenceParser, []nmeatesting.TestCase{
+func TestSentenceParserFunc(t *testing.T) {
+	nmeatesting.TestSentenceParserFunc(t, SentenceParserFunc, []nmeatesting.TestCase{
 		// u-blox examples from
 		// https://content.u-blox.com/sites/default/files/products/documents/u-blox8-M8_ReceiverDescrProtSpec_UBX-13003221.pdf
 		{

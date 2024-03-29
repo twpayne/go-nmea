@@ -17,7 +17,7 @@ type TestCase struct {
 	Expected    nmea.Sentence
 }
 
-func TestSentenceParser(t *testing.T, sentenceParserFunc func(string) nmea.SentenceParser, testCases []TestCase) {
+func TestSentenceParserFunc(t *testing.T, sentenceParserFunc func(string) nmea.SentenceParser, testCases []TestCase) {
 	t.Helper()
 	for _, testCase := range testCases {
 		t.Run(testCase.S, func(t *testing.T) {
