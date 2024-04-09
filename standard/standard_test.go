@@ -1186,6 +1186,31 @@ func TestNovatel(t *testing.T) {
 				},
 			},
 			{
+				S: "$GPGSA,M,3,05,02,31,06,19,29,20,12,24,25,,,0.9,0.5,0.7*35",
+				Expected: &standard.GSA{
+					Address: nmea.NewAddress("GPGSA"),
+					OpMode:  'M',
+					NavMode: 3,
+					SVIDs: []nmea.Optional[int]{
+						nmea.NewOptional(5),
+						nmea.NewOptional(2),
+						nmea.NewOptional(31),
+						nmea.NewOptional(6),
+						nmea.NewOptional(19),
+						nmea.NewOptional(29),
+						nmea.NewOptional(20),
+						nmea.NewOptional(12),
+						nmea.NewOptional(24),
+						nmea.NewOptional(25),
+						{},
+						{},
+					},
+					PDOP: nmea.NewOptional(0.9),
+					HDOP: nmea.NewOptional(0.5),
+					VDOP: nmea.NewOptional(0.7),
+				},
+			},
+			{
 				S: "$GNVTG,,,,,,,,,N*2E",
 				Expected: &standard.VTG{
 					Address:       nmea.NewAddress("GNVTG"),
