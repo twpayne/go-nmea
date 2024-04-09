@@ -1229,6 +1229,67 @@ func TestNovatel(t *testing.T) {
 				},
 			},
 			{
+				S: "$GAGSV,3,1,09,34,72,231,53,30,65,251,53,36,51,059,51,02,36,170,49*62",
+				Expected: &standard.GSV{
+					Address: nmea.NewAddress("GAGSV"),
+					NumMsg:  3,
+					MsgNum:  1,
+					NumSV:   9,
+					SatellitesInView: []standard.SatelliteInView{
+						{
+							SVID: 34,
+							Elv:  nmea.NewOptional(72),
+							Az:   nmea.NewOptional(231),
+							CNO:  nmea.NewOptional(53),
+						},
+						{
+							SVID: 30,
+							Elv:  nmea.NewOptional(65),
+							Az:   nmea.NewOptional(251),
+							CNO:  nmea.NewOptional(53),
+						},
+						{
+							SVID: 36,
+							Elv:  nmea.NewOptional(51),
+							Az:   nmea.NewOptional(59),
+							CNO:  nmea.NewOptional(51),
+						},
+						{
+							SVID: 2,
+							Elv:  nmea.NewOptional(36),
+							Az:   nmea.NewOptional(170),
+							CNO:  nmea.NewOptional(49),
+						},
+					},
+				},
+			},
+			{
+				S: "$GQGSV,1,1,01,02,08,309,37*4D",
+				Expected: &standard.GSV{
+					Address: nmea.NewAddress("GQGSV"),
+					NumMsg:  1,
+					MsgNum:  1,
+					NumSV:   1,
+					SatellitesInView: []standard.SatelliteInView{
+						{
+							SVID: 2,
+							Elv:  nmea.NewOptional(8),
+							Az:   nmea.NewOptional(309),
+							CNO:  nmea.NewOptional(37),
+						},
+					},
+				},
+			},
+			{
+				S: "$GIGSV,1,1,00,,,,*60",
+				Expected: &standard.GSV{
+					Address: nmea.NewAddress("GIGSV"),
+					NumMsg:  1,
+					MsgNum:  1,
+					NumSV:   0,
+				},
+			},
+			{
 				S: "$GNVTG,,,,,,,,,N*2E",
 				Expected: &standard.VTG{
 					Address:       nmea.NewAddress("GNVTG"),

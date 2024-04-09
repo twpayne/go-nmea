@@ -24,14 +24,24 @@ func ParseGSV(addr string, tok *nmea.Tokenizer) (*GSV, error) {
 	gsv.NumMsg = tok.CommaUnsignedInt()
 	gsv.MsgNum = tok.CommaUnsignedInt()
 	gsv.NumSV = tok.CommaUnsignedInt()
-	n := min(gsv.NumSV-4*(gsv.MsgNum-1), 4)
-	for i := 0; i < n; i++ {
-		siv := SatelliteInView{}
-		siv.SVID = tok.CommaUnsignedInt()
-		siv.Elv = tok.CommaOptionalInt()
-		siv.Az = tok.CommaOptionalInt()
-		siv.CNO = tok.CommaOptionalInt()
-		gsv.SatellitesInView = append(gsv.SatellitesInView, siv)
+	if n := min(gsv.NumSV-4*(gsv.MsgNum-1), 4); n > 0 {
+		for i := 0; i < n; i++ {
+			siv := SatelliteInView{}
+			siv.SVID = tok.CommaUnsignedInt()
+			siv.Elv = tok.CommaOptionalInt()
+			siv.Az = tok.CommaOptionalInt()
+			siv.CNO = tok.CommaOptionalInt()
+			gsv.SatellitesInView = append(gsv.SatellitesInView, siv)
+		}
+	} else {
+		tokFork := tok.Fork()
+		tok.Comma()
+		tok.Comma()
+		tok.Comma()
+		tok.Comma()
+		if tok.Err() != nil {
+			tok = tokFork
+		}
 	}
 	if !tok.AtEndOfData() {
 		gsv.SignalID = tok.CommaOptionalUnsignedInt()
