@@ -1211,6 +1211,24 @@ func TestNovatel(t *testing.T) {
 				},
 			},
 			{
+				S: "$GPGST,203017.00,1.25,0.02,0.01,-16.7566,0.02,0.01,0.03*7D",
+				Expected: &standard.GST{
+					Address: nmea.NewAddress("GPGST"),
+					TimeOfDay: nmea.TimeOfDay{
+						Hour:   20,
+						Minute: 30,
+						Second: 17,
+					},
+					RangeRMS:    1.25,
+					MajorStdDev: nmea.NewOptional(0.02),
+					MinorStdDev: nmea.NewOptional(0.01),
+					Orientation: nmea.NewOptional(-16.7566),
+					LatStdDev:   0.02,
+					LonStdDev:   0.01,
+					AltStdDev:   0.03,
+				},
+			},
+			{
 				S: "$GNVTG,,,,,,,,,N*2E",
 				Expected: &standard.VTG{
 					Address:       nmea.NewAddress("GNVTG"),

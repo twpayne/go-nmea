@@ -21,7 +21,7 @@ func ParseGST(addr string, tok *nmea.Tokenizer) (*GST, error) {
 	gst.RangeRMS = tok.CommaUnsignedFloat()
 	gst.MajorStdDev = tok.CommaOptionalUnsignedFloat()
 	gst.MinorStdDev = tok.CommaOptionalUnsignedFloat()
-	gst.Orientation = tok.CommaOptionalUnsignedFloat()
+	gst.Orientation = tok.CommaOptionalFloat()
 	gst.LatStdDev = tok.CommaUnsignedFloat()
 	gst.LonStdDev = tok.CommaUnsignedFloat()
 	gst.AltStdDev = tok.CommaUnsignedFloat()
