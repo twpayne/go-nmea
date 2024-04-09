@@ -84,8 +84,8 @@ func TestUblox(t *testing.T) {
 				S: "$GPGLL,4717.11364,N,00833.91565,E,092321.00,A,A*60",
 				Expected: &standard.GLL{
 					Address: nmea.NewAddress("GPGLL"),
-					Lat:     47.28522733333333,
-					Lon:     8.565260833333333,
+					Lat:     nmea.NewOptional(47.28522733333333),
+					Lon:     nmea.NewOptional(8.565260833333333),
 					TimeOfDay: nmea.TimeOfDay{
 						Hour:   9,
 						Minute: 23,
@@ -479,8 +479,8 @@ func TestSparkfun(t *testing.T) {
 				S: "$GPGLL,3723.2475,N,12158.3416,W,161229.487,A,A*41",
 				Expected: &standard.GLL{
 					Address: nmea.NewAddress("GPGLL"),
-					Lat:     37.387458333333335,
-					Lon:     -121.97236,
+					Lat:     nmea.NewOptional(37.387458333333335),
+					Lon:     nmea.NewOptional(-121.97236),
 					TimeOfDay: nmea.TimeOfDay{
 						Hour:       16,
 						Minute:     12,
@@ -898,6 +898,19 @@ func TestMiscellaneous(t *testing.T) {
 				},
 			},
 			{
+				S: "$GNGLL,,,,,095943.00,V,N*56",
+				Expected: &standard.GLL{
+					Address: nmea.NewAddress("GNGLL"),
+					TimeOfDay: nmea.TimeOfDay{
+						Hour:   9,
+						Minute: 59,
+						Second: 43,
+					},
+					Status:  'V',
+					PosMode: 'N',
+				},
+			},
+			{
 				S: "$GPMSS,0,0,0.000000,0,*58",
 				Expected: &standard.MSS{
 					Address: nmea.NewAddress("GPMSS"),
@@ -1057,8 +1070,8 @@ func TestNovatel(t *testing.T) {
 				S: "$GPGLL,5109.0262317,N,11401.8407304,W,202725.00,A,D*79",
 				Expected: &standard.GLL{
 					Address: nmea.NewAddress("GPGLL"),
-					Lat:     51.150437195,
-					Lon:     -114.03067884,
+					Lat:     nmea.NewOptional(51.150437195),
+					Lon:     nmea.NewOptional(-114.03067884),
 					TimeOfDay: nmea.TimeOfDay{
 						Hour:   20,
 						Minute: 27,
@@ -1072,8 +1085,8 @@ func TestNovatel(t *testing.T) {
 				S: "$GNGLL,5109.0262321,N,11401.8407167,W,174738.00,A,D*6B",
 				Expected: &standard.GLL{
 					Address: nmea.NewAddress("GNGLL"),
-					Lat:     51.15043720166667,
-					Lon:     -114.03067861166667,
+					Lat:     nmea.NewOptional(51.15043720166667),
+					Lon:     nmea.NewOptional(-114.03067861166667),
 					TimeOfDay: nmea.TimeOfDay{
 						Hour:   17,
 						Minute: 47,

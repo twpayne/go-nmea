@@ -4,8 +4,8 @@ import "github.com/twpayne/go-nmea"
 
 type GLL struct {
 	nmea.Address
-	Lat float64
-	Lon float64
+	Lat nmea.Optional[float64]
+	Lon nmea.Optional[float64]
 	nmea.TimeOfDay
 	Status  byte
 	PosMode byte
@@ -14,8 +14,8 @@ type GLL struct {
 func ParseGLL(addr string, tok *nmea.Tokenizer) (*GLL, error) {
 	var gll GLL
 	gll.Address = nmea.NewAddress(addr)
-	gll.Lat = tok.CommaLatDegMinCommaHemi()
-	gll.Lon = tok.CommaLonDegMinCommaHemi()
+	gll.Lat = tok.CommaOptionalLatDegMinCommaHemi()
+	gll.Lon = tok.CommaOptionalLonDegMinCommaHemi()
 	gll.TimeOfDay = nmea.ParseCommaTimeOfDay(tok)
 	gll.Status = tok.CommaOneByteOf("AV")
 	gll.PosMode = tok.CommaOneByteOf("ADEFNR")
