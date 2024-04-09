@@ -1054,7 +1054,6 @@ func TestTheNMEA0813InformationSheetIssue4(t *testing.T) {
 
 func TestNovatel(t *testing.T) {
 	// From https://docs.novatel.com/OEM7/Content/Logs/Core_Logs.htm.
-	// FIXME add more test cases
 	nmeatest.TestSentenceParserFunc(t,
 		[]nmea.ParserOption{
 			nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineStrict),
@@ -1296,6 +1295,27 @@ func TestNovatel(t *testing.T) {
 				Expected: &standard.HDT{
 					Address:     nmea.NewAddress("GPHDT"),
 					HeadingTrue: 75.5664,
+				},
+			},
+			{
+				S: "$GLMLA,23,22,87,0864,83,021f,43,30bb,0000,34c0f6,0c8f05,065ccf,004357,000,00b*37",
+				Expected: &standard.MLA{
+					Address:                nmea.NewAddress("GLMLA"),
+					NumMsg:                 23,
+					MsgNum:                 22,
+					PRN:                    87,
+					GPSWeek:                864,
+					SVHealth:               0x83,
+					Eccentricity:           0x021f,
+					AlmanacReferenceTime:   0x43,
+					InclinationAngle:       0x30bb,
+					OmegaDot:               0x0000,
+					RootAxis:               0x34c0f6,
+					Omega:                  0x0c8f05,
+					AscensionNodeLongitude: 0x065ccf,
+					MeanAnomaly:            0x004357,
+					AF0:                    0x000,
+					AF1:                    0x00b,
 				},
 			},
 			{
