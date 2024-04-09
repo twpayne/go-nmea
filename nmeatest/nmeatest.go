@@ -2,7 +2,9 @@
 package nmeatest
 
 import (
+	"errors"
 	"slices"
+	"strings"
 	"testing"
 
 	"github.com/alecthomas/assert/v2"
@@ -22,6 +24,7 @@ func TestSentenceParserFunc(t *testing.T, options []nmea.ParserOption, testCases
 	t.Helper()
 	for _, testCase := range testCases {
 		t.Run(testCase.S, func(t *testing.T) {
+			t.Helper()
 			if testCase.Skip != "" {
 				t.Skip(testCase.Skip)
 			}
@@ -32,6 +35,16 @@ func TestSentenceParserFunc(t *testing.T, options []nmea.ParserOption, testCases
 			if testCase.ExpectedErr != nil {
 				assert.IsError(t, err, testCase.ExpectedErr)
 			} else {
+				var syntaxError *nmea.SyntaxError
+				if errors.As(err, &syntaxError) {
+					t.Fatalf(
+						"Did not expect an error but got:\n"+
+							"%s\n"+
+							"%s^syntax error: %v",
+						syntaxError.Data,
+						strings.Repeat(" ", syntaxError.Pos), syntaxError.Err,
+					)
+				}
 				assert.NoError(t, err)
 				assert.Equal(t, testCase.Expected, actual)
 			}

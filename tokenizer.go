@@ -29,9 +29,7 @@ type SyntaxError struct {
 }
 
 func (e *SyntaxError) Error() string {
-	// return fmt.Sprintf("%d: %v", e.Pos, e.Err)
-	// FIXME make this a single line error? or add Humanize or modify tests show friendly errors?
-	return fmt.Sprintf("%s\n%s^: %v", e.Data, strings.Repeat(" ", e.Pos), e.Err)
+	return fmt.Sprintf("syntax error at position %d: %v", e.Pos, e.Err)
 }
 
 func (e *SyntaxError) Unwrap() error {
