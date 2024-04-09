@@ -21,13 +21,13 @@ type GSV struct {
 func ParseGSV(addr string, tok *nmea.Tokenizer) (*GSV, error) {
 	var gsv GSV
 	gsv.Address = nmea.NewAddress(addr)
-	gsv.NumMsg = tok.CommaInt()
-	gsv.MsgNum = tok.CommaInt()
-	gsv.NumSV = tok.CommaInt()
+	gsv.NumMsg = tok.CommaUnsignedInt()
+	gsv.MsgNum = tok.CommaUnsignedInt()
+	gsv.NumSV = tok.CommaUnsignedInt()
 	n := min(gsv.NumSV-4*(gsv.MsgNum-1), 4)
 	for i := 0; i < n; i++ {
 		siv := SatelliteInView{}
-		siv.SVID = tok.CommaInt()
+		siv.SVID = tok.CommaUnsignedInt()
 		siv.Elv = tok.CommaOptionalInt()
 		siv.Az = tok.CommaOptionalInt()
 		siv.CNO = tok.CommaOptionalInt()
