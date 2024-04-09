@@ -10,9 +10,9 @@ type RMC struct {
 	nmea.Address
 	Time              time.Time
 	Status            byte
-	Lat               float64
-	Lon               float64
-	SpeedOverGroundKN float64
+	Lat               nmea.Optional[float64]
+	Lon               nmea.Optional[float64]
+	SpeedOverGroundKN nmea.Optional[float64]
 	CourseOverGround  nmea.Optional[float64]
 	MagneticVariation nmea.Optional[float64]
 	ModeIndicator     byte
@@ -24,9 +24,9 @@ func ParseRMC(addr string, tok *nmea.Tokenizer) (*RMC, error) {
 	rmc.Address = nmea.NewAddress(addr)
 	timeOfDay := nmea.ParseCommaTimeOfDay(tok)
 	rmc.Status = tok.CommaOneByteOf("AV")
-	rmc.Lat = tok.CommaLatDegMinCommaHemi()
-	rmc.Lon = tok.CommaLonDegMinCommaHemi()
-	rmc.SpeedOverGroundKN = tok.CommaUnsignedFloat()
+	rmc.Lat = tok.CommaOptionalLatDegMinCommaHemi()
+	rmc.Lon = tok.CommaOptionalLonDegMinCommaHemi()
+	rmc.SpeedOverGroundKN = tok.CommaOptionalUnsignedFloat()
 	rmc.CourseOverGround = tok.CommaOptionalUnsignedFloat()
 	date := nmea.ParseCommaDate(tok)
 	rmc.Time = time.Date(date.Year, date.Month, date.Day, timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second, timeOfDay.Nanosecond, time.UTC)
@@ -40,7 +40,9 @@ func ParseRMC(addr string, tok *nmea.Tokenizer) (*RMC, error) {
 		tok.Comma()
 	}
 	if !tok.AtEndOfData() {
-		rmc.ModeIndicator = tok.CommaOneByteOf("AV")
+		rmc.ModeIndicator = tok.CommaOneByteOf("ADEMN")
+	}
+	if !tok.AtEndOfData() {
 		rmc.NavStatus = tok.CommaOneByteOf("V")
 	}
 	tok.EndOfData()
