@@ -7,8 +7,8 @@ type GRS struct {
 	TimeOfDay nmea.TimeOfDay
 	Mode      int
 	Residuals []nmea.Optional[float64]
-	SystemID  int
-	SignalID  int
+	SystemID  nmea.Optional[int]
+	SignalID  nmea.Optional[int]
 }
 
 func ParseGRS(addr string, tok *nmea.Tokenizer) (*GRS, error) {
@@ -20,8 +20,12 @@ func ParseGRS(addr string, tok *nmea.Tokenizer) (*GRS, error) {
 		residual := tok.CommaOptionalFloat()
 		grs.Residuals = append(grs.Residuals, residual)
 	}
-	grs.SystemID = tok.CommaHex()
-	grs.SignalID = tok.CommaHex()
+	if !tok.AtEndOfData() {
+		grs.SystemID = tok.CommaOptionalHex()
+	}
+	if !tok.AtEndOfData() {
+		grs.SignalID = tok.CommaOptionalHex()
+	}
 	tok.EndOfData()
 	return &grs, tok.Err()
 }
