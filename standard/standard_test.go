@@ -1314,6 +1314,31 @@ func TestNovatel(t *testing.T) {
 				},
 			},
 			{
+				S: "$GPRMC,203522.00,A,5109.0262308,N,11401.8407342,W,0.004,133.4,130522,0.0,E,D*2B",
+				Expected: &standard.RMC{
+					Address:           nmea.NewAddress("GPRMC"),
+					Time:              time.Date(2022, time.May, 13, 20, 35, 22, 0, time.UTC),
+					Status:            'A',
+					Lat:               nmea.NewOptional(51.15043718),
+					Lon:               nmea.NewOptional(-114.03067890333334),
+					SpeedOverGroundKN: nmea.NewOptional(0.004),
+					CourseOverGround:  nmea.NewOptional(133.4),
+					MagneticVariation: nmea.NewOptional(0.0),
+					ModeIndicator:     'D',
+				},
+			},
+			{
+				S: "$GNVTG,139.969,T,139.969,M,0.007,N,0.013,K,D*3D",
+				Expected: &standard.VTG{
+					Address:                  nmea.NewAddress("GNVTG"),
+					TrueCourseOverGround:     nmea.NewOptional(139.969),
+					MagneticCourseOverGround: nmea.NewOptional(139.969),
+					SpeedOverGroundKN:        nmea.NewOptional(0.007),
+					SpeedOverGroundKPH:       nmea.NewOptional(0.013),
+					ModeIndicator:            'D',
+				},
+			},
+			{
 				S: "$GNVTG,,,,,,,,,N*2E",
 				Expected: &standard.VTG{
 					Address:       nmea.NewAddress("GNVTG"),
