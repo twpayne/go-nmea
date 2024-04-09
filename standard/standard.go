@@ -34,6 +34,7 @@ var (
 		"HDT": nmea.MakeSentenceParser(ParseHDT),
 		"MSS": nmea.MakeSentenceParser(ParseMSS),
 		"MTW": nmea.MakeSentenceParser(ParseMTW),
+		"RMB": nmea.MakeSentenceParser(ParseRMB),
 		"RMC": nmea.MakeSentenceParser(ParseRMC),
 		"THS": nmea.MakeSentenceParser(ParseTHS),
 		"TXT": nmea.MakeSentenceParser(ParseTXT),

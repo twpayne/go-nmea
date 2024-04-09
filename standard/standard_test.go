@@ -1297,6 +1297,23 @@ func TestNovatel(t *testing.T) {
 				},
 			},
 			{
+				S: "$GPRMB,A,4.32,L,FROM,TO,5109.7578000,N,11409.0960000,W,4.6,279.2,0.0,V,D*4A",
+				Expected: &standard.RMB{
+					Address:                nmea.NewAddress("GPRMB"),
+					DataStatus:             'A',
+					CrossTrackError:        4.32,
+					CrossTrackErrorDir:     76,
+					OriginWaypointID:       "FROM",
+					DestinationWaypointID:  "TO",
+					DestinationWaypointLat: 51.16263,
+					DestinationWaypointLon: -114.1516,
+					RangeNM:                4.6,
+					BearingTrue:            279.2,
+					ArrivalStatus:          'V',
+					ModeIndicator:          'D',
+				},
+			},
+			{
 				S: "$GNVTG,,,,,,,,,N*2E",
 				Expected: &standard.VTG{
 					Address:       nmea.NewAddress("GNVTG"),
