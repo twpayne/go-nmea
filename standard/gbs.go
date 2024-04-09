@@ -4,16 +4,16 @@ import "github.com/twpayne/go-nmea"
 
 type GBS struct {
 	nmea.Address
-	nmea.TimeOfDay
-	ErrLat   float64
-	ErrLon   float64
-	ErrAlt   float64
-	SVID     nmea.Optional[int]
-	Prob     nmea.Optional[float64]
-	Bias     nmea.Optional[float64]
-	StdDev   nmea.Optional[float64]
-	SystemID nmea.Optional[int]
-	SignalID nmea.Optional[int]
+	TimeOfDay nmea.TimeOfDay
+	ErrLat    float64
+	ErrLon    float64
+	ErrAlt    float64
+	SVID      nmea.Optional[int]
+	Prob      nmea.Optional[float64]
+	Bias      nmea.Optional[float64]
+	StdDev    nmea.Optional[float64]
+	SystemID  nmea.Optional[int]
+	SignalID  nmea.Optional[int]
 }
 
 func ParseGBS(addr string, tok *nmea.Tokenizer) (*GBS, error) {

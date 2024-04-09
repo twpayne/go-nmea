@@ -4,7 +4,7 @@ import "github.com/twpayne/go-nmea"
 
 type GNS struct {
 	nmea.Address
-	nmea.TimeOfDay
+	TimeOfDay   nmea.TimeOfDay
 	Lat         nmea.Optional[float64]
 	Lon         nmea.Optional[float64]
 	PosMode     []byte

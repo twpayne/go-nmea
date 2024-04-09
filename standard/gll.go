@@ -4,11 +4,11 @@ import "github.com/twpayne/go-nmea"
 
 type GLL struct {
 	nmea.Address
-	Lat nmea.Optional[float64]
-	Lon nmea.Optional[float64]
-	nmea.TimeOfDay
-	Status  byte
-	PosMode byte
+	Lat       nmea.Optional[float64]
+	Lon       nmea.Optional[float64]
+	TimeOfDay nmea.TimeOfDay
+	Status    byte
+	PosMode   byte
 }
 
 func ParseGLL(addr string, tok *nmea.Tokenizer) (*GLL, error) {
