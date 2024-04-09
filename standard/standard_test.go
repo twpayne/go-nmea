@@ -1290,6 +1290,13 @@ func TestNovatel(t *testing.T) {
 				},
 			},
 			{
+				S: "$GPHDT,75.5664,T*36",
+				Expected: &standard.HDT{
+					Address:     nmea.NewAddress("GPHDT"),
+					HeadingTrue: 75.5664,
+				},
+			},
+			{
 				S: "$GNVTG,,,,,,,,,N*2E",
 				Expected: &standard.VTG{
 					Address:       nmea.NewAddress("GNVTG"),
