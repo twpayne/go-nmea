@@ -958,6 +958,33 @@ func TestMiscellaneous(t *testing.T) {
 					ModeIndicator:     'A',
 				},
 			},
+			{
+				S: "$GPGSV,2,2,07,32,-1,222,08,36,34,160,,49,36,185,*58",
+				Expected: &standard.GSV{
+					Address: nmea.NewAddress("GPGSV"),
+					NumMsg:  2,
+					MsgNum:  2,
+					NumSV:   7,
+					SatellitesInView: []standard.SatelliteInView{
+						{
+							SVID: 32,
+							Elv:  nmea.NewOptional(-1),
+							Az:   nmea.NewOptional(222),
+							CNO:  nmea.NewOptional(8),
+						},
+						{
+							SVID: 36,
+							Elv:  nmea.NewOptional(34),
+							Az:   nmea.NewOptional(160),
+						},
+						{
+							SVID: 49,
+							Elv:  nmea.NewOptional(36),
+							Az:   nmea.NewOptional(185),
+						},
+					},
+				},
+			},
 		},
 	)
 }
