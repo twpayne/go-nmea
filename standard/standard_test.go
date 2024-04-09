@@ -1006,3 +1006,111 @@ func TestTheNMEA0813InformationSheetIssue4(t *testing.T) {
 		},
 	)
 }
+
+func TestNovatel(t *testing.T) {
+	// From https://docs.novatel.com/OEM7/Content/Logs/Core_Logs.htm.
+	// FIXME add more test cases
+	nmeatest.TestSentenceParserFunc(t,
+		[]nmea.ParserOption{
+			nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineStrict),
+			nmea.WithLineEndingDiscipline(nmea.LineEndingDisciplineNever),
+			nmea.WithSentenceParserFunc(standard.SentenceParserFunc),
+		},
+		[]nmeatest.TestCase{
+			{
+				Skip: "MLA not implemented",
+				S:    "$GLMLA,23,01,65,0864,81,01f4,1e,96d9,0000,34bf42,129a60,0c37e8,001e0d,000,202*60",
+			},
+			{
+				Skip: "MLA not implemented",
+				S:    "$GLMLA,23,22,87,0864,83,021f,43,30bb,0000,34c0f6,0c8f05,065ccf,004357,000,00b*37",
+			},
+			{
+				Skip: "ALM not implemented",
+				S:    "$GPALM,30,01,01,2210,00,617b,0f,1da7,fd70,a10d0a,24de91,6fe696,16263f,17c,ffe*7B",
+			},
+			{
+				Skip: "ALM not implemented",
+				S:    "$GPALM,30,29,31,2210,00,5578,0f,085d,fd5d,a10d86,0fe442,f05163,e7e443,f46,000*2F",
+			},
+			{
+				S: "$GPGGA,202530.00,5109.0262,N,11401.8407,W,5,40,0.5,1097.36,M,-17.00,M,18,TSTR*61",
+				Expected: &standard.GGA{
+					Address: nmea.NewAddress("GPGGA"),
+					TimeOfDay: nmea.TimeOfDay{
+						Hour:   20,
+						Minute: 25,
+						Second: 30,
+					},
+					Lat:                              nmea.NewOptional(51.150436666666664),
+					Lon:                              nmea.NewOptional(-114.03067833333333),
+					FixQuality:                       5,
+					NumberOfSatellites:               40,
+					HDOP:                             0.5,
+					Alt:                              nmea.NewOptional(1097.36),
+					HeightOfGeoidAboveWGS84Ellipsoid: nmea.NewOptional(-17.0),
+					TimeSinceLastDGPSUpdate:          nmea.NewOptional(18),
+					DGPSReferenceStationID:           "TSTR",
+				},
+			},
+			{
+				S: "$GPGLL,5109.0262317,N,11401.8407304,W,202725.00,A,D*79",
+				Expected: &standard.GLL{
+					Address: nmea.NewAddress("GPGLL"),
+					Lat:     51.150437195,
+					Lon:     -114.03067884,
+					TimeOfDay: nmea.TimeOfDay{
+						Hour:   20,
+						Minute: 27,
+						Second: 25,
+					},
+					Status:  'A',
+					PosMode: 'D',
+				},
+			},
+			{
+				S: "$GNGLL,5109.0262321,N,11401.8407167,W,174738.00,A,D*6B",
+				Expected: &standard.GLL{
+					Address: nmea.NewAddress("GNGLL"),
+					Lat:     51.15043720166667,
+					Lon:     -114.03067861166667,
+					TimeOfDay: nmea.TimeOfDay{
+						Hour:   17,
+						Minute: 47,
+						Second: 38,
+					},
+					Status:  'A',
+					PosMode: 'D',
+				},
+			},
+			{
+				S: "$GPRMC,203522.00,A,5109.0262308,N,11401.8407342,W,0.004,133.4,130522,0.0,E,D*2B",
+				Expected: &standard.RMC{
+					Address:           nmea.NewAddress("GPRMC"),
+					Time:              time.Date(2022, time.May, 13, 20, 35, 22, 0, time.UTC),
+					Status:            'A',
+					Lat:               nmea.NewOptional(51.15043718),
+					Lon:               nmea.NewOptional(-114.03067890333334),
+					SpeedOverGroundKN: nmea.NewOptional(0.004),
+					CourseOverGround:  nmea.NewOptional(133.4),
+					MagneticVariation: nmea.NewOptional(0.0),
+					ModeIndicator:     'D',
+				},
+			},
+			{
+				S: "$GNRMC,204520.00,A,5109.0262239,N,11401.8407338,W,0.004,102.3,130522,0.0,E,D*3B",
+				Expected: &standard.RMC{
+					Address:           nmea.NewAddress("GNRMC"),
+					Time:              time.Date(2022, time.May, 13, 20, 45, 20, 0, time.UTC),
+					Status:            'A',
+					Lat:               nmea.NewOptional(51.150437065),
+					Lon:               nmea.NewOptional(-114.03067889666667),
+					SpeedOverGroundKN: nmea.NewOptional(0.004),
+					CourseOverGround:  nmea.NewOptional(102.3),
+					MagneticVariation: nmea.NewOptional(0.0),
+					ModeIndicator:     'D',
+				},
+			},
+		},
+	)
+}
