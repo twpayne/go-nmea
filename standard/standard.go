@@ -19,6 +19,7 @@ var (
 	addressRx = regexp.MustCompile(`\A[A-Z]{2}([A-Z]{3})\z`)
 
 	sentenceParserMap = nmea.SentenceParserMap{
+		"ALM": nmea.MakeSentenceParser(ParseALM),
 		"DBT": nmea.MakeSentenceParser(ParseDBT),
 		"DPT": nmea.MakeSentenceParser(ParseDPT),
 		"DTM": nmea.MakeSentenceParser(ParseDTM),

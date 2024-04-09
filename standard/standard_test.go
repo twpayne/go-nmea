@@ -1061,20 +1061,25 @@ func TestNovatel(t *testing.T) {
 		},
 		[]nmeatest.TestCase{
 			{
-				Skip: "MLA not implemented",
-				S:    "$GLMLA,23,01,65,0864,81,01f4,1e,96d9,0000,34bf42,129a60,0c37e8,001e0d,000,202*60",
-			},
-			{
-				Skip: "MLA not implemented",
-				S:    "$GLMLA,23,22,87,0864,83,021f,43,30bb,0000,34c0f6,0c8f05,065ccf,004357,000,00b*37",
-			},
-			{
-				Skip: "ALM not implemented",
-				S:    "$GPALM,30,01,01,2210,00,617b,0f,1da7,fd70,a10d0a,24de91,6fe696,16263f,17c,ffe*7B",
-			},
-			{
-				Skip: "ALM not implemented",
-				S:    "$GPALM,30,29,31,2210,00,5578,0f,085d,fd5d,a10d86,0fe442,f05163,e7e443,f46,000*2F",
+				S: "$GPALM,30,01,01,2210,00,617b,0f,1da7,fd70,a10d0a,24de91,6fe696,16263f,17c,ffe*7B",
+				Expected: &standard.ALM{
+					Address:                nmea.NewAddress("GPALM"),
+					NumMsg:                 30,
+					MsgNum:                 1,
+					PRN:                    1,
+					GPSWeek:                2210,
+					SVHealth:               0,
+					Eccentricity:           0x617b,
+					AlmanacReferenceTime:   0x0f,
+					InclinationAngle:       0x1da7,
+					OmegaDot:               0xfd70,
+					RootAxis:               0xa10d0a,
+					Omega:                  0x24de91,
+					AscensionNodeLongitude: 0x6fe696,
+					MeanAnomaly:            0x16263f,
+					AF0:                    0x17c,
+					AF1:                    0xffe,
+				},
 			},
 			{
 				S: "$GPGGA,202530.00,5109.0262,N,11401.8407,W,5,40,0.5,1097.36,M,-17.00,M,18,TSTR*61",
