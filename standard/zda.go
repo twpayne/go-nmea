@@ -9,8 +9,8 @@ import (
 type ZDA struct {
 	nmea.Address
 	Time                 time.Time
-	LocalTimeZoneHours   int
-	LocalTimeZoneMinutes int
+	LocalTimeZoneHours   nmea.Optional[int]
+	LocalTimeZoneMinutes nmea.Optional[int]
 }
 
 func ParseZDA(addr string, tok *nmea.Tokenizer) (*ZDA, error) {
@@ -21,8 +21,8 @@ func ParseZDA(addr string, tok *nmea.Tokenizer) (*ZDA, error) {
 	month := time.Month(tok.CommaUnsignedInt())
 	year := tok.CommaUnsignedInt()
 	zda.Time = time.Date(year, month, day, timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second, timeOfDay.Nanosecond, time.UTC)
-	zda.LocalTimeZoneHours = tok.CommaInt()
-	zda.LocalTimeZoneMinutes = tok.CommaInt()
+	zda.LocalTimeZoneHours = tok.CommaOptionalInt()
+	zda.LocalTimeZoneMinutes = tok.CommaOptionalInt()
 	tok.EndOfData()
 	return &zda, tok.Err()
 }

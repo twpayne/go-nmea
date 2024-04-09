@@ -439,8 +439,8 @@ func TestUblox(t *testing.T) {
 				Expected: &standard.ZDA{
 					Address:              nmea.NewAddress("GPZDA"),
 					Time:                 time.Date(2002, time.September, 16, 8, 27, 10, 0, time.UTC),
-					LocalTimeZoneHours:   0,
-					LocalTimeZoneMinutes: 0,
+					LocalTimeZoneHours:   nmea.NewOptional(0),
+					LocalTimeZoneMinutes: nmea.NewOptional(0),
 				},
 			},
 		},
@@ -622,8 +622,10 @@ func TestSparkfun(t *testing.T) {
 			{
 				S: "$GPZDA,181813,14,10,2003,00,00*4F",
 				Expected: &standard.ZDA{
-					Address: nmea.NewAddress("GPZDA"),
-					Time:    time.Date(2003, time.October, 14, 18, 18, 13, 0, time.UTC),
+					Address:              nmea.NewAddress("GPZDA"),
+					Time:                 time.Date(2003, time.October, 14, 18, 18, 13, 0, time.UTC),
+					LocalTimeZoneHours:   nmea.NewOptional(0),
+					LocalTimeZoneMinutes: nmea.NewOptional(0),
 				},
 			},
 		},
@@ -1336,6 +1338,13 @@ func TestNovatel(t *testing.T) {
 					SpeedOverGroundKN:        nmea.NewOptional(0.007),
 					SpeedOverGroundKPH:       nmea.NewOptional(0.013),
 					ModeIndicator:            'D',
+				},
+			},
+			{
+				S: "$GPZDA,204007.00,13,05,2022,,*62",
+				Expected: &standard.ZDA{
+					Address: nmea.NewAddress("GPZDA"),
+					Time:    time.Date(2022, time.May, 13, 20, 40, 7, 0, time.UTC),
 				},
 			},
 			{
