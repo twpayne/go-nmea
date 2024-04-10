@@ -389,7 +389,7 @@ func TestUblox(t *testing.T) {
 				S: "$GPTHS,77.52,E*32",
 				Expected: &standard.THS{
 					Address:       nmea.NewAddress("GPTHS"),
-					TrueHeading:   77.52,
+					HeadingTrue:   77.52,
 					ModeIndicator: 'E',
 				},
 			},
@@ -428,7 +428,7 @@ func TestUblox(t *testing.T) {
 				S: "$GPVTG,77.52,T,,M,0.004,N,0.008,K,A*06",
 				Expected: &standard.VTG{
 					Address:              nmea.NewAddress("GPVTG"),
-					TrueCourseOverGround: nmea.NewOptional(77.52),
+					CourseOverGroundTrue: nmea.NewOptional(77.52),
 					SpeedOverGroundKN:    nmea.NewOptional(0.004),
 					SpeedOverGroundKPH:   nmea.NewOptional(0.008),
 					ModeIndicator:        'A',
@@ -613,7 +613,7 @@ func TestSparkfun(t *testing.T) {
 				S: "$GPVTG,309.62,T,,M,0.13,N,0.2,K,A*23",
 				Expected: &standard.VTG{
 					Address:              nmea.NewAddress("GPVTG"),
-					TrueCourseOverGround: nmea.NewOptional(309.62),
+					CourseOverGroundTrue: nmea.NewOptional(309.62),
 					SpeedOverGroundKN:    nmea.NewOptional(0.13),
 					SpeedOverGroundKPH:   nmea.NewOptional(0.2),
 					ModeIndicator:        'A',
@@ -872,7 +872,7 @@ func TestGNSSDO(t *testing.T) {
 				S: "$GNVTG,0.00,T,,M,0.00,N,0.00,K,D*XX",
 				Expected: &standard.VTG{
 					Address:              nmea.NewAddress("GNVTG"),
-					TrueCourseOverGround: nmea.NewOptional(0.0),
+					CourseOverGroundTrue: nmea.NewOptional(0.0),
 					SpeedOverGroundKN:    nmea.NewOptional(0.0),
 					SpeedOverGroundKPH:   nmea.NewOptional(0.0),
 					ModeIndicator:        'D',
@@ -1353,8 +1353,8 @@ func TestNovatel(t *testing.T) {
 				S: "$GNVTG,139.969,T,139.969,M,0.007,N,0.013,K,D*3D",
 				Expected: &standard.VTG{
 					Address:                  nmea.NewAddress("GNVTG"),
-					TrueCourseOverGround:     nmea.NewOptional(139.969),
-					MagneticCourseOverGround: nmea.NewOptional(139.969),
+					CourseOverGroundTrue:     nmea.NewOptional(139.969),
+					CourseOverGroundMagnetic: nmea.NewOptional(139.969),
 					SpeedOverGroundKN:        nmea.NewOptional(0.007),
 					SpeedOverGroundKPH:       nmea.NewOptional(0.013),
 					ModeIndicator:            'D',
