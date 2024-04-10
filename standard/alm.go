@@ -4,21 +4,21 @@ import "github.com/twpayne/go-nmea"
 
 type ALM struct {
 	nmea.Address
-	NumMsg                 int
-	MsgNum                 int
-	PRN                    int
-	GPSWeek                int
-	SVHealth               int
-	Eccentricity           int
-	AlmanacReferenceTime   int
-	InclinationAngle       int
-	OmegaDot               int
-	RootAxis               int
-	Omega                  int
-	AscensionNodeLongitude int
-	MeanAnomaly            int
-	AF0                    int
-	AF1                    int
+	NumMsg               int
+	MsgNum               int
+	PRN                  int
+	GPSWeek              int
+	SVHealth             int
+	Eccentricity         int
+	AlmanacReferenceTime int
+	InclinationAngle     int
+	OmegaDot             int
+	RootAxis             int
+	Omega                int
+	AscensionNodeLon     int
+	MeanAnomaly          int
+	AF0                  int
+	AF1                  int
 }
 
 func ParseALM(addr string, tok *nmea.Tokenizer) (*ALM, error) {
@@ -35,7 +35,7 @@ func ParseALM(addr string, tok *nmea.Tokenizer) (*ALM, error) {
 	alm.OmegaDot = tok.CommaHex()
 	alm.RootAxis = tok.CommaHex()
 	alm.Omega = tok.CommaHex()
-	alm.AscensionNodeLongitude = tok.CommaHex()
+	alm.AscensionNodeLon = tok.CommaHex()
 	alm.MeanAnomaly = tok.CommaHex()
 	alm.AF0 = tok.CommaHex()
 	alm.AF1 = tok.CommaHex()
