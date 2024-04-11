@@ -240,6 +240,11 @@ func (t *Tokenizer) CommaOptionalUnsignedInt() Optional[int] {
 	return t.OptionalUnsignedInt()
 }
 
+func (t *Tokenizer) CommaRegexp(regexp *regexp.Regexp) [][]byte {
+	t.Comma()
+	return t.Regexp(regexp)
+}
+
 func (t *Tokenizer) CommaRest() []byte {
 	t.Comma()
 	return t.Rest()

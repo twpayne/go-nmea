@@ -9,6 +9,7 @@ var sentenceParserMap = nmea.SentenceParserMap{
 	"PFLAA": nmea.MakeSentenceParser(ParsePFLAA),
 	"PFLAE": ParsePFLAE,
 	"PFLAU": nmea.MakeSentenceParser(ParsePFLAU),
+	"PFLAV": ParsePFLAV,
 }
 
 func SentenceParserFunc(addr string) nmea.SentenceParser {

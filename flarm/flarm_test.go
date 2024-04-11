@@ -115,5 +115,22 @@ func TestSentenceParserFunc(t *testing.T) {
 					Message:   nmea.NewOptional("Software expiry"),
 				},
 			},
+			{
+				S: "$PFLAV,A,2.00,5.00,alps20110221_*",
+				Expected: &flarm.PFLAVAnswer{
+					Address:         nmea.NewAddress("PFLAV"),
+					HardwareVersion: "2.00",
+					SoftwareVersion: "5.00",
+					ObstacleVersion: nmea.NewOptional("alps20110221_"),
+				},
+			},
+			{
+				S: "$PFLAV,A,2.00,5.00,*",
+				Expected: &flarm.PFLAVAnswer{
+					Address:         nmea.NewAddress("PFLAV"),
+					HardwareVersion: "2.00",
+					SoftwareVersion: "5.00",
+				},
+			},
 		})
 }
