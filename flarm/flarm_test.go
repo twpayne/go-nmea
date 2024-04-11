@@ -90,5 +90,30 @@ func TestSentenceParserFunc(t *testing.T) {
 					AircraftType:     1,
 				},
 			},
+			{
+				S: "$PFLAE,A,0,0*",
+				Expected: &flarm.PFLAEAnswer{
+					Address:   nmea.NewAddress("PFLAE"),
+					Severity:  0,
+					ErrorCode: 0,
+				},
+			},
+			{
+				S: "$PFLAE,A,2,81*",
+				Expected: &flarm.PFLAEAnswer{
+					Address:   nmea.NewAddress("PFLAE"),
+					Severity:  2,
+					ErrorCode: 0x81,
+				},
+			},
+			{
+				S: "$PFLAE,A,3,11,Software expiry*",
+				Expected: &flarm.PFLAEAnswer{
+					Address:   nmea.NewAddress("PFLAE"),
+					Severity:  3,
+					ErrorCode: 0x11,
+					Message:   nmea.NewOptional("Software expiry"),
+				},
+			},
 		})
 }
