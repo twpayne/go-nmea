@@ -1,0 +1,36 @@
+package flarm
+
+import "github.com/twpayne/go-nmea"
+
+type PFLAU struct {
+	nmea.Address
+	RX               int
+	TX               int
+	GPS              int
+	Power            int
+	AlarmLevel       int
+	RelativeBearing  nmea.Optional[int]
+	AlarmType        int
+	RelativeVertical nmea.Optional[int]
+	RelativeDistance nmea.Optional[int]
+	ID               nmea.Optional[int]
+}
+
+func ParsePFLAU(addr string, tok *nmea.Tokenizer) (*PFLAU, error) {
+	var pflau PFLAU
+	pflau.Address = nmea.NewAddress(addr)
+	pflau.RX = tok.CommaUnsignedInt()
+	pflau.TX = tok.CommaUnsignedInt()
+	pflau.GPS = tok.CommaUnsignedInt()
+	pflau.Power = tok.CommaUnsignedInt()
+	pflau.AlarmLevel = tok.CommaUnsignedInt()
+	pflau.RelativeBearing = tok.CommaOptionalInt()
+	pflau.AlarmType = tok.CommaUnsignedInt()
+	pflau.RelativeVertical = tok.CommaOptionalInt()
+	pflau.RelativeDistance = tok.CommaOptionalUnsignedInt()
+	if !tok.AtEndOfData() {
+		pflau.ID = tok.CommaOptionalHex()
+	}
+	tok.EndOfData()
+	return &pflau, tok.Err()
+}
