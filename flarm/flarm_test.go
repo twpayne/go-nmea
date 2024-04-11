@@ -215,5 +215,14 @@ func TestSentenceParserFunc(t *testing.T) {
 					Address: nmea.NewAddress("PFLAC"),
 				},
 			},
+			{
+				S: "$PFLAJ,A,1,1,0*",
+				Expected: &flarm.PFLAJAnswer{
+					Address:              nmea.NewAddress("PFLAJ"),
+					FlightState:          1,
+					FlightRecorderState:  1,
+					TISRADSRClientStatus: nmea.NewOptional(0),
+				},
+			},
 		})
 }
