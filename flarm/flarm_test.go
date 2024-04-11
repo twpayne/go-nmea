@@ -224,5 +224,75 @@ func TestSentenceParserFunc(t *testing.T) {
 					TISRADSRClientStatus: nmea.NewOptional(0),
 				},
 			},
+			{
+				S: "$PFLAN,A,RANGE,RFTOP,A,5600,4800,3600,2400,1200,1200,*",
+				Expected: &flarm.PFLANRangeStatisticAnswer{
+					Address:       nmea.NewAddress("PFLAN"),
+					StatisticType: "RFTOP",
+					Channel:       'A',
+					Values: []nmea.Optional[int]{
+						nmea.NewOptional(5600),
+						nmea.NewOptional(4800),
+						nmea.NewOptional(3600),
+						nmea.NewOptional(2400),
+						nmea.NewOptional(1200),
+						nmea.NewOptional(1200),
+						{},
+					},
+				},
+			},
+			{
+				S: "$PFLAN,A,RANGE,RFCNT,A,54,121,65,41,87,98,*",
+				Expected: &flarm.PFLANRangeStatisticAnswer{
+					Address:       nmea.NewAddress("PFLAN"),
+					StatisticType: "RFCNT",
+					Channel:       'A',
+					Values: []nmea.Optional[int]{
+						nmea.NewOptional(54),
+						nmea.NewOptional(121),
+						nmea.NewOptional(65),
+						nmea.NewOptional(41),
+						nmea.NewOptional(87),
+						nmea.NewOptional(98),
+						{},
+					},
+				},
+			},
+			{
+				S: "$PFLAN,A,RANGE,RFDEV,B,1800,1100,1500,900,1200,1300,*",
+				Expected: &flarm.PFLANRangeStatisticAnswer{
+					Address:       nmea.NewAddress("PFLAN"),
+					StatisticType: "RFDEV",
+					Channel:       'B',
+					Values: []nmea.Optional[int]{
+						nmea.NewOptional(1800),
+						nmea.NewOptional(1100),
+						nmea.NewOptional(1500),
+						nmea.NewOptional(900),
+						nmea.NewOptional(1200),
+						nmea.NewOptional(1300),
+						{},
+					},
+				},
+			},
+			{
+				S: "$PFLAN,A,RANGE,STATS,5000*",
+				Expected: &flarm.PFLANRangeStatsAnswer{
+					Address:           nmea.NewAddress("PFLAN"),
+					NumberOfPointsTop: 5000,
+				},
+			},
+			{
+				S: "$PFLAN,A,RANGE*",
+				Expected: &flarm.PFLANRangeAnswer{
+					Address: nmea.NewAddress("PFLAN"),
+				},
+			},
+			{
+				S: "$PFLAN,A,RESET*",
+				Expected: &flarm.PFLANResetAnswer{
+					Address: nmea.NewAddress("PFLAN"),
+				},
+			},
 		})
 }
