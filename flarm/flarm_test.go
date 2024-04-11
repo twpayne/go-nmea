@@ -193,5 +193,21 @@ func TestSentenceParserFunc(t *testing.T) {
 					ZoneType:      0x41,
 				},
 			},
+			{
+				S: "$PFLAI,IGCREADOUT,OK*",
+				Expected: &flarm.PFLAI{
+					Address: nmea.NewAddress("PFLAI"),
+					Value:   "IGCREADOUT",
+					Result:  "OK",
+				},
+			},
+			{
+				S: "$PFLAI,PILOTEVENT,OK*",
+				Expected: &flarm.PFLAI{
+					Address: nmea.NewAddress("PFLAI"),
+					Value:   "PILOTEVENT",
+					Result:  "OK",
+				},
+			},
 		})
 }

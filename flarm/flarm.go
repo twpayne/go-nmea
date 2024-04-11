@@ -8,6 +8,7 @@ import "github.com/twpayne/go-nmea"
 var sentenceParserMap = nmea.SentenceParserMap{
 	"PFLAA": nmea.MakeSentenceParser(ParsePFLAA),
 	"PFLAE": ParsePFLAE,
+	"PFLAI": nmea.MakeSentenceParser(ParsePFLAI),
 	"PFLAO": nmea.MakeSentenceParser(ParsePFLAO),
 	"PFLAQ": nmea.MakeSentenceParser(ParsePFLAQ),
 	"PFLAU": nmea.MakeSentenceParser(ParsePFLAU),
