@@ -209,5 +209,11 @@ func TestSentenceParserFunc(t *testing.T) {
 					Result:  "OK",
 				},
 			},
+			{
+				S: "$PFLAC,A,ERROR*",
+				Expected: &flarm.PFLACError{
+					Address: nmea.NewAddress("PFLAC"),
+				},
+			},
 		})
 }
