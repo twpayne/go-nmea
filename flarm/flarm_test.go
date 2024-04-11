@@ -132,5 +132,48 @@ func TestSentenceParserFunc(t *testing.T) {
 					SoftwareVersion: "5.00",
 				},
 			},
+			{
+				S: "$PFLAQ,OBST,,10*",
+				Expected: &flarm.PFLAQ{
+					Address:   nmea.NewAddress("PFLAQ"),
+					Operation: "OBST",
+					Info:      nmea.NewOptional(""),
+					Progress:  10,
+				},
+			},
+			{
+				S: "$PFLAQ,IGC,2A8GJ7K1.IGC,55*",
+				Expected: &flarm.PFLAQ{
+					Address:   nmea.NewAddress("PFLAQ"),
+					Operation: "IGC",
+					Info:      nmea.NewOptional("2A8GJ7K1.IGC"),
+					Progress:  55,
+				},
+			},
+			{
+				S: "$PFLAQ,IGC,2A8GJ7K1.IGC,65*",
+				Expected: &flarm.PFLAQ{
+					Address:   nmea.NewAddress("PFLAQ"),
+					Operation: "IGC",
+					Info:      nmea.NewOptional("2A8GJ7K1.IGC"),
+					Progress:  65,
+				},
+			},
+			{
+				S: "$PFLAQ,IGC,25*",
+				Expected: &flarm.PFLAQ{
+					Address:   nmea.NewAddress("PFLAQ"),
+					Operation: "IGC",
+					Progress:  25,
+				},
+			},
+			{
+				S: "$PFLAQ,IGC,60*",
+				Expected: &flarm.PFLAQ{
+					Address:   nmea.NewAddress("PFLAQ"),
+					Operation: "IGC",
+					Progress:  60,
+				},
+			},
 		})
 }
