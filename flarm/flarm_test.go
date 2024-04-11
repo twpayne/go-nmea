@@ -2,6 +2,7 @@ package flarm_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/twpayne/go-nmea"
 	"github.com/twpayne/go-nmea/flarm"
@@ -173,6 +174,23 @@ func TestSentenceParserFunc(t *testing.T) {
 					Address:   nmea.NewAddress("PFLAQ"),
 					Operation: "IGC",
 					Progress:  60,
+				},
+			},
+			{
+				S: "$PFLAO,1,1,471122335,85577812,2000,100,4550,1432832400,DF4738,2,41*",
+				Expected: &flarm.PFLAO{
+					Address:       nmea.NewAddress("PFLAO"),
+					AlarmLevel:    1,
+					Inside:        1,
+					Lat:           471122335,
+					Lon:           85577812,
+					Radius:        2000,
+					Bottom:        100,
+					Top:           4550,
+					ActivityLimit: time.Date(2015, time.May, 28, 17, 0, 0, 0, time.UTC),
+					ID:            0xDF4738,
+					IDType:        2,
+					ZoneType:      0x41,
 				},
 			},
 		})
