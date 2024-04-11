@@ -294,5 +294,19 @@ func TestSentenceParserFunc(t *testing.T) {
 					Address: nmea.NewAddress("PFLAN"),
 				},
 			},
+			{
+				S: "$PFLAL,12224002NbWFCFcMN?lknsqrbser;NAKELu[*",
+				Expected: &flarm.PFLAL{
+					Address:      nmea.NewAddress("PFLAL"),
+					DebugMessage: "12224002NbWFCFcMN?lknsqrbser;NAKELu[",
+				},
+			},
+			{
+				S: "$PFLAL,122242GPS 7 39*",
+				Expected: &flarm.PFLAL{
+					Address:      nmea.NewAddress("PFLAL"),
+					DebugMessage: "122242GPS 7 39",
+				},
+			},
 		})
 }

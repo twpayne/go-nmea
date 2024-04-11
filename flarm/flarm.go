@@ -11,6 +11,7 @@ var sentenceParserMap = nmea.SentenceParserMap{
 	"PFLAC": ParsePFLAC,
 	"PFLAI": nmea.MakeSentenceParser(ParsePFLAI),
 	"PFLAJ": ParsePFLAJ,
+	"PFLAL": nmea.MakeSentenceParser(ParsePFLAL),
 	"PFLAN": ParsePFLAN,
 	"PFLAO": nmea.MakeSentenceParser(ParsePFLAO),
 	"PFLAQ": nmea.MakeSentenceParser(ParsePFLAQ),
