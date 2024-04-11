@@ -6,6 +6,7 @@ package flarm
 import "github.com/twpayne/go-nmea"
 
 var sentenceParserMap = nmea.SentenceParserMap{
+	"PFLAA": nmea.MakeSentenceParser(ParsePFLAA),
 	"PFLAU": nmea.MakeSentenceParser(ParsePFLAU),
 }
 
