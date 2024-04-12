@@ -237,7 +237,7 @@ func TestSentenceParserFunc(t *testing.T) {
 					Address:              nmea.NewAddress("PFLAJ"),
 					FlightState:          1,
 					FlightRecorderState:  1,
-					TISRADSRClientStatus: nmea.NewOptional(0),
+					TISBADSRClientStatus: nmea.NewOptional(0),
 				},
 			},
 			{

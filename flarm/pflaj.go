@@ -8,7 +8,7 @@ type PFLAJAnswer struct {
 	nmea.Address
 	FlightState          int
 	FlightRecorderState  int
-	TISRADSRClientStatus nmea.Optional[int]
+	TISBADSRClientStatus nmea.Optional[int]
 }
 
 func ParsePFLAJ(addr string, tok *nmea.Tokenizer) (nmea.Sentence, error) {
@@ -32,7 +32,7 @@ func ParsePFLAJAnswer(addr string, tok *nmea.Tokenizer) (*PFLAJAnswer, error) {
 	pflajAnswer.FlightState = tok.CommaUnsignedInt()
 	pflajAnswer.FlightRecorderState = tok.CommaUnsignedInt()
 	if !tok.AtEndOfData() {
-		pflajAnswer.TISRADSRClientStatus = tok.CommaOptionalUnsignedInt()
+		pflajAnswer.TISBADSRClientStatus = tok.CommaOptionalUnsignedInt()
 	}
 	tok.EndOfData()
 	return &pflajAnswer, tok.Err()
