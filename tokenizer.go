@@ -1,6 +1,7 @@
 package nmea
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"regexp"
@@ -34,6 +35,14 @@ func (e *SyntaxError) Error() string {
 
 func (e *SyntaxError) Unwrap() error {
 	return e.Err
+}
+
+type expectedLiteralError struct {
+	literal []byte
+}
+
+func (e *expectedLiteralError) Error() string {
+	return fmt.Sprintf("expected %q", e.literal)
 }
 
 type Tokenizer struct {
@@ -150,6 +159,16 @@ func (t *Tokenizer) CommaLatDegMinCommaHemi() float64 {
 func (t *Tokenizer) CommaLiteralByte(b byte) {
 	t.Comma()
 	t.LiteralByte(b)
+}
+
+func (t *Tokenizer) CommaLiteralBytes(bs []byte) {
+	t.Comma()
+	t.LiteralBytes(bs)
+}
+
+func (t *Tokenizer) CommaLiteralString(s string) {
+	t.Comma()
+	t.LiteralString(s)
 }
 
 func (t *Tokenizer) CommaLonCommaHemi() float64 {
@@ -425,6 +444,23 @@ func (t *Tokenizer) LiteralByte(b byte) {
 		return
 	}
 	t.pos++
+}
+
+func (t *Tokenizer) LiteralBytes(bs []byte) {
+	if t.err != nil {
+		return
+	}
+	if !bytes.HasPrefix(t.data[t.pos:], bs) {
+		t.err = &expectedLiteralError{
+			literal: bs,
+		}
+		return
+	}
+	t.pos += len(bs)
+}
+
+func (t *Tokenizer) LiteralString(s string) {
+	t.LiteralBytes([]byte(s))
 }
 
 func (t *Tokenizer) LonDegMinCommaHemi() float64 {
