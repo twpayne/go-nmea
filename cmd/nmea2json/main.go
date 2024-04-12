@@ -3,7 +3,9 @@ package main
 import (
 	"bufio"
 	"encoding/json"
+	"flag"
 	"fmt"
+	"io"
 	"os"
 	"regexp"
 
@@ -15,17 +17,8 @@ import (
 
 var sentenceRx = regexp.MustCompile(`\$[A-Z]+,[^*]+\*(?:[0-9A-Fa-f]{2})?`)
 
-func run() error {
-	parser := nmea.NewParser(
-		nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
-		nmea.WithLineEndingDiscipline(nmea.LineEndingDisciplineNever),
-		nmea.WithSentenceParserFunc(garmin.SentenceParserFunc),
-		nmea.WithSentenceParserFunc(standard.SentenceParserFunc),
-		nmea.WithSentenceParserFunc(ublox.SentenceParserFunc),
-	)
-
-	scanner := bufio.NewScanner(os.Stdin)
-	encoder := json.NewEncoder(os.Stdout)
+func processReader(encoder *json.Encoder, parser *nmea.Parser, r io.Reader) error {
+	scanner := bufio.NewScanner(r)
 	for scanner.Scan() {
 		match := sentenceRx.FindStringSubmatch(scanner.Text())
 		if match == nil {
@@ -49,6 +42,56 @@ func run() error {
 	}
 	if err := scanner.Err(); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func processFile(encoder *json.Encoder, parser *nmea.Parser, name string) error {
+	file, err := os.Open(name)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	return processReader(encoder, parser, file)
+}
+
+func run() error {
+	outputFilename := flag.String("o", "", "output filename")
+	flag.Parse()
+
+	parser := nmea.NewParser(
+		nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
+		nmea.WithLineEndingDiscipline(nmea.LineEndingDisciplineNever),
+		nmea.WithSentenceParserFunc(garmin.SentenceParserFunc),
+		nmea.WithSentenceParserFunc(standard.SentenceParserFunc),
+		nmea.WithSentenceParserFunc(ublox.SentenceParserFunc),
+	)
+
+	var output *os.File
+	if *outputFilename == "" || *outputFilename == "-" {
+		output = os.Stdout
+	} else {
+		outputFile, err := os.Create(*outputFilename)
+		if err != nil {
+			return err
+		}
+		defer outputFile.Close()
+		output = outputFile
+	}
+
+	encoder := json.NewEncoder(output)
+
+	if flag.NArg() == 0 {
+		if err := processReader(encoder, parser, os.Stdin); err != nil {
+			return err
+		}
+	} else {
+		for _, arg := range flag.Args() {
+			if err := processFile(encoder, parser, arg); err != nil {
+				return err
+			}
+		}
 	}
 
 	return nil
