@@ -1,14 +1,7 @@
 package flarm
 
 import (
-	"regexp"
-
 	"github.com/twpayne/go-nmea"
-)
-
-var (
-	hardwareVersionRx = regexp.MustCompile(`\A\d\.\d\d`)
-	softwareVersionRx = regexp.MustCompile(`\A\d\d?\.\d\d`)
 )
 
 type PFLAVAnswer struct {
@@ -34,12 +27,8 @@ func ParsePFLAV(addr string, tok *nmea.Tokenizer) (nmea.Sentence, error) {
 func ParsePFLAVAnswer(addr string, tok *nmea.Tokenizer) (*PFLAVAnswer, error) {
 	var pflavAnswer PFLAVAnswer
 	pflavAnswer.Address = nmea.NewAddress(addr)
-	if match := tok.CommaRegexp(hardwareVersionRx); match != nil {
-		pflavAnswer.HardwareVersion = string(match[0])
-	}
-	if match := tok.CommaRegexp(softwareVersionRx); match != nil {
-		pflavAnswer.SoftwareVersion = string(match[0])
-	}
+	pflavAnswer.HardwareVersion = tok.CommaString()
+	pflavAnswer.SoftwareVersion = tok.CommaString()
 	pflavAnswer.ObstacleVersion = tok.CommaOptionalString()
 	return &pflavAnswer, tok.Err()
 }
