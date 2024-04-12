@@ -6,11 +6,11 @@ type PFLAA struct {
 	nmea.Address
 	AlarmLevel       int
 	RelativeNorth    int
-	RelativeEast     int
+	RelativeEast     nmea.Optional[int]
 	RelativeVertical int
 	IDType           nmea.Optional[int]
 	ID               nmea.Optional[int]
-	Track            int
+	Track            nmea.Optional[int]
 	TurnRate         struct{}
 	GroundSpeed      nmea.Optional[int]
 	ClimbRate        nmea.Optional[float64]
@@ -25,11 +25,11 @@ func ParsePFLAA(addr string, tok *nmea.Tokenizer) (*PFLAA, error) {
 	pflaa.Address = nmea.NewAddress(addr)
 	pflaa.AlarmLevel = tok.CommaUnsignedInt()
 	pflaa.RelativeNorth = tok.CommaInt()
-	pflaa.RelativeEast = tok.CommaInt()
+	pflaa.RelativeEast = tok.CommaOptionalInt()
 	pflaa.RelativeVertical = tok.CommaInt()
 	pflaa.IDType = tok.CommaOptionalUnsignedInt()
 	pflaa.ID = tok.CommaOptionalHex()
-	pflaa.Track = tok.CommaUnsignedInt()
+	pflaa.Track = tok.CommaOptionalUnsignedInt()
 	pflaa.TurnRate = tok.CommaEmpty()
 	pflaa.GroundSpeed = tok.CommaOptionalUnsignedInt()
 	pflaa.ClimbRate = tok.CommaOptionalFloat()

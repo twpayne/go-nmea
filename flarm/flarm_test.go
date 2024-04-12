@@ -81,11 +81,11 @@ func TestSentenceParserFunc(t *testing.T) {
 				Expected: &flarm.PFLAA{
 					Address:          nmea.NewAddress("PFLAA"),
 					RelativeNorth:    -1234,
-					RelativeEast:     1234,
+					RelativeEast:     nmea.NewOptional(1234),
 					RelativeVertical: 220,
 					IDType:           nmea.NewOptional(2),
 					ID:               nmea.NewOptional(0xDD8F12),
-					Track:            180,
+					Track:            nmea.NewOptional(180),
 					GroundSpeed:      nmea.NewOptional(30),
 					ClimbRate:        nmea.NewOptional(-1.4),
 					AircraftType:     1,
@@ -336,6 +336,19 @@ func TestSentenceParserFunc(t *testing.T) {
 				Expected: &flarm.PFLAL{
 					Address:      nmea.NewAddress("PFLAL"),
 					DebugMessage: "122242GPS 7 39",
+				},
+			},
+			{
+				S: "$PFLAA,0,4964,,0,1,123456,,,,,0,0,6,*",
+				Expected: &flarm.PFLAA{
+					Address:          nmea.NewAddress("PFLAA"),
+					AlarmLevel:       0,
+					RelativeNorth:    4964,
+					RelativeVertical: 0,
+					IDType:           nmea.NewOptional(1),
+					ID:               nmea.NewOptional(0x123456),
+					NoTrack:          nmea.NewOptional(0),
+					Source:           nmea.NewOptional(6),
 				},
 			},
 		})
