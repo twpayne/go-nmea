@@ -14,7 +14,7 @@ func ParsePFLAI(addr string, tok *nmea.Tokenizer) (*PFLAI, error) {
 	pflai.Address = nmea.NewAddress(addr)
 	pflai.Value = tok.CommaString()
 	pflai.Result = tok.CommaString()
-	if pflai.Result == "ERROR" {
+	if pflai.Result == "ERROR" && !tok.AtEndOfData() {
 		pflai.Message = nmea.NewOptional(tok.CommaString())
 	}
 	tok.EndOfData()
