@@ -21,6 +21,7 @@ func (e *UnknownQueryTypeError) Error() string {
 var sentenceParserMap = nmea.SentenceParserMap{
 	"PFLAA": nmea.MakeSentenceParser(ParsePFLAA),
 	"PFLAE": ParsePFLAE,
+	"PFLAF": ParsePFLAF,
 	"PFLAC": ParsePFLAC,
 	"PFLAI": nmea.MakeSentenceParser(ParsePFLAI),
 	"PFLAJ": ParsePFLAJ,

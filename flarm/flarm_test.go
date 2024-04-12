@@ -311,6 +311,20 @@ func TestSentenceParserFunc(t *testing.T) {
 				},
 			},
 			{
+				S: "$PFLAF,A,1*",
+				Expected: &flarm.PFLAFAnswer{
+					Address:        nmea.NewAddress("PFLAF"),
+					ScenarioNumber: 1,
+				},
+			},
+			{
+				S: "$PFLAF,A,ERROR,COMMAND*",
+				Expected: &flarm.PFLAFError{
+					Address:   nmea.NewAddress("PFLAF"),
+					ErrorType: "COMMAND",
+				},
+			},
+			{
 				S: "$PFLAL,12224002NbWFCFcMN?lknsqrbser;NAKELu[*",
 				Expected: &flarm.PFLAL{
 					Address:      nmea.NewAddress("PFLAL"),
