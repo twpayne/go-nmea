@@ -18,7 +18,9 @@ func ParsePFLAE(addr string, tok *nmea.Tokenizer) (nmea.Sentence, error) {
 	case 'A':
 		return ParsePFLAEAnswer(addr, tok)
 	default:
-		return nil, tok.Err()
+		return nil, &UnknownQueryTypeError{
+			QueryType: queryType,
+		}
 	}
 }
 
