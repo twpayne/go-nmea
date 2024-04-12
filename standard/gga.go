@@ -8,8 +8,8 @@ type GGA struct {
 	Lat                              nmea.Optional[float64]
 	Lon                              nmea.Optional[float64]
 	FixQuality                       int
-	NumberOfSatellites               int
-	HDOP                             float64
+	NumberOfSatellites               nmea.Optional[int]
+	HDOP                             nmea.Optional[float64]
 	Alt                              nmea.Optional[float64]
 	HeightOfGeoidAboveWGS84Ellipsoid nmea.Optional[float64]
 	TimeSinceLastDGPSUpdate          nmea.Optional[int]
@@ -23,8 +23,8 @@ func ParseGGA(addr string, tok *nmea.Tokenizer) (*GGA, error) {
 	gga.Lat = tok.CommaOptionalLatDegMinCommaHemi()
 	gga.Lon = tok.CommaOptionalLonDegMinCommaHemi()
 	gga.FixQuality = tok.CommaUnsignedInt()
-	gga.NumberOfSatellites = tok.CommaUnsignedInt()
-	gga.HDOP = tok.CommaUnsignedFloat()
+	gga.NumberOfSatellites = tok.CommaOptionalUnsignedInt()
+	gga.HDOP = tok.CommaOptionalUnsignedFloat()
 	gga.Alt = tok.CommaOptionalFloatCommaUnit('M')
 	gga.HeightOfGeoidAboveWGS84Ellipsoid = tok.CommaOptionalFloatCommaUnit('M')
 	gga.TimeSinceLastDGPSUpdate = tok.CommaOptionalUnsignedInt()
