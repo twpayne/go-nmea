@@ -21,8 +21,8 @@ func TestSentenceParserFunc(t *testing.T) {
 				S: "$PFLAU,3,1,2,1,2,-30,2,-32,755*",
 				Expected: &flarm.PFLAU{
 					Address:          nmea.NewAddress("PFLAU"),
-					RX:               3,
-					TX:               1,
+					Rx:               3,
+					Tx:               1,
 					GPS:              2,
 					Power:            1,
 					AlarmLevel:       2,
@@ -36,8 +36,8 @@ func TestSentenceParserFunc(t *testing.T) {
 				S: "$PFLAU,2,1,1,1,0,,0,,,*",
 				Expected: &flarm.PFLAU{
 					Address:    nmea.NewAddress("PFLAU"),
-					RX:         2,
-					TX:         1,
+					Rx:         2,
+					Tx:         1,
 					GPS:        1,
 					Power:      1,
 					AlarmLevel: 0,
@@ -48,8 +48,8 @@ func TestSentenceParserFunc(t *testing.T) {
 				S: "$PFLAU,2,1,2,1,1,-45,2,50,75,1A304C*",
 				Expected: &flarm.PFLAU{
 					Address:          nmea.NewAddress("PFLAU"),
-					RX:               2,
-					TX:               1,
+					Rx:               2,
+					Tx:               1,
 					GPS:              2,
 					Power:            1,
 					AlarmLevel:       1,
@@ -64,8 +64,8 @@ func TestSentenceParserFunc(t *testing.T) {
 				S: "$PFLAU,2,1,2,1,1,0,41,0,0,A25703*",
 				Expected: &flarm.PFLAU{
 					Address:          nmea.NewAddress("PFLAU"),
-					RX:               2,
-					TX:               1,
+					Rx:               2,
+					Tx:               1,
 					GPS:              2,
 					Power:            1,
 					AlarmLevel:       1,

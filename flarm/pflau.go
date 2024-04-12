@@ -4,8 +4,8 @@ import "github.com/twpayne/go-nmea"
 
 type PFLAU struct {
 	nmea.Address
-	RX               int
-	TX               int
+	Rx               int
+	Tx               int
 	GPS              int
 	Power            int
 	AlarmLevel       int
@@ -19,8 +19,8 @@ type PFLAU struct {
 func ParsePFLAU(addr string, tok *nmea.Tokenizer) (*PFLAU, error) {
 	var pflau PFLAU
 	pflau.Address = nmea.NewAddress(addr)
-	pflau.RX = tok.CommaUnsignedInt()
-	pflau.TX = tok.CommaUnsignedInt()
+	pflau.Rx = tok.CommaUnsignedInt()
+	pflau.Tx = tok.CommaUnsignedInt()
 	pflau.GPS = tok.CommaUnsignedInt()
 	pflau.Power = tok.CommaUnsignedInt()
 	pflau.AlarmLevel = tok.CommaUnsignedInt()
