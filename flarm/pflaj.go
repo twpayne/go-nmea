@@ -1,8 +1,6 @@
 package flarm
 
 import (
-	"fmt"
-
 	"github.com/twpayne/go-nmea"
 )
 
@@ -22,7 +20,9 @@ func ParsePFLAJ(addr string, tok *nmea.Tokenizer) (nmea.Sentence, error) {
 	case 'A':
 		return ParsePFLAJAnswer(addr, tok)
 	default:
-		panic(fmt.Errorf("%c: unknown query type", queryType))
+		return nil, &UnknownQueryTypeError{
+			QueryType: queryType,
+		}
 	}
 }
 

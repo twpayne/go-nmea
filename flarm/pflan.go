@@ -85,6 +85,8 @@ func ParsePFLAN(addr string, tok *nmea.Tokenizer) (nmea.Sentence, error) {
 			return nil, fmt.Errorf("%s: unexpected string", s)
 		}
 	default:
-		panic(fmt.Errorf("%c: unknown query type", queryType))
+		return nil, &UnknownQueryTypeError{
+			QueryType: queryType,
+		}
 	}
 }

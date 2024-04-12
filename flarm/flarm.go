@@ -4,7 +4,19 @@
 // See https://www.flarm.com/wp-content/uploads/man/FTD-014-FLARM-Configuration-Specification.pdf.
 package flarm
 
-import "github.com/twpayne/go-nmea"
+import (
+	"fmt"
+
+	"github.com/twpayne/go-nmea"
+)
+
+type UnknownQueryTypeError struct {
+	QueryType byte
+}
+
+func (e *UnknownQueryTypeError) Error() string {
+	return fmt.Sprintf("%c: unknown query type", e.QueryType)
+}
 
 var sentenceParserMap = nmea.SentenceParserMap{
 	"PFLAA": nmea.MakeSentenceParser(ParsePFLAA),
