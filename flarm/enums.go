@@ -48,6 +48,7 @@ var (
 	}
 
 	ErrorCodes = map[int]string{
+		0x00:  "no error",
 		0x11:  "firmware expired",
 		0x12:  "firmware update error",
 		0x21:  "power",
