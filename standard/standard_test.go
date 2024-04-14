@@ -378,8 +378,8 @@ func TestUblox(t *testing.T) {
 					Lon:               nmea.NewOptional(8.565253666666667),
 					SpeedOverGroundKN: nmea.NewOptional(0.004),
 					CourseOverGround:  nmea.NewOptional(77.52),
-					ModeIndicator:     'A',
-					NavStatus:         'V',
+					ModeIndicator:     nmea.NewOptional[byte]('A'),
+					NavStatus:         nmea.NewOptional[byte]('V'),
 				},
 			},
 			{
@@ -945,7 +945,7 @@ func TestMiscellaneous(t *testing.T) {
 					Address:       nmea.NewAddress("GPRMC"),
 					Time:          time.Date(2024, time.March, 11, 10, 20, 42, 0, time.UTC),
 					Status:        'V',
-					ModeIndicator: 'N',
+					ModeIndicator: nmea.NewOptional[byte]('N'),
 				},
 			},
 			{
@@ -958,7 +958,7 @@ func TestMiscellaneous(t *testing.T) {
 					Lon:               nmea.NewOptional(8.365833333333333),
 					SpeedOverGroundKN: nmea.NewOptional(14.8),
 					CourseOverGround:  nmea.NewOptional(90.0),
-					ModeIndicator:     'A',
+					ModeIndicator:     nmea.NewOptional[byte]('A'),
 				},
 			},
 			{
@@ -1186,7 +1186,7 @@ func TestNovatel(t *testing.T) {
 					SpeedOverGroundKN: nmea.NewOptional(0.004),
 					CourseOverGround:  nmea.NewOptional(133.4),
 					MagneticVariation: nmea.NewOptional(0.0),
-					ModeIndicator:     'D',
+					ModeIndicator:     nmea.NewOptional[byte]('D'),
 				},
 			},
 			{
@@ -1200,7 +1200,7 @@ func TestNovatel(t *testing.T) {
 					SpeedOverGroundKN: nmea.NewOptional(0.004),
 					CourseOverGround:  nmea.NewOptional(102.3),
 					MagneticVariation: nmea.NewOptional(0.0),
-					ModeIndicator:     'D',
+					ModeIndicator:     nmea.NewOptional[byte]('D'),
 				},
 			},
 			{
@@ -1363,7 +1363,7 @@ func TestNovatel(t *testing.T) {
 					SpeedOverGroundKN: nmea.NewOptional(0.004),
 					CourseOverGround:  nmea.NewOptional(133.4),
 					MagneticVariation: nmea.NewOptional(0.0),
-					ModeIndicator:     'D',
+					ModeIndicator:     nmea.NewOptional[byte]('D'),
 				},
 			},
 			{

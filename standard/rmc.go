@@ -15,8 +15,8 @@ type RMC struct {
 	SpeedOverGroundKN nmea.Optional[float64]
 	CourseOverGround  nmea.Optional[float64]
 	MagneticVariation nmea.Optional[float64]
-	ModeIndicator     byte
-	NavStatus         byte
+	ModeIndicator     nmea.Optional[byte]
+	NavStatus         nmea.Optional[byte]
 }
 
 func ParseRMC(addr string, tok *nmea.Tokenizer) (*RMC, error) {
@@ -40,10 +40,10 @@ func ParseRMC(addr string, tok *nmea.Tokenizer) (*RMC, error) {
 		tok.Comma()
 	}
 	if !tok.AtEndOfData() {
-		rmc.ModeIndicator = tok.CommaOneByteOf("ADEMN")
+		rmc.ModeIndicator = nmea.NewOptional(tok.CommaOneByteOf("ADEMN"))
 	}
 	if !tok.AtEndOfData() {
-		rmc.NavStatus = tok.CommaOneByteOf("V")
+		rmc.NavStatus = nmea.NewOptional(tok.CommaOneByteOf("V"))
 	}
 	tok.EndOfData()
 	return &rmc, tok.Err()
