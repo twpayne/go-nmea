@@ -16,7 +16,7 @@ type ZDA struct {
 func ParseZDA(addr string, tok *nmea.Tokenizer) (*ZDA, error) {
 	var zda ZDA
 	zda.Address = nmea.NewAddress(addr)
-	timeOfDay := nmea.ParseCommaTimeOfDay(tok)
+	timeOfDay := tok.CommaTimeOfDay()
 	day := tok.CommaUnsignedInt()
 	month := time.Month(tok.CommaUnsignedInt())
 	year := tok.CommaUnsignedInt()

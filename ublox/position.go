@@ -27,7 +27,7 @@ type Position struct {
 func ParsePosition(addr string, tok *nmea.Tokenizer) (*Position, error) {
 	var p Position
 	p.Address = nmea.NewAddress(addr)
-	p.TimeOfDay = nmea.ParseCommaTimeOfDay(tok)
+	p.TimeOfDay = tok.CommaTimeOfDay()
 	p.Lat = tok.CommaLatDegMinCommaHemi()
 	p.Lon = tok.CommaLonDegMinCommaHemi()
 	p.AltRef = tok.CommaFloat()

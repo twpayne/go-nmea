@@ -14,25 +14,7 @@ type TimeOfDay struct {
 	Nanosecond int
 }
 
-func ParseCommaTimeOfDay(tok *Tokenizer) TimeOfDay {
-	tok.Comma()
-	return ParseTimeOfDay(tok)
-}
-
-func ParseTimeOfDay(tok *Tokenizer) TimeOfDay {
-	hour := tok.DecimalDigits(2)
-	min := tok.DecimalDigits(2)
-	sec, nsec := secondPointNanosecond(tok)
-	return TimeOfDay{
-		Hour:       hour,
-		Minute:     min,
-		Second:     sec,
-		Nanosecond: nsec,
-	}
-}
-
 func (t TimeOfDay) String() string {
-	// FIXME strip trailing zeros
 	return fmt.Sprintf("%02d:%02d:%02d.%09d", t.Hour, t.Minute, t.Second, t.Nanosecond)
 }
 
@@ -58,6 +40,41 @@ func (t TimeOfDay) Valid() bool {
 		return false
 	}
 	return true
+}
+
+func (t *Tokenizer) CommaOptionalTimeOfDay() Optional[TimeOfDay] {
+	t.Comma()
+	return t.OptionalTimeOfDay()
+}
+
+func (t *Tokenizer) CommaTimeOfDay() TimeOfDay {
+	t.Comma()
+	return t.TimeOfDay()
+}
+
+func (t *Tokenizer) OptionalTimeOfDay() Optional[TimeOfDay] {
+	if t.err != nil {
+		return Optional[TimeOfDay]{}
+	}
+	if t.pos == len(t.data) {
+		return Optional[TimeOfDay]{}
+	}
+	if t.data[t.pos] == ',' {
+		return Optional[TimeOfDay]{}
+	}
+	return NewOptional(t.TimeOfDay())
+}
+
+func (t *Tokenizer) TimeOfDay() TimeOfDay {
+	hour := t.DecimalDigits(2)
+	min := t.DecimalDigits(2)
+	sec, nsec := secondPointNanosecond(t)
+	return TimeOfDay{
+		Hour:       hour,
+		Minute:     min,
+		Second:     sec,
+		Nanosecond: nsec,
+	}
 }
 
 func secondPointNanosecond(tok *Tokenizer) (int, int) {

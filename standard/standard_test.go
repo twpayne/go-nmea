@@ -371,15 +371,24 @@ func TestUblox(t *testing.T) {
 				},
 				S: "$GPRMC,083559.00,A,4717.11437,N,00833.91522,E,0.004,77.52,091202,,,A,V*57",
 				Expected: &standard.RMC{
-					Address:           nmea.NewAddress("GPRMC"),
-					Time:              time.Date(2002, time.December, 9, 8, 35, 59, 0, time.UTC),
+					Address: nmea.NewAddress("GPRMC"),
+					TimeOfDay: nmea.NewOptional(nmea.TimeOfDay{
+						Hour:   8,
+						Minute: 35,
+						Second: 59,
+					}),
 					Status:            'A',
 					Lat:               nmea.NewOptional(47.2852395),
 					Lon:               nmea.NewOptional(8.565253666666667),
 					SpeedOverGroundKN: nmea.NewOptional(0.004),
 					CourseOverGround:  nmea.NewOptional(77.52),
-					ModeIndicator:     nmea.NewOptional[byte]('A'),
-					NavStatus:         nmea.NewOptional[byte]('V'),
+					Date: nmea.NewOptional(nmea.Date{
+						Year:  2002,
+						Month: time.December,
+						Day:   9,
+					}),
+					ModeIndicator: nmea.NewOptional[byte]('A'),
+					NavStatus:     nmea.NewOptional[byte]('V'),
 				},
 			},
 			{
@@ -597,13 +606,23 @@ func TestSparkfun(t *testing.T) {
 			{
 				S: "$GPRMC,161229.487,A,3723.2475,N,12158.3416,W,0.13,309.62,120598,,*10",
 				Expected: &standard.RMC{
-					Address:           nmea.NewAddress("GPRMC"),
-					Time:              time.Date(1998, time.May, 12, 16, 12, 29, 487000000, time.UTC),
+					Address: nmea.NewAddress("GPRMC"),
+					TimeOfDay: nmea.NewOptional(nmea.TimeOfDay{
+						Hour:       16,
+						Minute:     12,
+						Second:     29,
+						Nanosecond: 487000000,
+					}),
 					Status:            'A',
 					Lat:               nmea.NewOptional(37.387458333333335),
 					Lon:               nmea.NewOptional(-121.97236),
 					SpeedOverGroundKN: nmea.NewOptional(0.13),
 					CourseOverGround:  nmea.NewOptional(309.62),
+					Date: nmea.NewOptional(nmea.Date{
+						Year:  1998,
+						Month: time.May,
+						Day:   12,
+					}),
 				},
 			},
 			{
@@ -942,23 +961,41 @@ func TestMiscellaneous(t *testing.T) {
 			{
 				S: "$GPRMC,102042.00,V,,,,,,,110324,,,N*7D",
 				Expected: &standard.RMC{
-					Address:       nmea.NewAddress("GPRMC"),
-					Time:          time.Date(2024, time.March, 11, 10, 20, 42, 0, time.UTC),
-					Status:        'V',
+					Address: nmea.NewAddress("GPRMC"),
+					TimeOfDay: nmea.NewOptional(nmea.TimeOfDay{
+						Hour:   10,
+						Minute: 20,
+						Second: 42,
+					}),
+					Status: 'V',
+					Date: nmea.NewOptional(nmea.Date{
+						Year:  2024,
+						Month: time.March,
+						Day:   11,
+					}),
 					ModeIndicator: nmea.NewOptional[byte]('N'),
 				},
 			},
 			{
 				S: "$GPRMC,085131,A,4652.8560,N,00821.9500,E,14.8,90.0,070424,,,A*76",
 				Expected: &standard.RMC{
-					Address:           nmea.NewAddress("GPRMC"),
-					Time:              time.Date(2024, time.April, 7, 8, 51, 31, 0, time.UTC),
+					Address: nmea.NewAddress("GPRMC"),
+					TimeOfDay: nmea.NewOptional(nmea.TimeOfDay{
+						Hour:   8,
+						Minute: 51,
+						Second: 31,
+					}),
 					Status:            65,
 					Lat:               nmea.NewOptional(46.88093333333333),
 					Lon:               nmea.NewOptional(8.365833333333333),
 					SpeedOverGroundKN: nmea.NewOptional(14.8),
 					CourseOverGround:  nmea.NewOptional(90.0),
-					ModeIndicator:     nmea.NewOptional[byte]('A'),
+					Date: nmea.NewOptional(nmea.Date{
+						Year:  2024,
+						Month: time.April,
+						Day:   7,
+					}),
+					ModeIndicator: nmea.NewOptional[byte]('A'),
 				},
 			},
 			{
@@ -1002,6 +1039,34 @@ func TestMiscellaneous(t *testing.T) {
 					FixQuality:                       1,
 					Alt:                              nmea.NewOptional(2500.0),
 					HeightOfGeoidAboveWGS84Ellipsoid: nmea.NewOptional(0.0),
+				},
+			},
+			{
+				S: "$GPRMC,,V,,,,,,,,,,N*53",
+				Expected: &standard.RMC{
+					Address:       nmea.NewAddress("GPRMC"),
+					Status:        'V',
+					ModeIndicator: nmea.NewOptional[byte]('N'),
+				},
+			},
+			{
+				S: "$GPRMC,084614.00,V,,,,,,,,,,N*72",
+				Expected: &standard.RMC{
+					Address: nmea.NewAddress("GPRMC"),
+					TimeOfDay: nmea.NewOptional(nmea.TimeOfDay{
+						Hour:   8,
+						Minute: 46,
+						Second: 14,
+					}),
+					Status:        'V',
+					ModeIndicator: nmea.NewOptional[byte]('N'),
+				},
+			},
+			{
+				Skip: "FIXME",
+				S:    "$GPGGA,,,,,,0,00,99.99,,,,,,*48",
+				Expected: &standard.GGA{
+					Address: nmea.NewAddress("GPGGA"),
 				},
 			},
 		},
@@ -1178,13 +1243,22 @@ func TestNovatel(t *testing.T) {
 			{
 				S: "$GPRMC,203522.00,A,5109.0262308,N,11401.8407342,W,0.004,133.4,130522,0.0,E,D*2B",
 				Expected: &standard.RMC{
-					Address:           nmea.NewAddress("GPRMC"),
-					Time:              time.Date(2022, time.May, 13, 20, 35, 22, 0, time.UTC),
+					Address: nmea.NewAddress("GPRMC"),
+					TimeOfDay: nmea.NewOptional(nmea.TimeOfDay{
+						Hour:   20,
+						Minute: 35,
+						Second: 22,
+					}),
 					Status:            'A',
 					Lat:               nmea.NewOptional(51.15043718),
 					Lon:               nmea.NewOptional(-114.03067890333334),
 					SpeedOverGroundKN: nmea.NewOptional(0.004),
 					CourseOverGround:  nmea.NewOptional(133.4),
+					Date: nmea.NewOptional(nmea.Date{
+						Year:  2022,
+						Month: time.May,
+						Day:   13,
+					}),
 					MagneticVariation: nmea.NewOptional(0.0),
 					ModeIndicator:     nmea.NewOptional[byte]('D'),
 				},
@@ -1192,13 +1266,22 @@ func TestNovatel(t *testing.T) {
 			{
 				S: "$GNRMC,204520.00,A,5109.0262239,N,11401.8407338,W,0.004,102.3,130522,0.0,E,D*3B",
 				Expected: &standard.RMC{
-					Address:           nmea.NewAddress("GNRMC"),
-					Time:              time.Date(2022, time.May, 13, 20, 45, 20, 0, time.UTC),
+					Address: nmea.NewAddress("GNRMC"),
+					TimeOfDay: nmea.NewOptional(nmea.TimeOfDay{
+						Hour:   20,
+						Minute: 45,
+						Second: 20,
+					}),
 					Status:            'A',
 					Lat:               nmea.NewOptional(51.150437065),
 					Lon:               nmea.NewOptional(-114.03067889666667),
 					SpeedOverGroundKN: nmea.NewOptional(0.004),
 					CourseOverGround:  nmea.NewOptional(102.3),
+					Date: nmea.NewOptional(nmea.Date{
+						Year:  2022,
+						Month: time.May,
+						Day:   13,
+					}),
 					MagneticVariation: nmea.NewOptional(0.0),
 					ModeIndicator:     nmea.NewOptional[byte]('D'),
 				},
@@ -1355,13 +1438,22 @@ func TestNovatel(t *testing.T) {
 			{
 				S: "$GPRMC,203522.00,A,5109.0262308,N,11401.8407342,W,0.004,133.4,130522,0.0,E,D*2B",
 				Expected: &standard.RMC{
-					Address:           nmea.NewAddress("GPRMC"),
-					Time:              time.Date(2022, time.May, 13, 20, 35, 22, 0, time.UTC),
+					Address: nmea.NewAddress("GPRMC"),
+					TimeOfDay: nmea.NewOptional(nmea.TimeOfDay{
+						Hour:   20,
+						Minute: 35,
+						Second: 22,
+					}),
 					Status:            'A',
 					Lat:               nmea.NewOptional(51.15043718),
 					Lon:               nmea.NewOptional(-114.03067890333334),
 					SpeedOverGroundKN: nmea.NewOptional(0.004),
 					CourseOverGround:  nmea.NewOptional(133.4),
+					Date: nmea.NewOptional(nmea.Date{
+						Year:  2022,
+						Month: time.May,
+						Day:   13,
+					}),
 					MagneticVariation: nmea.NewOptional(0.0),
 					ModeIndicator:     nmea.NewOptional[byte]('D'),
 				},

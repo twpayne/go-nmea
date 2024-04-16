@@ -19,7 +19,7 @@ type GBS struct {
 func ParseGBS(addr string, tok *nmea.Tokenizer) (*GBS, error) {
 	var gbs GBS
 	gbs.Address = nmea.NewAddress(addr)
-	gbs.TimeOfDay = nmea.ParseCommaTimeOfDay(tok)
+	gbs.TimeOfDay = tok.CommaTimeOfDay()
 	gbs.ErrLat = tok.CommaUnsignedFloat()
 	gbs.ErrLon = tok.CommaUnsignedFloat()
 	gbs.ErrAlt = tok.CommaUnsignedFloat()

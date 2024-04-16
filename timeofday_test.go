@@ -69,7 +69,7 @@ func TestParseTimeOfDay(t *testing.T) {
 	} {
 		t.Run(tc.s, func(t *testing.T) {
 			tok := nmea.NewTokenizer([]byte(tc.s))
-			assert.Equal(t, tc.expected, nmea.ParseTimeOfDay(tok))
+			assert.Equal(t, tc.expected, tok.TimeOfDay())
 			assert.NoError(t, tok.Err())
 		})
 	}

@@ -20,7 +20,7 @@ type GNS struct {
 func ParseGNS(addr string, tok *nmea.Tokenizer) (*GNS, error) {
 	var gns GNS
 	gns.Address = nmea.NewAddress(addr)
-	gns.TimeOfDay = nmea.ParseCommaTimeOfDay(tok)
+	gns.TimeOfDay = tok.CommaTimeOfDay()
 	gns.Lat = tok.CommaOptionalLatDegMinCommaHemi()
 	gns.Lon = tok.CommaOptionalLonDegMinCommaHemi()
 	gns.PosMode = []byte(tok.CommaString())

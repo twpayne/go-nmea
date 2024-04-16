@@ -1,28 +1,53 @@
 package nmea
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 type Date struct {
-	Day   int
-	Month time.Month
 	Year  int
+	Month time.Month
+	Day   int
 }
 
-func ParseCommaDate(tok *Tokenizer) Date {
-	tok.Comma()
-	return ParseDate(tok)
+func (d Date) String() string {
+	return fmt.Sprintf("%04d-%02d-%02d", d.Year, d.Month, d.Day)
 }
 
-func ParseDate(tok *Tokenizer) Date {
-	day := tok.DecimalDigits(2)
-	month := time.Month(tok.DecimalDigits(2))
-	year := 1900 + tok.DecimalDigits(2)
+func (t *Tokenizer) CommaDate() Date {
+	t.Comma()
+	return t.Date()
+}
+
+func (t *Tokenizer) CommaOptionalDate() Optional[Date] {
+	t.Comma()
+	return t.OptionalDate()
+}
+
+func (t *Tokenizer) Date() Date {
+	day := t.DecimalDigits(2)
+	month := time.Month(t.DecimalDigits(2))
+	year := 1900 + t.DecimalDigits(2)
 	if year < 1993 {
 		year += 100
 	}
 	return Date{
-		Day:   day,
-		Month: month,
 		Year:  year,
+		Month: month,
+		Day:   day,
 	}
+}
+
+func (t *Tokenizer) OptionalDate() Optional[Date] {
+	if t.err != nil {
+		return Optional[Date]{}
+	}
+	if t.pos == len(t.data) {
+		return Optional[Date]{}
+	}
+	if t.data[t.pos] == ',' {
+		return Optional[Date]{}
+	}
+	return NewOptional(t.Date())
 }

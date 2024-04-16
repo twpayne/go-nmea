@@ -21,8 +21,8 @@ type Time struct {
 func ParseTime(addr string, tok *nmea.Tokenizer) (*Time, error) {
 	var t Time
 	t.Address = nmea.NewAddress(addr)
-	timeOfDay := nmea.ParseCommaTimeOfDay(tok)
-	date := nmea.ParseCommaDate(tok)
+	timeOfDay := tok.CommaTimeOfDay()
+	date := tok.CommaDate()
 	t.Time = time.Date(date.Year, date.Month, date.Day, timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second, timeOfDay.Nanosecond, time.UTC)
 	t.UTCTimeOfWeek = tok.CommaUnsignedFloat()
 	t.UTCWeek = tok.CommaUnsignedInt()

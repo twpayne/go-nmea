@@ -19,7 +19,7 @@ type GGA struct {
 func ParseGGA(addr string, tok *nmea.Tokenizer) (*GGA, error) {
 	var gga GGA
 	gga.Address = nmea.NewAddress(addr)
-	gga.TimeOfDay = nmea.ParseCommaTimeOfDay(tok)
+	gga.TimeOfDay = tok.CommaTimeOfDay()
 	gga.Lat = tok.CommaOptionalLatDegMinCommaHemi()
 	gga.Lon = tok.CommaOptionalLonDegMinCommaHemi()
 	gga.FixQuality = tok.CommaUnsignedInt()

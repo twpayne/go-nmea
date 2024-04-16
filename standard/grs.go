@@ -14,7 +14,7 @@ type GRS struct {
 func ParseGRS(addr string, tok *nmea.Tokenizer) (*GRS, error) {
 	var grs GRS
 	grs.Address = nmea.NewAddress(addr)
-	grs.TimeOfDay = nmea.ParseCommaTimeOfDay(tok)
+	grs.TimeOfDay = tok.CommaTimeOfDay()
 	grs.Mode = tok.CommaUnsignedInt()
 	for i := 0; i < 12; i++ {
 		residual := tok.CommaOptionalFloat()
