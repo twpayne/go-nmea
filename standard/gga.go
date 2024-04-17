@@ -4,7 +4,7 @@ import "github.com/twpayne/go-nmea"
 
 type GGA struct {
 	nmea.Address
-	TimeOfDay                        nmea.TimeOfDay
+	TimeOfDay                        nmea.Optional[nmea.TimeOfDay]
 	Lat                              nmea.Optional[float64]
 	Lon                              nmea.Optional[float64]
 	FixQuality                       int
@@ -19,7 +19,7 @@ type GGA struct {
 func ParseGGA(addr string, tok *nmea.Tokenizer) (*GGA, error) {
 	var gga GGA
 	gga.Address = nmea.NewAddress(addr)
-	gga.TimeOfDay = tok.CommaTimeOfDay()
+	gga.TimeOfDay = tok.CommaOptionalTimeOfDay()
 	gga.Lat = tok.CommaOptionalLatDegMinCommaHemi()
 	gga.Lon = tok.CommaOptionalLonDegMinCommaHemi()
 	gga.FixQuality = tok.CommaUnsignedInt()

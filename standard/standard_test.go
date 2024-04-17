@@ -66,11 +66,11 @@ func TestUblox(t *testing.T) {
 				S: "$GPGGA,092725.00,4717.11399,N,00833.91590,E,1,08,1.01,499.6,M,48.0,M,,*5B",
 				Expected: &standard.GGA{
 					Address: nmea.NewAddress("GPGGA"),
-					TimeOfDay: nmea.TimeOfDay{
+					TimeOfDay: nmea.NewOptional(nmea.TimeOfDay{
 						Hour:   9,
 						Minute: 27,
 						Second: 25,
-					},
+					}),
 					Lat:                              nmea.NewOptional(47.285233166666664),
 					Lon:                              nmea.NewOptional(8.565265),
 					FixQuality:                       1,
@@ -469,11 +469,11 @@ func TestSparkfun(t *testing.T) {
 				S: "$GPGGA,002153.000,3342.6618,N,11751.3858,W,1,10,1.2,27.0,M,-34.2,M,,0000*5E",
 				Expected: &standard.GGA{
 					Address: nmea.NewAddress("GPGGA"),
-					TimeOfDay: nmea.TimeOfDay{
+					TimeOfDay: nmea.NewOptional(nmea.TimeOfDay{
 						Hour:   0,
 						Minute: 21,
 						Second: 53,
-					},
+					}),
 					Lat:                              nmea.NewOptional(33.71103),
 					Lon:                              nmea.NewOptional(-117.85643),
 					FixQuality:                       1,
@@ -913,11 +913,11 @@ func TestMiscellaneous(t *testing.T) {
 				S: "$GPGGA,102039.00,,,,,0,00,99.99,,,,,,*6F",
 				Expected: &standard.GGA{
 					Address: nmea.NewAddress("GPGGA"),
-					TimeOfDay: nmea.TimeOfDay{
+					TimeOfDay: nmea.NewOptional(nmea.TimeOfDay{
 						Hour:   10,
 						Minute: 20,
 						Second: 39,
-					},
+					}),
 					NumberOfSatellites: nmea.NewOptional(0),
 					HDOP:               nmea.NewOptional(99.99),
 				},
@@ -1029,11 +1029,11 @@ func TestMiscellaneous(t *testing.T) {
 				S: "$GPGGA,080054,4659.6556,N,00758.6842,E,1,,,2500.0,M,0.0,M,,*6E",
 				Expected: &standard.GGA{
 					Address: nmea.NewAddress("GPGGA"),
-					TimeOfDay: nmea.TimeOfDay{
+					TimeOfDay: nmea.NewOptional(nmea.TimeOfDay{
 						Hour:   8,
 						Minute: 0,
 						Second: 54,
-					},
+					}),
 					Lat:                              nmea.NewOptional(46.99426),
 					Lon:                              nmea.NewOptional(7.97807),
 					FixQuality:                       1,
@@ -1063,10 +1063,11 @@ func TestMiscellaneous(t *testing.T) {
 				},
 			},
 			{
-				Skip: "FIXME",
-				S:    "$GPGGA,,,,,,0,00,99.99,,,,,,*48",
+				S: "$GPGGA,,,,,,0,00,99.99,,,,,,*48",
 				Expected: &standard.GGA{
-					Address: nmea.NewAddress("GPGGA"),
+					Address:            nmea.NewAddress("GPGGA"),
+					NumberOfSatellites: nmea.NewOptional(0),
+					HDOP:               nmea.NewOptional(99.99),
 				},
 			},
 		},
@@ -1168,11 +1169,11 @@ func TestNovatel(t *testing.T) {
 				S: "$GPGGA,202530.00,5109.0262,N,11401.8407,W,5,40,0.5,1097.36,M,-17.00,M,18,TSTR*61",
 				Expected: &standard.GGA{
 					Address: nmea.NewAddress("GPGGA"),
-					TimeOfDay: nmea.TimeOfDay{
+					TimeOfDay: nmea.NewOptional(nmea.TimeOfDay{
 						Hour:   20,
 						Minute: 25,
 						Second: 30,
-					},
+					}),
 					Lat:                              nmea.NewOptional(51.150436666666664),
 					Lon:                              nmea.NewOptional(-114.03067833333333),
 					FixQuality:                       5,
