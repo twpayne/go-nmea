@@ -29,7 +29,7 @@ const (
 )
 
 var (
-	sentenceRx = regexp.MustCompile(`\A\$([^*]+)\*(.{2})?(\r?\n)?\z`)
+	sentenceRx = regexp.MustCompile(`\A\$([^$*]+)\*(.{2})?(\r?\n)?\z`)
 
 	errFraming              = errors.New("framing error")
 	errInvalidLineEnding    = errors.New("invalid line ending")
