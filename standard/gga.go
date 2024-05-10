@@ -12,7 +12,7 @@ type GGA struct {
 	HDOP                             nmea.Optional[float64]
 	Alt                              nmea.Optional[float64]
 	HeightOfGeoidAboveWGS84Ellipsoid nmea.Optional[float64]
-	TimeSinceLastDGPSUpdate          nmea.Optional[int]
+	TimeSinceLastDGPSUpdate          nmea.Optional[float64]
 	DGPSReferenceStationID           string
 }
 
@@ -27,7 +27,7 @@ func ParseGGA(addr string, tok *nmea.Tokenizer) (*GGA, error) {
 	gga.HDOP = tok.CommaOptionalUnsignedFloat()
 	gga.Alt = tok.CommaOptionalFloatCommaUnit('M')
 	gga.HeightOfGeoidAboveWGS84Ellipsoid = tok.CommaOptionalFloatCommaUnit('M')
-	gga.TimeSinceLastDGPSUpdate = tok.CommaOptionalUnsignedInt()
+	gga.TimeSinceLastDGPSUpdate = tok.CommaOptionalFloat()
 	gga.DGPSReferenceStationID = tok.CommaString()
 	tok.EndOfData()
 	return &gga, tok.Err()
