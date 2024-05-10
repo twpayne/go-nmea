@@ -81,6 +81,25 @@ func TestUblox(t *testing.T) {
 				},
 			},
 			{
+				S: "$GPGGA,092725.00,4717.11399,N,00833.91590,E,1,08,1.01,499.6,M,48.0,M,145.5,*70",
+				Expected: &standard.GGA{
+					Address: nmea.NewAddress("GPGGA"),
+					TimeOfDay: nmea.NewOptional(nmea.TimeOfDay{
+						Hour:   9,
+						Minute: 27,
+						Second: 25,
+					}),
+					Lat:                              nmea.NewOptional(47.285233166666664),
+					Lon:                              nmea.NewOptional(8.565265),
+					FixQuality:                       1,
+					NumberOfSatellites:               nmea.NewOptional(8),
+					HDOP:                             nmea.NewOptional(1.01),
+					Alt:                              nmea.NewOptional(499.6),
+					HeightOfGeoidAboveWGS84Ellipsoid: nmea.NewOptional(48.0),
+					TimeSinceLastDGPSUpdate:          nmea.NewOptional(145.5),
+				},
+			},
+			{
 				S: "$GPGLL,4717.11364,N,00833.91565,E,092321.00,A,A*60",
 				Expected: &standard.GLL{
 					Address: nmea.NewAddress("GPGLL"),
@@ -1181,7 +1200,7 @@ func TestNovatel(t *testing.T) {
 					HDOP:                             nmea.NewOptional(0.5),
 					Alt:                              nmea.NewOptional(1097.36),
 					HeightOfGeoidAboveWGS84Ellipsoid: nmea.NewOptional(-17.0),
-					TimeSinceLastDGPSUpdate:          nmea.NewOptional(18),
+					TimeSinceLastDGPSUpdate:          nmea.NewOptional(18.0),
 					DGPSReferenceStationID:           "TSTR",
 				},
 			},
