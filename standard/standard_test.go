@@ -1089,6 +1089,22 @@ func TestMiscellaneous(t *testing.T) {
 					HDOP:               nmea.NewOptional(99.99),
 				},
 			},
+			{
+				S: "$SDDBS,,,0187.5,M,,*1A",
+				Expected: &standard.DBS{
+					Address: nmea.NewAddress("SDDBS"),
+					Depth:   nmea.NewOptional(187.5),
+				},
+			},
+			{
+				S: "$SDDBS,3.9,f,6.8,M,9.8,F*04",
+				Expected: &standard.DBS{
+					Address:      nmea.NewAddress("SDDBS"),
+					DepthFeet:    nmea.NewOptional(3.9),
+					Depth:        nmea.NewOptional(6.8),
+					DepthFathoms: nmea.NewOptional(9.8),
+				},
+			},
 		},
 	)
 }

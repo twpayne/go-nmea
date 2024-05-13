@@ -21,6 +21,7 @@ var (
 	sentenceParserMap = nmea.SentenceParserMap{
 		"ALM": nmea.MakeSentenceParser(ParseALM),
 		"DBT": nmea.MakeSentenceParser(ParseDBT),
+		"DBS": nmea.MakeSentenceParser(ParseDBS),
 		"DPT": nmea.MakeSentenceParser(ParseDPT),
 		"DTM": nmea.MakeSentenceParser(ParseDTM),
 		"GBS": nmea.MakeSentenceParser(ParseGBS),
