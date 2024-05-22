@@ -20,7 +20,7 @@ type Position struct {
 	VDOP               float64
 	TDOP               float64
 	NumSVs             int
-	Reserved           int
+	Reserved           struct{}
 	DR                 int
 }
 
@@ -42,7 +42,7 @@ func ParsePosition(addr string, tok *nmea.Tokenizer) (*Position, error) {
 	p.VDOP = tok.CommaUnsignedFloat()
 	p.TDOP = tok.CommaUnsignedFloat()
 	p.NumSVs = tok.CommaUnsignedInt()
-	p.Reserved = tok.CommaInt()
+	p.Reserved = tok.CommaIgnore()
 	p.DR = tok.CommaInt()
 	tok.EndOfData()
 	return &p, tok.Err()

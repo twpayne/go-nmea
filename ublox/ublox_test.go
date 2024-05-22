@@ -44,14 +44,13 @@ func TestSentenceParserFunc(t *testing.T) {
 			{
 				S: "$PUBX,40,GLL,1,0,0,0,0,0*5D",
 				Expected: &ublox.Rate{
-					Address:  nmea.NewAddress("PUBX"),
-					MsgID:    "GLL",
-					RDDC:     1,
-					RUS1:     0,
-					RUS2:     0,
-					RUSB:     0,
-					RSPI:     0,
-					Reserved: 0,
+					Address: nmea.NewAddress("PUBX"),
+					MsgID:   "GLL",
+					RDDC:    1,
+					RUS1:    0,
+					RUS2:    0,
+					RUSB:    0,
+					RSPI:    0,
 				},
 			},
 			{

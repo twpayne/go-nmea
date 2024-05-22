@@ -10,7 +10,7 @@ type Rate struct {
 	RUS2     int
 	RUSB     int
 	RSPI     int
-	Reserved int
+	Reserved struct{}
 }
 
 func ParseRate(addr string, tok *nmea.Tokenizer) (*Rate, error) {
@@ -22,7 +22,7 @@ func ParseRate(addr string, tok *nmea.Tokenizer) (*Rate, error) {
 	r.RUS2 = tok.CommaUnsignedInt()
 	r.RUSB = tok.CommaUnsignedInt()
 	r.RSPI = tok.CommaUnsignedInt()
-	r.Reserved = tok.CommaUnsignedInt()
+	r.Reserved = tok.CommaIgnore()
 	tok.EndOfData()
 	return &r, tok.Err()
 }
