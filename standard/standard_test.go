@@ -1112,6 +1112,44 @@ func TestMiscellaneous(t *testing.T) {
 				S:              "$GPGSV,2,2,08,23,22,046,37,27,58,140,41,32,25,115,36*48",
 				ExpectedErrStr: "syntax error at position 51: unexpected end of data",
 			},
+			{
+				// This sentence was observed from a Samsung Galaxy A53. The
+				// checksum is incorrect.
+				S:              "$GPEVT,22052024,125045.672,1,,,*5E",
+				ExpectedErrStr: "invalid checksum: expected 7A, got 5E",
+			},
+			{
+				S: "$GPEVT,17102022,184937.464,1,,,*7C",
+				Expected: &standard.EVT{
+					Address: nmea.NewAddress("GPEVT"),
+					Day:     17,
+					Month:   time.October,
+					Year:    2022,
+					TimeOfDay: nmea.TimeOfDay{
+						Hour:       18,
+						Minute:     49,
+						Second:     37,
+						Nanosecond: 464000000,
+					},
+					Unknown1: 1,
+				},
+			},
+			{
+				S: "$GPEVT,22052024,125045.672,1,,,*7A",
+				Expected: &standard.EVT{
+					Address: nmea.NewAddress("GPEVT"),
+					Day:     22,
+					Month:   time.May,
+					Year:    2024,
+					TimeOfDay: nmea.TimeOfDay{
+						Hour:       12,
+						Minute:     50,
+						Second:     45,
+						Nanosecond: 672000000,
+					},
+					Unknown1: 1,
+				},
+			},
 		},
 	)
 }

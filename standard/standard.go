@@ -24,6 +24,7 @@ var (
 		"DBS": nmea.MakeSentenceParser(ParseDBS),
 		"DPT": nmea.MakeSentenceParser(ParseDPT),
 		"DTM": nmea.MakeSentenceParser(ParseDTM),
+		"EVT": nmea.MakeSentenceParser(ParseEVT),
 		"GBS": nmea.MakeSentenceParser(ParseGBS),
 		"GGA": nmea.MakeSentenceParser(ParseGGA),
 		"GLL": nmea.MakeSentenceParser(ParseGLL),
