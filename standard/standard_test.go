@@ -1105,6 +1105,13 @@ func TestMiscellaneous(t *testing.T) {
 					DepthFathoms: nmea.NewOptional(9.8),
 				},
 			},
+			{
+				// This sentence was observed from a Samsung Galaxy A53.
+				// Although the checksum is correct, the visible satellite data
+				// is incomplete.
+				S:              "$GPGSV,2,2,08,23,22,046,37,27,58,140,41,32,25,115,36*48",
+				ExpectedErrStr: "syntax error at position 51: unexpected end of data",
+			},
 		},
 	)
 }

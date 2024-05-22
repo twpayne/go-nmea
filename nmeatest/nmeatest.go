@@ -13,11 +13,11 @@ import (
 )
 
 type TestCase struct {
-	Skip        string
-	Options     []nmea.ParserOption
-	S           string
-	ExpectedErr error
-	Expected    nmea.Sentence
+	Skip           string
+	Options        []nmea.ParserOption
+	S              string
+	ExpectedErrStr string
+	Expected       nmea.Sentence
 }
 
 func TestSentenceParserFunc(t *testing.T, options []nmea.ParserOption, testCases []TestCase) {
@@ -32,8 +32,8 @@ func TestSentenceParserFunc(t *testing.T, options []nmea.ParserOption, testCases
 			testCaseOptions = append(testCaseOptions, testCase.Options...)
 			parser := nmea.NewParser(testCaseOptions...)
 			actual, err := parser.ParseString(testCase.S)
-			if testCase.ExpectedErr != nil {
-				assert.IsError(t, err, testCase.ExpectedErr)
+			if testCase.ExpectedErrStr != "" {
+				assert.Equal(t, testCase.ExpectedErrStr, err.Error())
 			} else {
 				var syntaxError *nmea.SyntaxError
 				if errors.As(err, &syntaxError) {
