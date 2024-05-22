@@ -10,6 +10,7 @@ import (
 	"regexp"
 
 	"github.com/twpayne/go-nmea"
+	"github.com/twpayne/go-nmea/flarm"
 	"github.com/twpayne/go-nmea/garmin"
 	"github.com/twpayne/go-nmea/standard"
 	"github.com/twpayne/go-nmea/ublox"
@@ -63,6 +64,7 @@ func run() error {
 	parser := nmea.NewParser(
 		nmea.WithChecksumDiscipline(nmea.ChecksumDisciplineIgnore),
 		nmea.WithLineEndingDiscipline(nmea.LineEndingDisciplineNever),
+		nmea.WithSentenceParserFunc(flarm.SentenceParserFunc),
 		nmea.WithSentenceParserFunc(garmin.SentenceParserFunc),
 		nmea.WithSentenceParserFunc(standard.SentenceParserFunc),
 		nmea.WithSentenceParserFunc(ublox.SentenceParserFunc),
