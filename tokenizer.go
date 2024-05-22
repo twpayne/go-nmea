@@ -132,6 +132,11 @@ func (t *Tokenizer) CommaHexBytes() []byte {
 	return t.HexBytes()
 }
 
+func (t *Tokenizer) CommaIgnore() struct{} {
+	t.Comma()
+	return t.Ignore()
+}
+
 func (t *Tokenizer) CommaInt() int {
 	t.Comma()
 	return t.Int()
@@ -402,6 +407,11 @@ func (t *Tokenizer) HexBytes() []byte {
 		value = append(value, byte(byteValue))
 	}
 	return value
+}
+
+func (t *Tokenizer) Ignore() struct{} {
+	_ = t.String()
+	return struct{}{}
 }
 
 func (t *Tokenizer) Int() int {
