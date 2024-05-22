@@ -10,11 +10,11 @@ type PGRME struct {
 }
 
 func ParsePGRME(addr string, tok *nmea.Tokenizer) (*PGRME, error) {
-	var e PGRME
-	e.Address = nmea.NewAddress(addr)
-	e.HorizontalPositionError = tok.CommaFloatCommaUnit('M')
-	e.VerticalPositionError = tok.CommaFloatCommaUnit('M')
-	e.PositionError = tok.CommaFloatCommaUnit('M')
+	var pgrme PGRME
+	pgrme.Address = nmea.NewAddress(addr)
+	pgrme.HorizontalPositionError = tok.CommaFloatCommaUnit('M')
+	pgrme.VerticalPositionError = tok.CommaFloatCommaUnit('M')
+	pgrme.PositionError = tok.CommaFloatCommaUnit('M')
 	tok.EndOfData()
-	return &e, tok.Err()
+	return &pgrme, tok.Err()
 }

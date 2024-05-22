@@ -16,17 +16,17 @@ type PGRMT struct {
 }
 
 func ParsePGRMT(addr string, tok *nmea.Tokenizer) (*PGRMT, error) {
-	var t PGRMT
-	t.Address = nmea.NewAddress(addr)
-	t.ProductModelAndSoftwareVersion = tok.CommaString()
-	t.ROMChecksumTest = tok.CommaOptionalOneByteOf("FP")
-	t.ReceiverFailureDiscrete = tok.CommaOptionalOneByteOf("FP")
-	t.StoredDataLost = tok.CommaOptionalOneByteOf("LR")
-	t.RealTimeClockLost = tok.CommaOptionalOneByteOf("LR")
-	t.OscillatorDriftDiscrete = tok.CommaOptionalOneByteOf("FP")
-	t.DataCollectionDiscrete = tok.CommaOptionalLiteralByte('C')
-	t.GPSSensorTemperature = tok.CommaOptionalInt()
-	t.GPSSensorConfigurationData = tok.CommaOptionalOneByteOf("LR")
+	var pgrmt PGRMT
+	pgrmt.Address = nmea.NewAddress(addr)
+	pgrmt.ProductModelAndSoftwareVersion = tok.CommaString()
+	pgrmt.ROMChecksumTest = tok.CommaOptionalOneByteOf("FP")
+	pgrmt.ReceiverFailureDiscrete = tok.CommaOptionalOneByteOf("FP")
+	pgrmt.StoredDataLost = tok.CommaOptionalOneByteOf("LR")
+	pgrmt.RealTimeClockLost = tok.CommaOptionalOneByteOf("LR")
+	pgrmt.OscillatorDriftDiscrete = tok.CommaOptionalOneByteOf("FP")
+	pgrmt.DataCollectionDiscrete = tok.CommaOptionalLiteralByte('C')
+	pgrmt.GPSSensorTemperature = tok.CommaOptionalInt()
+	pgrmt.GPSSensorConfigurationData = tok.CommaOptionalOneByteOf("LR")
 	tok.EndOfData()
-	return &t, tok.Err()
+	return &pgrmt, tok.Err()
 }

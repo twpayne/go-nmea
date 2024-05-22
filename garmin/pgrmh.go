@@ -15,16 +15,16 @@ type PGRMH struct {
 }
 
 func ParsePGRMH(addr string, tok *nmea.Tokenizer) (*PGRMH, error) {
-	var h PGRMH
-	h.Address = nmea.NewAddress(addr)
-	h.DataStatus = tok.CommaOneByteOf("Av")
-	h.VerticalSpeedFeetPerMinute = tok.CommaInt()
-	h.VNAVProfileErrorFeet = tok.CommaInt()
-	h.VerticalSpeedToVNAVTargetFeetPerMinute = tok.CommaInt()
-	h.VerticalSpeedToNextWaypointFeetPerMinute = tok.CommaInt()
-	h.ApproximateHeightAboveTerrainFeet = tok.CommaInt()
-	h.DesiredTrack = tok.CommaInt()
-	h.CourseOfNextRouteLeg = tok.CommaInt()
+	var pgrmh PGRMH
+	pgrmh.Address = nmea.NewAddress(addr)
+	pgrmh.DataStatus = tok.CommaOneByteOf("Av")
+	pgrmh.VerticalSpeedFeetPerMinute = tok.CommaInt()
+	pgrmh.VNAVProfileErrorFeet = tok.CommaInt()
+	pgrmh.VerticalSpeedToVNAVTargetFeetPerMinute = tok.CommaInt()
+	pgrmh.VerticalSpeedToNextWaypointFeetPerMinute = tok.CommaInt()
+	pgrmh.ApproximateHeightAboveTerrainFeet = tok.CommaInt()
+	pgrmh.DesiredTrack = tok.CommaInt()
+	pgrmh.CourseOfNextRouteLeg = tok.CommaInt()
 	tok.EndOfData()
-	return &h, tok.Err()
+	return &pgrmh, tok.Err()
 }

@@ -8,9 +8,9 @@ type PGRMM struct {
 }
 
 func ParsePGRMM(addr string, tok *nmea.Tokenizer) (*PGRMM, error) {
-	var m PGRMM
-	m.Address = nmea.NewAddress(addr)
-	m.Datum = tok.CommaString()
+	var pgrmm PGRMM
+	pgrmm.Address = nmea.NewAddress(addr)
+	pgrmm.Datum = tok.CommaString()
 	tok.EndOfData()
-	return &m, tok.Err()
+	return &pgrmm, tok.Err()
 }

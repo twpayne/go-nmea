@@ -15,16 +15,16 @@ type PGRMB struct {
 }
 
 func ParsePGRMB(addr string, tok *nmea.Tokenizer) (*PGRMB, error) {
-	var b PGRMB
-	b.Address = nmea.NewAddress(addr)
-	b.BeaconTuneFrequencyKHz = tok.CommaFloat()
-	b.BeaconBitRate = tok.CommaUnsignedInt()
-	b.BeaconSNR = tok.CommaOptionalUnsignedInt()
-	b.BeaconDataQuality = tok.CommaOptionalUnsignedInt()
-	b.DistanceToBeaconReferenceStationKM = tok.CommaOptionalIntCommaUnit('K')
-	b.BeaconReceiverCommunicationStatus = tok.CommaOptionalUnsignedInt()
-	b.DGPSFixSource = tok.CommaOneByteOf("NRW")
-	b.DGPSMode = tok.CommaOneByteOf("ANRW")
+	var pgrmb PGRMB
+	pgrmb.Address = nmea.NewAddress(addr)
+	pgrmb.BeaconTuneFrequencyKHz = tok.CommaFloat()
+	pgrmb.BeaconBitRate = tok.CommaUnsignedInt()
+	pgrmb.BeaconSNR = tok.CommaOptionalUnsignedInt()
+	pgrmb.BeaconDataQuality = tok.CommaOptionalUnsignedInt()
+	pgrmb.DistanceToBeaconReferenceStationKM = tok.CommaOptionalIntCommaUnit('K')
+	pgrmb.BeaconReceiverCommunicationStatus = tok.CommaOptionalUnsignedInt()
+	pgrmb.DGPSFixSource = tok.CommaOneByteOf("NRW")
+	pgrmb.DGPSMode = tok.CommaOneByteOf("ANRW")
 	tok.EndOfData()
-	return &b, tok.Err()
+	return &pgrmb, tok.Err()
 }

@@ -10,11 +10,11 @@ type PGRMV struct {
 }
 
 func ParsePGRMV(addr string, tok *nmea.Tokenizer) (*PGRMV, error) {
-	var v PGRMV
-	v.Address = nmea.NewAddress(addr)
-	v.TrueEastVelocity = tok.CommaFloat()
-	v.TrueNorthVelocity = tok.CommaFloat()
-	v.UpVelocity = tok.CommaFloat()
+	var pgrmv PGRMV
+	pgrmv.Address = nmea.NewAddress(addr)
+	pgrmv.TrueEastVelocity = tok.CommaFloat()
+	pgrmv.TrueNorthVelocity = tok.CommaFloat()
+	pgrmv.UpVelocity = tok.CommaFloat()
 	tok.EndOfData()
-	return &v, tok.Err()
+	return &pgrmv, tok.Err()
 }

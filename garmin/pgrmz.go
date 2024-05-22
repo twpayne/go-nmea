@@ -9,11 +9,11 @@ type PGRMZ struct {
 }
 
 func ParsePGRMZ(addr string, tok *nmea.Tokenizer) (*PGRMZ, error) {
-	var z PGRMZ
-	z.Address = nmea.NewAddress(addr)
-	z.AltFeet = tok.CommaFloat()
+	var pgrmz PGRMZ
+	pgrmz.Address = nmea.NewAddress(addr)
+	pgrmz.AltFeet = tok.CommaFloat()
 	tok.CommaOneByteOf("Ff")
-	z.FixType = tok.CommaUnsignedInt()
+	pgrmz.FixType = tok.CommaUnsignedInt()
 	tok.EndOfData()
-	return &z, tok.Err()
+	return &pgrmz, tok.Err()
 }

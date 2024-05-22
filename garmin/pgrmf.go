@@ -23,22 +23,22 @@ type PGRMF struct {
 }
 
 func ParsePGRMF(addr string, tok *nmea.Tokenizer) (*PGRMF, error) {
-	var f PGRMF
-	f.Address = nmea.NewAddress(addr)
-	f.GPSWeekNumber = tok.CommaUnsignedInt()
-	f.GPSSeconds = tok.CommaUnsignedInt()
+	var pgrmf PGRMF
+	pgrmf.Address = nmea.NewAddress(addr)
+	pgrmf.GPSWeekNumber = tok.CommaUnsignedInt()
+	pgrmf.GPSSeconds = tok.CommaUnsignedInt()
 	date := tok.CommaDate()
 	timeOfDay := tok.CommaTimeOfDay()
-	f.Time = time.Date(date.Year, date.Month, date.Day, timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second, timeOfDay.Nanosecond, time.UTC)
-	f.LeapSeconds = tok.CommaUnsignedInt()
-	f.Lat = tok.CommaLatDegMinCommaHemi()
-	f.Lon = tok.CommaLonDegMinCommaHemi()
-	f.Mode = tok.CommaOneByteOf("AM")
-	f.FixType = tok.CommaUnsignedInt()
-	f.SpeedOverGroundKPH = tok.CommaUnsignedInt()
-	f.CourseOverGround = tok.CommaUnsignedInt()
-	f.PDOP = tok.CommaUnsignedInt()
-	f.TDOP = tok.CommaUnsignedInt()
+	pgrmf.Time = time.Date(date.Year, date.Month, date.Day, timeOfDay.Hour, timeOfDay.Minute, timeOfDay.Second, timeOfDay.Nanosecond, time.UTC)
+	pgrmf.LeapSeconds = tok.CommaUnsignedInt()
+	pgrmf.Lat = tok.CommaLatDegMinCommaHemi()
+	pgrmf.Lon = tok.CommaLonDegMinCommaHemi()
+	pgrmf.Mode = tok.CommaOneByteOf("AM")
+	pgrmf.FixType = tok.CommaUnsignedInt()
+	pgrmf.SpeedOverGroundKPH = tok.CommaUnsignedInt()
+	pgrmf.CourseOverGround = tok.CommaUnsignedInt()
+	pgrmf.PDOP = tok.CommaUnsignedInt()
+	pgrmf.TDOP = tok.CommaUnsignedInt()
 	tok.EndOfData()
-	return &f, tok.Err()
+	return &pgrmf, tok.Err()
 }
