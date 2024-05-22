@@ -12,6 +12,7 @@ import (
 	"github.com/twpayne/go-nmea"
 	"github.com/twpayne/go-nmea/flarm"
 	"github.com/twpayne/go-nmea/garmin"
+	"github.com/twpayne/go-nmea/lxnavigation"
 	"github.com/twpayne/go-nmea/samsung"
 	"github.com/twpayne/go-nmea/standard"
 	"github.com/twpayne/go-nmea/ublox"
@@ -67,6 +68,7 @@ func run() error {
 		nmea.WithLineEndingDiscipline(nmea.LineEndingDisciplineNever),
 		nmea.WithSentenceParserFunc(flarm.SentenceParserFunc),
 		nmea.WithSentenceParserFunc(garmin.SentenceParserFunc),
+		nmea.WithSentenceParserFunc(lxnavigation.SentenceParserFunc),
 		nmea.WithSentenceParserFunc(samsung.SentenceParserFunc),
 		nmea.WithSentenceParserFunc(standard.SentenceParserFunc),
 		nmea.WithSentenceParserFunc(ublox.SentenceParserFunc),
