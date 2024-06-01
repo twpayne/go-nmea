@@ -16,6 +16,7 @@ import (
 	"github.com/twpayne/go-nmea/samsung"
 	"github.com/twpayne/go-nmea/standard"
 	"github.com/twpayne/go-nmea/ublox"
+	"github.com/twpayne/go-nmea/xctracer"
 )
 
 var sentenceRx = regexp.MustCompile(`\$[A-Z]+,[^*]+\*(?:[0-9A-Fa-f]{2})?`)
@@ -72,6 +73,7 @@ func run() error {
 		nmea.WithSentenceParserFunc(samsung.SentenceParserFunc),
 		nmea.WithSentenceParserFunc(standard.SentenceParserFunc),
 		nmea.WithSentenceParserFunc(ublox.SentenceParserFunc),
+		nmea.WithSentenceParserFunc(xctracer.SentenceParserFunc),
 	)
 
 	var output *os.File
