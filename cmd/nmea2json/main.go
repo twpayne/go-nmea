@@ -19,7 +19,7 @@ import (
 	"github.com/twpayne/go-nmea/xctracer"
 )
 
-var sentenceRx = regexp.MustCompile(`\$[A-Z]+,[^*]+\*(?:[0-9A-Fa-f]{2})?`)
+var sentenceRx = regexp.MustCompile(`\$[A-Z][A-Z0-9]*,[^*]+\*(?:[0-9A-Fa-f]{2})?`)
 
 func processReader(encoder *json.Encoder, parser *nmea.Parser, r io.Reader) error {
 	scanner := bufio.NewScanner(r)
