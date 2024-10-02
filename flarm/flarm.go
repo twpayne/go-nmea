@@ -1,7 +1,7 @@
 // Package flarm parses FLARM NMEA sentences.
 //
-// See https://www.flarm.com/wp-content/uploads/man/FTD-012-Data-Port-Interface-Control-Document-ICD.pdf.
-// See https://www.flarm.com/wp-content/uploads/man/FTD-014-FLARM-Configuration-Specification.pdf.
+// See https://www.flarm.com/wp-content/uploads/2024/04/FTD-012-Data-Port-Interface-Control-Document-ICD-7.19.pdf.
+// See https://www.flarm.com/wp-content/uploads/2024/07/FTD-014-FLARM-Configuration-Specification-1.17.pdf.
 package flarm
 
 import (
