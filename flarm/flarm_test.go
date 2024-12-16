@@ -224,17 +224,17 @@ func TestSentenceParserFunc(t *testing.T) {
 			{
 				S: "$PFLAC,A,ID,FFFFFF*",
 				Expected: &flarm.PFLACAnswer{
-					Address:           nmea.NewAddress("PFLAC"),
-					ConfigurationItem: "ID",
-					Values:            []string{"FFFFFF"},
+					Address: nmea.NewAddress("PFLAC"),
+					Item:    "ID",
+					Values:  []string{"FFFFFF"},
 				},
 			},
 			{
 				S: "$PFLAC,A,RADIOID,2,DF202B*",
 				Expected: &flarm.PFLACAnswer{
-					Address:           nmea.NewAddress("PFLAC"),
-					ConfigurationItem: "RADIOID",
-					Values:            []string{"2", "DF202B"},
+					Address: nmea.NewAddress("PFLAC"),
+					Item:    "RADIOID",
+					Values:  []string{"2", "DF202B"},
 				},
 			},
 			{

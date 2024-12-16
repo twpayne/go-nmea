@@ -6,8 +6,8 @@ import (
 
 type PFLACAnswer struct {
 	nmea.Address
-	ConfigurationItem string
-	Values            []string
+	Item   string
+	Values []string
 }
 
 type PFLACError struct {
@@ -30,7 +30,7 @@ func ParsePFLAC(addr string, tok *nmea.Tokenizer) (nmea.Sentence, error) {
 		default:
 			var pflacAnswer PFLACAnswer
 			pflacAnswer.Address = nmea.NewAddress(addr)
-			pflacAnswer.ConfigurationItem = s
+			pflacAnswer.Item = s
 			for !tok.AtEndOfData() {
 				value := tok.CommaString()
 				pflacAnswer.Values = append(pflacAnswer.Values, value)
