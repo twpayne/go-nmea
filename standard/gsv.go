@@ -25,7 +25,7 @@ func ParseGSV(addr string, tok *nmea.Tokenizer) (*GSV, error) {
 	gsv.MsgNum = tok.CommaUnsignedInt()
 	gsv.NumSV = tok.CommaUnsignedInt()
 	if n := min(gsv.NumSV-4*(gsv.MsgNum-1), 4); n > 0 {
-		for i := 0; i < n; i++ {
+		for range n {
 			siv := SatelliteInView{}
 			siv.SVID = tok.CommaUnsignedInt()
 			siv.Elv = tok.CommaOptionalInt()

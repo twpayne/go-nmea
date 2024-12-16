@@ -18,7 +18,7 @@ func ParseGSA(addr string, tok *nmea.Tokenizer) (*GSA, error) {
 	gsa.Address = nmea.NewAddress(addr)
 	gsa.OpMode = tok.CommaOneByteOf("AM")
 	gsa.NavMode = tok.CommaUnsignedInt()
-	for i := 0; i < 12; i++ {
+	for range 12 {
 		id := tok.CommaOptionalUnsignedInt()
 		gsa.SVIDs = append(gsa.SVIDs, id)
 	}

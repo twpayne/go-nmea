@@ -22,7 +22,7 @@ func ParseLXWP0(addr string, tok *nmea.Tokenizer) (*LXWP0, error) {
 	lxwp0.TrueAirspeedKPH = tok.CommaOptionalUnsignedFloat()
 	lxwp0.Alt = tok.CommaOptionalFloat()
 	lxwp0.Vario = make([]float64, 0, 6)
-	for i := 0; i < 6; i++ {
+	for range 6 {
 		if vario := tok.CommaOptionalFloat(); vario.Valid {
 			lxwp0.Vario = append(lxwp0.Vario, vario.Value)
 		}

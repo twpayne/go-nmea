@@ -294,7 +294,7 @@ func (t *Tokenizer) DecimalDigits(n int) int {
 		return 0
 	}
 	value := 0
-	for i := 0; i < n; i++ {
+	for range n {
 		if t.pos == len(t.data) {
 			t.err = errUnexpectedEndOfData
 			return 0
@@ -431,10 +431,10 @@ func (t *Tokenizer) Int() int {
 }
 
 func (t *Tokenizer) LatDegMinCommaHemi() float64 {
-	deg := t.DecimalDigits(2)
-	min := t.DecimalDigits(2)
+	degrees := t.DecimalDigits(2)
+	minutes := t.DecimalDigits(2)
 	numerator, denominator := t.PointDecimal()
-	lat := float64(deg) + (float64(min)+float64(numerator)/float64(denominator))/60
+	lat := float64(degrees) + (float64(minutes)+float64(numerator)/float64(denominator))/60
 	if t.CommaOneByteOf("NS") == 'S' {
 		lat = -lat
 	}
@@ -474,10 +474,10 @@ func (t *Tokenizer) LiteralString(s string) {
 }
 
 func (t *Tokenizer) LonDegMinCommaHemi() float64 {
-	deg := t.DecimalDigits(3)
-	min := t.DecimalDigits(2)
+	degrees := t.DecimalDigits(3)
+	minutes := t.DecimalDigits(2)
 	numerator, denominator := t.PointDecimal()
-	lon := float64(deg) + (float64(min)+float64(numerator)/float64(denominator))/60
+	lon := float64(degrees) + (float64(minutes)+float64(numerator)/float64(denominator))/60
 	if t.CommaOneByteOf("EW") == 'W' {
 		lon = -lon
 	}

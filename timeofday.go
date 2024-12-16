@@ -67,13 +67,13 @@ func (t *Tokenizer) OptionalTimeOfDay() Optional[TimeOfDay] {
 
 func (t *Tokenizer) TimeOfDay() TimeOfDay {
 	hour := t.DecimalDigits(2)
-	min := t.DecimalDigits(2)
-	sec, nsec := secondPointNanosecond(t)
+	minute := t.DecimalDigits(2)
+	second, nanosecond := secondPointNanosecond(t)
 	return TimeOfDay{
 		Hour:       hour,
-		Minute:     min,
-		Second:     sec,
-		Nanosecond: nsec,
+		Minute:     minute,
+		Second:     second,
+		Nanosecond: nanosecond,
 	}
 }
 

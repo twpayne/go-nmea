@@ -16,7 +16,7 @@ func ParseGRS(addr string, tok *nmea.Tokenizer) (*GRS, error) {
 	grs.Address = nmea.NewAddress(addr)
 	grs.TimeOfDay = tok.CommaTimeOfDay()
 	grs.Mode = tok.CommaUnsignedInt()
-	for i := 0; i < 12; i++ {
+	for range 12 {
 		residual := tok.CommaOptionalFloat()
 		grs.Residuals = append(grs.Residuals, residual)
 	}
