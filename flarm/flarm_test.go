@@ -357,5 +357,346 @@ func TestSentenceParserFunc(t *testing.T) {
 					Source:           nmea.NewOptional(6),
 				},
 			},
+			{
+				S: "$PFLAM,R,394,390,6*",
+				Expected: &flarm.PFLAMResponse{
+					Address:     nmea.NewAddress("PFLAM"),
+					Scheduled:   394,
+					Transmitted: 390,
+					FreeSlots:   6,
+				},
+			},
+			{
+				S: "$PFLAM,U,2,DF2000,AREG,48422D534941*",
+				Expected: &flarm.PFLAMUnsolicited{
+					Address:     nmea.NewAddress("PFLAM"),
+					IDType:      2,
+					ID:          0xDF2000,
+					MessageType: "AREG",
+					Message: &flarm.PFLAMAircraftRegistrationMessage{
+						Name: "HB-SIA",
+					},
+				},
+			},
+			{
+				S: "$PFLAM,U,2,DF2000,PNAME,4F7276696C6C6520577269676874*",
+				Expected: &flarm.PFLAMUnsolicited{
+					Address:     nmea.NewAddress("PFLAM"),
+					IDType:      2,
+					ID:          0xDF2000,
+					MessageType: "PNAME",
+					Message: &flarm.PFLAMPilotNameMessage{
+						Name: "Orville Wright",
+					},
+				},
+			},
+			{
+				S: "$PFLAM,U,2,DF2000,ATYPE,436573736E6120313732*",
+				Expected: &flarm.PFLAMUnsolicited{
+					Address:     nmea.NewAddress("PFLAM"),
+					IDType:      2,
+					ID:          0xDF2000,
+					MessageType: "ATYPE",
+					Message: &flarm.PFLAMAircraftTypeMessage{
+						Name: "Cessna 172",
+					},
+				},
+			},
+			{
+				S: "$PFLAM,U,2,DF2000,ACALL,5A4D*",
+				Expected: &flarm.PFLAMUnsolicited{
+					Address:     nmea.NewAddress("PFLAM"),
+					IDType:      2,
+					ID:          0xDF2000,
+					MessageType: "ACALL",
+					Message: &flarm.PFLAMAircraftCallsignMessage{
+						Name: "ZM",
+					},
+				},
+			},
+			{
+				S: "$PFLAM,U,2,DF2000,VHF,118.455,121.500,,*",
+				Expected: &flarm.PFLAMUnsolicited{
+					Address:     nmea.NewAddress("PFLAM"),
+					IDType:      2,
+					ID:          0xDF2000,
+					MessageType: "VHF",
+					Message: &flarm.PFLAMVHFRadioFrequencyMessage{
+						FrequencyAMHz: 118.455,
+						FrequencyBMHz: nmea.NewOptional(121.5),
+					},
+				},
+			},
+			{
+				S: "$PFLAM,A,OK,VHF,118.455,121.500,,*",
+				Expected: &flarm.PFLAMAnswer{
+					Address:     nmea.NewAddress("PFLAM"),
+					Result:      "OK",
+					MessageType: "VHF",
+					Message: &flarm.PFLAMVHFRadioFrequencyMessage{
+						FrequencyAMHz: 118.455,
+						FrequencyBMHz: nmea.NewOptional(121.5),
+					},
+				},
+			},
+			{
+				S: "$PFLAM,U,2,DF2000,TEAM,57574743415553*",
+				Expected: &flarm.PFLAMUnsolicited{
+					Address:     nmea.NewAddress("PFLAM"),
+					IDType:      2,
+					ID:          0xDF2000,
+					MessageType: "TEAM",
+					Message: &flarm.PFLAMTeamNameMessage{
+						Name: "WWGCAUS",
+					},
+				},
+			},
+			{
+				S: "$PFLAM,A,OK,TEAM,57574763415553*",
+				Expected: &flarm.PFLAMAnswer{
+					Address:     nmea.NewAddress("PFLAM"),
+					Result:      "OK",
+					MessageType: "TEAM",
+					Message: &flarm.PFLAMTeamNameMessage{
+						Name: "WWGcAUS",
+					},
+				},
+			},
+			{
+				S: "$PFLAM,A,ERROR,PAYLOAD TOO LARGE*",
+				Expected: &flarm.PFLAMAnswer{
+					Address: nmea.NewAddress("PFLAM"),
+					Result:  "ERROR",
+					Error:   "PAYLOAD TOO LARGE",
+				},
+			},
+			{
+				S: "$PFLAM,U,2,DF2000,SENS,62,3052,4.1,4.3*",
+				Expected: &flarm.PFLAMUnsolicited{
+					Address:     nmea.NewAddress("PFLAM"),
+					IDType:      2,
+					ID:          0xDF2000,
+					MessageType: "SENS",
+					Message: &flarm.PFLAMSensorMeasurementsMessage{
+						IAS:         nmea.NewOptional(62),
+						Altimeter:   nmea.NewOptional(3052),
+						Vario:       nmea.NewOptional(4.1),
+						Temperature: nmea.NewOptional(4.3),
+					},
+				},
+			},
+			{
+				S: "$PFLAM,A,OK,SENS,105,2999,,7.2*",
+				Expected: &flarm.PFLAMAnswer{
+					Address:     nmea.NewAddress("PFLAM"),
+					Result:      "OK",
+					MessageType: "SENS",
+					Message: &flarm.PFLAMSensorMeasurementsMessage{
+						IAS:         nmea.NewOptional(105),
+						Altimeter:   nmea.NewOptional(2999),
+						Temperature: nmea.NewOptional(7.2),
+					},
+				},
+			},
+			{
+				S: "$PFLAM,U,2,DF2000,AIRPT,LSZF,47.443333,8.233888,1300,26,121.555,1013,3*",
+				Expected: &flarm.PFLAMUnsolicited{
+					Address:     nmea.NewAddress("PFLAM"),
+					IDType:      2,
+					ID:          0xDF2000,
+					MessageType: "AIRPT",
+					Message: &flarm.PFLAMAirportInformationMessage{
+						ICAOCode:        "LSZF",
+						Lat:             47.443333,
+						Lon:             8.233888,
+						AltAMSLFeet:     1300,
+						RunwayInUse:     nmea.NewOptional(26),
+						VHFFrequencyMHz: nmea.NewOptional(121.555),
+						AltimeterQNH:    nmea.NewOptional(1013),
+						AirportStatus:   nmea.NewOptional(3),
+					},
+				},
+			},
+			{
+				S: "$PFLAM,U,2,DF2000,AIRPT,LSZF,47.443333,8.233888,1300,,,,*",
+				Expected: &flarm.PFLAMUnsolicited{
+					Address:     nmea.NewAddress("PFLAM"),
+					IDType:      2,
+					ID:          0xDF2000,
+					MessageType: "AIRPT",
+					Message: &flarm.PFLAMAirportInformationMessage{
+						ICAOCode:    "LSZF",
+						Lat:         47.443333,
+						Lon:         8.233888,
+						AltAMSLFeet: 1300,
+					},
+				},
+			},
+			{
+				S: "$PFLAM,A,OK,AIRPT,LSZF,47.4433336,8.2338872,1300,,,,*",
+				Expected: &flarm.PFLAMAnswer{
+					Address:     nmea.NewAddress("PFLAM"),
+					Result:      "OK",
+					MessageType: "AIRPT",
+					Message: &flarm.PFLAMAirportInformationMessage{
+						ICAOCode:    "LSZF",
+						Lat:         47.4433336,
+						Lon:         8.2338872,
+						AltAMSLFeet: 1300,
+					},
+				},
+			},
+			{
+				S: "$PFLAM,A,ERROR,INVALID DATA*",
+				Expected: &flarm.PFLAMAnswer{
+					Address: nmea.NewAddress("PFLAM"),
+					Result:  "ERROR",
+					Error:   "INVALID DATA",
+				},
+			},
+			{
+				S: "$PFLAM,U,2,DF2000,AIRPT,LSZF,47.443333,8.233888,1300,26,,1013,3*",
+				Expected: &flarm.PFLAMUnsolicited{
+					Address:     nmea.NewAddress("PFLAM"),
+					IDType:      2,
+					ID:          0xDF2000,
+					MessageType: "AIRPT",
+					Message: &flarm.PFLAMAirportInformationMessage{
+						ICAOCode:      "LSZF",
+						Lat:           47.443333,
+						Lon:           8.233888,
+						AltAMSLFeet:   1300,
+						RunwayInUse:   nmea.NewOptional(26),
+						AltimeterQNH:  nmea.NewOptional(1013),
+						AirportStatus: nmea.NewOptional(3),
+					},
+				},
+			},
+			{
+				S: "$PFLAM,U,2,DF2000,METAR,260,7,,190,280,9999,SCT,1200,21,18,-TSRA*",
+				Expected: &flarm.PFLAMUnsolicited{
+					Address:     nmea.NewAddress("PFLAM"),
+					IDType:      2,
+					ID:          0xDF2000,
+					MessageType: "METAR",
+					Message: &flarm.PFLAMAirportWeatherMessage{
+						WindDirection:      260,
+						WindSpeedKnots:     7,
+						WindVariationBelow: nmea.NewOptional(190),
+						WindVariationAbove: nmea.NewOptional(280),
+						Visibility:         9999,
+						SkyCondition:       nmea.NewOptional("SCT"),
+						BaseHeight:         nmea.NewOptional(1200),
+						Temperature:        21,
+						DewPoint:           18,
+						PresentWeather:     nmea.NewOptional("-TSRA"),
+					},
+				},
+			},
+			{
+				S: "$PFLAM,A,OK,METAR,260,7,,190,280,9999,SCT,1200,21,18,-TSRA*",
+				Expected: &flarm.PFLAMAnswer{
+					Address:     nmea.NewAddress("PFLAM"),
+					Result:      "OK",
+					MessageType: "METAR",
+					Message: &flarm.PFLAMAirportWeatherMessage{
+						WindDirection:      260,
+						WindSpeedKnots:     7,
+						WindVariationBelow: nmea.NewOptional(190),
+						WindVariationAbove: nmea.NewOptional(280),
+						Visibility:         9999,
+						SkyCondition:       nmea.NewOptional("SCT"),
+						BaseHeight:         nmea.NewOptional(1200),
+						Temperature:        21,
+						DewPoint:           18,
+						PresentWeather:     nmea.NewOptional("-TSRA"),
+					},
+				},
+			},
+			{
+				S: "$PFLAM,U,2,DF2000,BCST,6E6F2E2068617465206265617273000000*",
+				Expected: &flarm.PFLAMUnsolicited{
+					Address:     nmea.NewAddress("PFLAM"),
+					IDType:      2,
+					ID:          0xDF2000,
+					MessageType: "BCST",
+					Message: &flarm.PFLAMOpenBroadcastMessage{
+						Data: []byte("no. hate bears\x00\x00\x00"),
+					},
+				},
+			},
+			{
+				S: "$PFLAM,A,OK,BCST,476F696E6720746F20454E53423F000000*",
+				Expected: &flarm.PFLAMAnswer{
+					Address:     nmea.NewAddress("PFLAM"),
+					Result:      "OK",
+					MessageType: "BCST",
+					Message: &flarm.PFLAMOpenBroadcastMessage{
+						Data: []byte("Going to ENSB?\x00\x00\x00"),
+					},
+				},
+			},
+			{
+				S: "$PFLAM,A,ERROR,INVALID DATA*",
+				Expected: &flarm.PFLAMAnswer{
+					Address: nmea.NewAddress("PFLAM"),
+					Result:  "ERROR",
+					Error:   "INVALID DATA",
+				},
+			},
+			{
+				S: "$PFLAM,U,2,DF1234,UCST,2,DF2000,476F696E6720746F2045000000*",
+				Expected: &flarm.PFLAMUnsolicited{
+					Address:     nmea.NewAddress("PFLAM"),
+					IDType:      2,
+					ID:          0xDF1234,
+					MessageType: "UCST",
+					Message: &flarm.PFLAMOpenUnicastMessage{
+						IDType: 2,
+						ID:     0xDF2000,
+						Data:   []byte("Going to E\x00\x00\x00"),
+					},
+				},
+			},
+			{
+				S: "$PFLAM,A,OK,UCST,2,DF2000,476F696E6720746F2045000000*",
+				Expected: &flarm.PFLAMAnswer{
+					Address:     nmea.NewAddress("PFLAM"),
+					Result:      "OK",
+					MessageType: "UCST",
+					Message: &flarm.PFLAMOpenUnicastMessage{
+						IDType: 2,
+						ID:     0xDF2000,
+						Data:   []byte("Going to E\x00\x00\x00"),
+					},
+				},
+			},
+			{
+				S: "$PFLAM,A,ERROR,INVALID DATA*",
+				Expected: &flarm.PFLAMAnswer{
+					Address: nmea.NewAddress("PFLAM"),
+					Result:  "ERROR",
+					Error:   "INVALID DATA",
+				},
+			},
+			{
+				S: "$PFLAM,U,2,160103,VER,7.2.4,8,87,49.48,,,0,1,0,30*",
+				Expected: &flarm.PFLAMUnsolicited{
+					Address:     nmea.NewAddress("PFLAM"),
+					IDType:      2,
+					ID:          0x160103,
+					MessageType: "VER",
+					Message: &flarm.PFLAMVersionMessage{
+						Version:              "7.2.4",
+						DevType:              8,
+						Region:               87,
+						TransponderInstalled: 0,
+						Hardware:             "49.48",
+						ModeSAlt:             1,
+						OwnModeC:             0,
+						PCASCal:              30,
+					},
+				},
+			},
 		})
 }
