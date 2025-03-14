@@ -4,6 +4,7 @@ import (
 	"github.com/twpayne/go-nmea"
 )
 
+// A PFLACAnswer contains device configuration.
 type PFLACAnswer struct {
 	nmea.Address
 	Item   string

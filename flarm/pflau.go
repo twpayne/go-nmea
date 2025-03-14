@@ -2,6 +2,7 @@ package flarm
 
 import "github.com/twpayne/go-nmea"
 
+// A PFLAU contains heart beat, status, and basic alarms.
 type PFLAU struct {
 	nmea.Address
 	Rx               int

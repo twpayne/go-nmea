@@ -4,6 +4,7 @@ import (
 	"github.com/twpayne/go-nmea"
 )
 
+// A PFLAVAnswer contains version information.
 type PFLAVAnswer struct {
 	nmea.Address
 	HardwareVersion string

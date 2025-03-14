@@ -13,6 +13,7 @@ var AirportStatuses = map[int]string{
 	3: "green: airport is safe to use",
 }
 
+// A PFLAMAnswer is part of the messaging feature.
 type PFLAMAnswer struct {
 	nmea.Address
 	Result      string
@@ -21,6 +22,7 @@ type PFLAMAnswer struct {
 	Message     PFLAMMessage
 }
 
+// A PFLAMResponse is part of the messaging feature.
 type PFLAMResponse struct {
 	nmea.Address
 	Scheduled   int
@@ -28,6 +30,7 @@ type PFLAMResponse struct {
 	FreeSlots   int
 }
 
+// A PFLAMUnsolicited is part of the messaging feature.
 type PFLAMUnsolicited struct {
 	nmea.Address
 	IDType      int

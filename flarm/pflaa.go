@@ -2,6 +2,7 @@ package flarm
 
 import "github.com/twpayne/go-nmea"
 
+// A PFLAA contains data on other proximate aircraft.
 type PFLAA struct {
 	nmea.Address
 	AlarmLevel       int

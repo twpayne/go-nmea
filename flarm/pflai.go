@@ -2,6 +2,7 @@ package flarm
 
 import "github.com/twpayne/go-nmea"
 
+// A PFLAI contains IGC readout or trigger or triggers an IGC pilot event.
 type PFLAI struct {
 	nmea.Address
 	Value   string

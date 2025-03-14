@@ -6,6 +6,7 @@ import (
 	"github.com/twpayne/go-nmea"
 )
 
+// A PFLAO contains alert zone information.
 type PFLAO struct {
 	nmea.Address
 	AlarmLevel    int

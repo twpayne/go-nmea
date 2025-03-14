@@ -2,6 +2,7 @@ package flarm
 
 import "github.com/twpayne/go-nmea"
 
+// A PFLAQ contains operations progress information.
 type PFLAQ struct {
 	nmea.Address
 	Operation string

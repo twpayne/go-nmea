@@ -2,6 +2,7 @@ package flarm
 
 import "github.com/twpayne/go-nmea"
 
+// A PFLAL contains a debug message.
 type PFLAL struct {
 	nmea.Address
 	DebugMessage string

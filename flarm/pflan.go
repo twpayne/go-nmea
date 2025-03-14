@@ -7,10 +7,12 @@ import (
 	"github.com/twpayne/go-nmea"
 )
 
+// A PFLANRangeAnswer contains information about the Continuous Analyzer of Range Performance (CARP).
 type PFLANRangeAnswer struct {
 	nmea.Address
 }
 
+// A PFLANRangeStatisticAnswer contains information about the Continuous Analyzer of Range Performance (CARP).
 type PFLANRangeStatisticAnswer struct {
 	nmea.Address
 	StatisticType string
@@ -18,17 +20,20 @@ type PFLANRangeStatisticAnswer struct {
 	Values        []nmea.Optional[int]
 }
 
+// A PFLANRangeStatsAnswer contains information about the Continuous Analyzer of Range Performance (CARP).
 type PFLANRangeStatsAnswer struct {
 	nmea.Address
 	NumberOfPointsTop int
 }
 
+// A PFLANRangeTimeSpanAnswer contains information about the Continuous Analyzer of Range Performance (CARP).
 type PFLANRangeTimeSpanAnswer struct {
 	nmea.Address
 	Start time.Time
 	Stop  time.Time
 }
 
+// A PFLANResetAnswer contains information about the Continuous Analyzer of Range Performance (CARP).
 type PFLANResetAnswer struct {
 	nmea.Address
 }

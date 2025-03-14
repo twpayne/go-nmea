@@ -2,6 +2,7 @@ package flarm
 
 import "github.com/twpayne/go-nmea"
 
+// A PFLAFAnswer contains information about simulated traffic and alarms.
 type PFLAFAnswer struct {
 	nmea.Address
 	ScenarioNumber int

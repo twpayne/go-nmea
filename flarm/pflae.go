@@ -2,6 +2,7 @@ package flarm
 
 import "github.com/twpayne/go-nmea"
 
+// A PFLAEAnswer contains self-test results and error codes.
 type PFLAEAnswer struct {
 	nmea.Address
 	Severity  nmea.Optional[int]

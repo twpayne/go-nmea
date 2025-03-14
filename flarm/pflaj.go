@@ -4,6 +4,7 @@ import (
 	"github.com/twpayne/go-nmea"
 )
 
+// A PFLAJAnswer contains flight and IGC recording state information.
 type PFLAJAnswer struct {
 	nmea.Address
 	FlightState          int
