@@ -7,17 +7,21 @@ linters:
   - asciicheck
   - bidichk
   - bodyclose
+  - canonicalheader
   - containedctx
   - contextcheck
+  - copyloopvar
   - decorder
   - dogsled
   - dupword
   - durationcheck
+  - err113
   - errcheck
   - errchkjson
   - errname
   - errorlint
   - exhaustive
+  - fatcontext
   - forbidigo
   - forcetypeassert
   - gci
@@ -26,10 +30,8 @@ linters:
   - gochecknoinits
   - gochecksumtype
   - gocognit
-  - goconst
   - gocritic
   - godot
-  - err113
   - gofmt
   - gofumpt
   - goheader
@@ -41,17 +43,21 @@ linters:
   - gosmopolitan
   - govet
   - grouper
+  - iface
   - importas
   - inamedparam
   - ineffassign
   - interfacebloat
+  - intrange
   - ireturn
   - loggercheck
   - makezero
+  - mirror
   - misspell
   - nakedret
   - nestif
   - nilerr
+  - nilnesserr
   - nilnil
   - noctx
   - nolintlint
@@ -62,6 +68,7 @@ linters:
   - promlinter
   - protogetter
   - reassign
+  - recvcheck
   - revive
   - rowserrcheck
   - sloglint
@@ -70,7 +77,6 @@ linters:
   - staticcheck
   - stylecheck
   - tagalign
-  - tenv
   - testableexamples
   - testifylint
   - thelper
@@ -79,16 +85,10 @@ linters:
   - unparam
   - unused
   - usestdlibvars
+  - usetesting
   - wastedassign
   - whitespace
   - zerologlint
-  - canonicalheader
-  - copyloopvar
-  - fatcontext
-  - iface
-  - intrange
-  - mirror
-  - recvcheck
   disable:
   - cyclop
   - depguard
@@ -96,12 +96,13 @@ linters:
   - exhaustruct
   - funlen
   - gochecknoglobals
+  - goconst
   - gocyclo
   - godox
-  - mnd
   - gomoddirectives
   - lll
   - maintidx
+  - mnd
   - musttag
   - nlreturn
   - nonamedreturns
