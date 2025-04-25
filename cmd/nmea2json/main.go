@@ -30,15 +30,14 @@ func processReader(encoder *json.Encoder, parser *nmea.Parser, r io.Reader) erro
 			continue
 		}
 		var value any
-		switch sentence, err := parser.ParseString(match[0]); {
-		case err == nil:
-			value = map[string]any{
-				sentence.GetAddress().String(): sentence,
-			}
-		default:
+		if sentence, err := parser.ParseString(match[0]); err != nil {
 			value = map[string]any{
 				"err":      err.Error(),
 				"sentence": match[0],
+			}
+		} else {
+			value = map[string]any{
+				sentence.GetAddress().String(): sentence,
 			}
 		}
 		if err := encoder.Encode(value); err != nil {
