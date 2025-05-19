@@ -698,5 +698,9 @@ func TestSentenceParserFunc(t *testing.T) {
 					},
 				},
 			},
+			{
+				S:        "$PFLAP,A*",
+				Expected: &flarm.PFLAP{},
+			},
 		})
 }
